@@ -519,11 +519,17 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
 @media (min-width: 1024px) {
   .pdp { grid-template-columns: minmax(0, 1fr) minmax(0, 518px); gap: 56px; align-items: start; }
 }
-/* galeria: pilha vertical desktop (gap 2px) / carrossel mobile */
+/* galeria: carrossel de swipe no MOBILE; no DESKTOP as fotos empilham
+   e rolam COM a página, igual ao resto do site (direção do Pedro,
+   05/08 — saiu o carrossel horizontal de setas) */
 .gallery { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 2px; scrollbar-width: none; }
 .gallery::-webkit-scrollbar { display: none; }
 .well--pdp { min-width: 100%; scroll-snap-align: start; cursor: zoom-in; }
 .gallery__bullets { display: flex; justify-content: center; gap: 6px; margin-top: 10px; }
+@media (min-width: 1024px) {
+  .gallery { display: grid; overflow-x: visible; scroll-snap-type: none; }
+  .gallery__bullets { display: none; }
+}
 .gallery__bullet {
   width: 2px;
   height: 2px; /* bullets 2×2px */
@@ -532,32 +538,12 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
   transition: width var(--t) var(--ease), background var(--t) var(--ease);
 }
 .gallery__bullet.is-active { width: 16px; background: var(--ink); } /* ativo estica p/ 16px */
-/* carrossel horizontal em QUALQUER tela (direção do Pedro): a imagem
-   desliza para o lado; setas no desktop, bullets sempre visíveis */
 .pdp__gallery { position: relative; }
-.gallery-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--bg);
-  font-size: 20px;
-  line-height: 1;
-  z-index: 2;
-  display: none;
-  box-shadow: 0 2px 12px rgba(28, 28, 28, .12);
-  transition: background var(--t) var(--ease);
-}
-.gallery-nav:hover { background: var(--panel); }
-.gallery-nav--prev { left: 12px; }
-.gallery-nav--next { right: 12px; }
-@media (min-width: 1024px) { .gallery-nav { display: block; } }
-/* buy box: sticky 143px, max 518px, coluna interna de texto 406px */
+/* buy box: sticky no desktop (o header não é mais fixo — cola a 24px
+   do topo), max 518px, coluna interna de texto 406px */
 .pdp__buybox { padding-top: 8px; }
 @media (min-width: 1024px) {
-  .pdp__buybox { position: sticky; top: 143px; max-width: 518px; }
+  .pdp__buybox { position: sticky; top: 24px; max-width: 518px; }
 }
 .pdp__buybox > * { max-width: 406px; margin-left: auto; margin-right: auto; }
 .utilities {
@@ -791,9 +777,11 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
   margin: 72px 0 0;
 }
 .well--duo { aspect-ratio: 4 / 5; border-radius: 0; }
-/* foto real no par: preenche o quadro; enquadramento na modelo
-   (a foto de abertura da loja é horizontal, o slot é vertical) */
+/* foto real no par: preenche o quadro — as fotos são horizontais e o
+   slot é vertical, o object-position enquadra o sujeito de cada uma */
 .well--duo img { object-fit: cover; object-position: 65% 50%; }
+/* slot 1 = retrato do banner anterior (hero DT26): modelo a ~35% */
+.duo .well--duo:first-child img { object-position: 35% 50%; }
 .well--duo .well__face:has(img) { background: transparent; }
 
 /* ---------------- subcollection (still 5:7 + grade 2×2) ---------------- */

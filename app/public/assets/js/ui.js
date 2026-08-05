@@ -856,8 +856,8 @@
     recentPush(p.code);
     injectProductJSONLD(p);
 
-    /* Galeria: carrossel HORIZONTAL em qualquer tela (direção do
-       Pedro — a imagem desliza para o lado, não para baixo), com as
+    /* Galeria: swipe horizontal no mobile; no desktop as fotos
+       empilham e rolam com a página (direção do Pedro, 05/08), com as
        fotos reais primeiro e a de costas liderando.                  */
     var order = galleryOrder(p);
     var figures = order.map(function (slot, i) {
@@ -898,8 +898,6 @@
       '<div class="pdp">' +
       '  <div class="pdp__gallery">' +
       '    <div class="gallery">' + figures + "</div>" +
-      '    <button type="button" class="gallery-nav gallery-nav--prev" aria-label="Imagem anterior">&#8249;</button>' +
-      '    <button type="button" class="gallery-nav gallery-nav--next" aria-label="Próxima imagem">&#8250;</button>' +
       '    <div class="gallery__bullets">' + bullets + "</div>" +
       "  </div>" +
       '  <div class="pdp__buybox">' +
@@ -1010,14 +1008,8 @@
         openZoom(p, order, parseInt(fig.getAttribute("data-idx"), 10));
       });
     });
-    /* setas do carrossel + bullets + gatilho do ATC fixo (mobile) */
+    /* bullets do swipe mobile + gatilho do ATC fixo (mobile) */
     var gallery = $(".gallery");
-    $(".gallery-nav--prev").addEventListener("click", function () {
-      gallery.scrollBy({ left: -gallery.clientWidth, behavior: "smooth" });
-    });
-    $(".gallery-nav--next").addEventListener("click", function () {
-      gallery.scrollBy({ left: gallery.clientWidth, behavior: "smooth" });
-    });
     window.addEventListener("scroll", function () {
       var rect = gallery.getBoundingClientRect();
       var atc = $(".sticky-atc");
