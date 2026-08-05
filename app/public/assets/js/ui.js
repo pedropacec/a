@@ -844,7 +844,7 @@
   }
   function initPDP() {
     var code = param("code");
-    var p = byCode(code) || byCode("U-DT26-HDY-001-01");
+    var p = byCode(code) || byCode("U-DT26-HDY-101-01");
     /* Boné não tem seletor nenhum (direção do Pedro): tamanho único,
        CTA já nasce ativo. */
     pdp = { product: p, size: p.type === "Boné" ? "Único" : null, added: false };
