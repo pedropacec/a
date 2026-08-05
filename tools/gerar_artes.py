@@ -74,11 +74,11 @@ def selo(diam=110, fundo="#FFFFFF", cor_cubo=GRAFITE, faces=True):
     </svg>'''
 
 
-def pendente(altura=170, selo_diam=104, cor_linha="#FFFFFF"):
+def pendente(altura=170, selo_diam=94, cor_linha="#FFFFFF"):
     """Linha vertical com o selo do cubo pendurado."""
     return f'''<div style="display:flex;flex-direction:column;align-items:center;">
-      <div style="width:9px;height:{altura}px;background:{cor_linha};"></div>
-      <div style="margin-top:-6px;">{selo(selo_diam, fundo=cor_linha, faces=False,
+      <div style="width:6px;height:{altura}px;background:{cor_linha};border-radius:3px;"></div>
+      <div style="margin-top:-5px;filter:drop-shadow(0 12px 26px rgba(20,50,0,.28));">{selo(selo_diam, fundo=cor_linha, faces=False,
         cor_cubo=GRAFITE if cor_linha == "#FFFFFF" else "#FFFFFF")}</div>
     </div>'''
 
@@ -102,6 +102,7 @@ IC = {
     "doc": '<path d="M6 2h9l5 5v15H6z" fill="none" stroke-width="2" stroke-linejoin="round"/><path d="M15 2v5h5M9 12h8M9 16h8" fill="none" stroke-width="2"/>',
     "sofa": '<path d="M5 10V8a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v2" fill="none" stroke-width="2"/><path d="M4 10a2.2 2.2 0 0 1 2.2 2.2V14h11.6v-1.8A2.2 2.2 0 1 1 21 14v5h-2v-1.6H5V19H3v-5a2.2 2.2 0 0 1 1-4z"/>',
     "wifi": '<path d="M2.5 9.5a14 14 0 0 1 19 0M5.5 13a9.5 9.5 0 0 1 13 0M8.6 16.4a5 5 0 0 1 6.8 0" fill="none" stroke-width="2.1" stroke-linecap="round"/><circle cx="12" cy="19.6" r="1.8" stroke="none"/>',
+    "seta": '<path d="M4 12h14.5M12.5 5l7 7-7 7" fill="none" stroke-width="2.8"/>',
 }
 
 
@@ -139,30 +140,82 @@ def pagina(titulo, corpo, w, h, extra_css=""):
 <body>{corpo}</body></html>'''
 
 
-# ---------------------------------------------------------------- posts
+# ---------------------------------------------------------------- posts v2
+
+FUNDO_VERDE = (
+    "background:"
+    "radial-gradient(1100px 800px at 88% -12%, rgba(255,255,255,.30), transparent 60%),"
+    "radial-gradient(1100px 900px at -18% 112%, rgba(20,70,0,.30), transparent 58%),"
+    f"linear-gradient(160deg,{VERDE_CLARO},{VERDE} 48%,#5da21a);")
+
+FUNDO_CLARO = (
+    "background:"
+    "radial-gradient(820px 560px at 12% 6%, rgba(123,198,40,.16), transparent 62%),"
+    "radial-gradient(900px 700px at 108% 96%, rgba(123,198,40,.12), transparent 60%),"
+    "linear-gradient(150deg,#FAFAF8,#EEEEEC);")
+
+GLASS = ("background:rgba(255,255,255,.15);border:2.5px solid rgba(255,255,255,.38);"
+         "backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);")
+
+SOMBRA = "box-shadow:0 24px 50px rgba(30,60,0,.14);"
+
+
+def ruido(op=.05):
+    """Textura de granulado sutil por cima do fundo."""
+    return (f'<svg style="position:absolute;inset:0;width:100%;height:100%;opacity:{op};" '
+            'xmlns="http://www.w3.org/2000/svg"><filter id="nz">'
+            '<feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" stitchTiles="stitch"/>'
+            '<feColorMatrix type="saturate" values="0"/></filter>'
+            '<rect width="100%" height="100%" filter="url(#nz)"/></svg>')
+
+
+def tag(txt, sobre_verde=True):
+    """Etiqueta pill em outline no topo do post."""
+    estilo = ('border:3px solid rgba(255,255,255,.6);color:#fff;' if sobre_verde
+              else f'border:3px solid {VERDE};color:{VERDE_ESCURO};')
+    return (f'<div style="display:inline-block;{estilo}border-radius:44px;'
+            f'padding:12px 34px;font-size:27px;font-weight:700;letter-spacing:6px;">{txt}</div>')
+
+
+def marcador(txt, bg=VERDE, cor="#fff", rot=-1.5):
+    """Palavra com tarja estilo marca-texto, levemente rotacionada."""
+    return (f'<span style="display:inline-block;background:{bg};color:{cor};'
+            f'padding:4px 30px 10px;border-radius:18px;transform:rotate({rot}deg);'
+            f'box-shadow:0 16px 36px rgba(60,110,10,.25);">{txt}</span>')
+
+
+def vazado(txt, cor="#fff", esp=4):
+    """Texto só com contorno (outline)."""
+    return f'<span style="color:transparent;-webkit-text-stroke:{esp}px {cor};">{txt}</span>'
+
 
 def rodape_post(claro=False):
-    """Rodapé padrão dos posts: site à esquerda, logo à direita."""
-    cor_site = "rgba(255,255,255,.95)" if not claro else GRAFITE
+    """Rodapé: pill do Instagram à esquerda, logo à direita."""
+    if claro:
+        pill = f"background:#fff;border:2.5px solid #E0E0DC;color:{GRAFITE};"
+        ic_cor, logo_v = VERDE_ESCURO, "cor"
+    else:
+        pill = "background:rgba(255,255,255,.16);border:2.5px solid rgba(255,255,255,.4);color:#fff;"
+        ic_cor, logo_v = "#fff", "branco"
     return f'''
-    <div style="position:absolute;left:64px;bottom:56px;font-weight:700;font-size:27px;color:{cor_site};">
-      <b>guardetudobh</b><span style="opacity:.75;">.com.br</span>
-    </div>
-    <div style="position:absolute;right:56px;bottom:34px;">{logo("cor" if claro else "branco", 210)}</div>'''
+    <div style="position:absolute;left:56px;bottom:56px;display:flex;align-items:center;gap:14px;{pill}border-radius:50px;padding:15px 30px;font-size:29px;font-weight:900;">{icone("insta", 30, ic_cor)} @guardetudobh</div>
+    <div style="position:absolute;right:56px;bottom:34px;">{logo(logo_v, 200)}</div>'''
 
 
 def post_01():
-    corpo = f'''<div class="canvas" style="background:linear-gradient(160deg,{VERDE_CLARO} 0%,{VERDE} 45%,#6ab31f 100%);">
-      {marca_dagua(tam=820, css="left:-300px;top:330px;")}
-      {marca_dagua(tam=420, css="right:-140px;top:-90px;opacity:.2;")}
-      <div style="position:absolute;left:0;right:0;top:0;display:flex;justify-content:center;">{pendente(200)}</div>
-      <div style="position:absolute;left:80px;right:80px;top:520px;text-align:center;color:#fff;">
-        <div style="font-size:64px;font-weight:300;font-style:italic;">Afinal, o que é</div>
-        <div style="font-size:124px;font-weight:900;letter-spacing:4px;line-height:1.04;margin-top:14px;">SELF<br>STORAGE?</div>
-        <div style="margin:56px auto 0;max-width:760px;font-size:36px;font-weight:400;line-height:1.45;">
-          Um box <b>individual, seguro e flexível</b> para guardar o que não cabe
-          na sua casa ou na sua empresa. Vem entender &rarr;
-        </div>
+    corpo = f'''<div class="canvas" style="{FUNDO_VERDE}">
+      {marca_dagua(tam=860, css="left:-320px;top:400px;")}
+      {marca_dagua(tam=440, css="right:-150px;top:-100px;opacity:.2;")}
+      {ruido()}
+      <div style="position:absolute;left:64px;top:64px;">{tag("SELF STORAGE &bull; BH")}</div>
+      <div style="position:absolute;right:120px;top:0;">{pendente(130)}</div>
+      <div style="position:absolute;left:80px;right:80px;top:420px;text-align:center;color:#fff;">
+        <div style="font-size:62px;font-weight:300;font-style:italic;">Afinal, o que é</div>
+        <div style="font-size:146px;font-weight:900;letter-spacing:2px;line-height:1.04;margin-top:10px;">SELF<br>{vazado("STORAGE?")}</div>
+      </div>
+      <div style="position:absolute;left:110px;right:110px;top:930px;{GLASS}{SOMBRA}border-radius:34px;padding:38px 46px;text-align:center;color:#fff;font-size:34px;line-height:1.5;">
+        Um box <b>individual, seguro e flexível</b> para guardar o que não cabe
+        na sua casa ou na sua empresa. Vem entender &rarr;
       </div>
       {rodape_post()}
     </div>'''
@@ -170,23 +223,25 @@ def post_01():
 
 
 def post_02():
-    tarja = (f'<span style="background:{VERDE};color:#fff;padding:6px 22px;'
-             f'box-decoration-break:clone;-webkit-box-decoration-break:clone;">')
-    corpo = f'''<div class="canvas" style="background:linear-gradient(150deg,#f4f4f4,{CINZA});">
-      {marca_dagua(VERDE, 900, "left:-330px;bottom:-260px;opacity:.25;")}
-      {marca_dagua(GRAFITE, 360, "right:-110px;top:200px;opacity:.08;")}
-      <div style="position:absolute;right:120px;top:0;">{pendente(150, cor_linha=VERDE)}</div>
-      <div style="position:absolute;left:84px;top:400px;color:{GRAFITE};">
-        <div style="font-size:110px;font-weight:900;line-height:1.12;letter-spacing:2px;">
-          MUDOU E<br>FALTOU<br>ESPAÇO?
+    corpo = f'''<div class="canvas" style="{FUNDO_CLARO}">
+      {marca_dagua(VERDE, 900, "left:-330px;bottom:-260px;opacity:.2;")}
+      {ruido(.04)}
+      <div style="position:absolute;left:64px;top:64px;">{tag("MUDANÇA &bull; ORGANIZAÇÃO", sobre_verde=False)}</div>
+      <div style="position:absolute;right:120px;top:0;">{pendente(140, cor_linha=VERDE)}</div>
+      <div style="position:absolute;left:84px;top:270px;color:{GRAFITE};">
+        <div style="font-size:118px;font-weight:900;line-height:1.16;letter-spacing:1px;">
+          MUDOU E<br>FALTOU<br>{marcador("ESPAÇO?", rot=-2)}
         </div>
-        <div style="margin-top:54px;font-size:66px;font-weight:900;letter-spacing:3px;line-height:1.35;">
-          {tarja}ARMAZENE AQUI!</span>
-        </div>
-        <div style="margin-top:52px;font-size:34px;font-weight:400;max-width:660px;line-height:1.45;">
+        <div style="margin-top:64px;font-size:33px;font-weight:400;max-width:640px;line-height:1.5;">
           Boxes de <b>4 a 1.000&nbsp;m²</b>, sem fiador e sem burocracia,
           pelo tempo que você precisar.
         </div>
+      </div>
+      <div style="position:absolute;left:84px;top:1010px;display:inline-flex;align-items:center;gap:22px;
+                  background:linear-gradient(135deg,{VERDE_CLARO},{VERDE_ESCURO});color:#fff;border-radius:70px;
+                  padding:28px 52px;font-size:52px;font-weight:900;letter-spacing:1px;
+                  box-shadow:0 22px 48px rgba(95,165,31,.38);">
+        ARMAZENE AQUI {icone("seta", 52)}
       </div>
       {rodape_post(claro=True)}
     </div>'''
@@ -195,25 +250,26 @@ def post_02():
 
 def post_03():
     def card(ic, titulo, sub):
-        return f'''<div style="background:#fff;border-radius:26px;padding:38px 42px;display:flex;align-items:center;gap:34px;box-shadow:0 10px 24px rgba(0,0,0,.10);">
-          <div style="flex:0 0 92px;height:92px;border-radius:50%;background:{VERDE};display:flex;align-items:center;justify-content:center;">{icone(ic, 48)}</div>
-          <div><div style="font-size:40px;font-weight:900;color:{GRAFITE};">{titulo}</div>
-          <div style="font-size:29px;color:#6b6b68;margin-top:4px;">{sub}</div></div>
+        return f'''<div style="{GLASS}{SOMBRA}border-radius:32px;padding:34px 40px;display:flex;align-items:center;gap:34px;">
+          <div style="flex:0 0 96px;height:96px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 26px rgba(20,50,0,.18);">{icone(ic, 48, VERDE_ESCURO)}</div>
+          <div><div style="font-size:40px;font-weight:900;color:#fff;">{titulo}</div>
+          <div style="font-size:28px;color:rgba(255,255,255,.88);margin-top:5px;">{sub}</div></div>
         </div>'''
-    corpo = f'''<div class="canvas" style="background:linear-gradient(165deg,{VERDE_CLARO},{VERDE} 55%,#68b01e);">
-      {marca_dagua(tam=780, css="right:-280px;top:-160px;")}
-      <div style="position:absolute;left:84px;top:96px;color:#fff;max-width:900px;">
-        <div style="font-size:40px;font-weight:700;letter-spacing:6px;">PARA PESSOA JURÍDICA</div>
-        <div style="font-size:88px;font-weight:900;line-height:1.12;margin-top:18px;">
-          SUA EMPRESA<br>PRECISA DE ESPAÇO?
+    corpo = f'''<div class="canvas" style="{FUNDO_VERDE}">
+      {marca_dagua(tam=800, css="right:-290px;top:-170px;")}
+      {ruido()}
+      <div style="position:absolute;left:84px;top:76px;">{tag("PARA PESSOA JURÍDICA")}</div>
+      <div style="position:absolute;left:84px;top:190px;color:#fff;max-width:940px;">
+        <div style="font-size:92px;font-weight:900;line-height:1.14;">
+          SUA EMPRESA<br>PRECISA DE {vazado("ESPAÇO?")}
         </div>
       </div>
-      <div style="position:absolute;left:84px;right:84px;top:470px;display:flex;flex-direction:column;gap:30px;">
+      <div style="position:absolute;left:84px;right:84px;top:500px;display:flex;flex-direction:column;gap:28px;">
         {card("caixa", "Estoque e mercadorias", "Espaço que cresce junto com as vendas")}
         {card("doc", "Documentos e arquivo morto", "Organização com sigilo e controle de acesso")}
         {card("sofa", "Móveis e equipamentos", "Guarde a estrutura entre projetos e reformas")}
       </div>
-      <div style="position:absolute;left:84px;bottom:170px;background:{GRAFITE};color:#fff;border-radius:60px;padding:24px 44px;display:flex;align-items:center;gap:20px;font-size:33px;font-weight:700;">
+      <div style="position:absolute;left:84px;top:1075px;display:inline-flex;align-items:center;gap:20px;background:{GRAFITE};color:#fff;border-radius:60px;padding:24px 46px;font-size:33px;font-weight:700;box-shadow:0 20px 44px rgba(20,40,0,.30);">
         {icone("zap", 40)} Solicite um orçamento &middot; {ZAP}
       </div>
       {rodape_post()}
@@ -223,17 +279,19 @@ def post_03():
 
 def post_04():
     def chip(ic, txt):
-        return f'''<div style="display:flex;align-items:center;gap:26px;background:rgba(56,52,53,.92);border-radius:60px;padding:20px 46px 20px 24px;">
-          <div style="flex:0 0 72px;height:72px;border-radius:50%;background:{VERDE};display:flex;align-items:center;justify-content:center;">{icone(ic, 40)}</div>
-          <div style="color:#fff;font-size:44px;font-weight:700;"><span style="color:{VERDE_CLARO};font-weight:900;">+</span> {txt}</div>
+        return f'''<div style="display:inline-flex;align-items:center;gap:24px;{GLASS}border-radius:60px;padding:16px 44px 16px 20px;">
+          <div style="flex:0 0 78px;height:78px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 22px rgba(20,50,0,.16);">{icone(ic, 42, VERDE_ESCURO)}</div>
+          <div style="color:#fff;font-size:43px;font-weight:700;"><span style="font-weight:900;">+</span> {txt}</div>
         </div>'''
-    corpo = f'''<div class="canvas" style="background:linear-gradient(160deg,{VERDE_CLARO},{VERDE} 50%,#66ae1d);">
-      {marca_dagua(tam=860, css="left:-330px;bottom:-230px;")}
-      <div style="position:absolute;right:110px;top:0;">{pendente(120)}</div>
-      <div style="position:absolute;left:84px;top:110px;color:#fff;">
-        <div style="font-size:82px;font-weight:900;line-height:1.15;">INFRAESTRUTURA<br>COMPLETA:</div>
+    corpo = f'''<div class="canvas" style="{FUNDO_VERDE}">
+      {marca_dagua(tam=880, css="left:-340px;bottom:-240px;")}
+      {ruido()}
+      <div style="position:absolute;left:84px;top:76px;">{tag("POR QUE GUARDE TUDO?")}</div>
+      <div style="position:absolute;right:110px;top:0;">{pendente(110)}</div>
+      <div style="position:absolute;left:84px;top:190px;color:#fff;">
+        <div style="font-size:84px;font-weight:900;line-height:1.15;">INFRAESTRUTURA<br>{vazado("COMPLETA:")}</div>
       </div>
-      <div style="position:absolute;left:84px;top:420px;display:flex;flex-direction:column;gap:26px;">
+      <div style="position:absolute;left:84px;top:480px;display:flex;flex-direction:column;align-items:flex-start;gap:24px;">
         {chip("camera", "Segurança 24 horas")}
         {chip("cadeado", "Privacidade total")}
         {chip("grade", "+40 opções de boxes")}
@@ -247,29 +305,29 @@ def post_04():
 
 def post_05():
     def card(letra, faixa, exemplos):
-        return f'''<div style="flex:1;background:#fff;border-radius:28px;padding:44px 26px 38px;text-align:center;box-shadow:0 10px 24px rgba(0,0,0,.10);">
-          <div style="width:118px;height:118px;margin:0 auto;border-radius:50%;background:{VERDE};color:#fff;font-size:64px;font-weight:900;display:flex;align-items:center;justify-content:center;">{letra}</div>
-          <div style="font-size:44px;font-weight:900;color:{GRAFITE};margin-top:26px;">{faixa}</div>
+        return f'''<div style="flex:1;background:#fff;border-radius:36px;padding:46px 26px 40px;text-align:center;box-shadow:0 24px 50px rgba(40,60,0,.10);">
+          <div style="width:120px;height:120px;margin:0 auto;border-radius:50%;background:linear-gradient(145deg,{VERDE_CLARO},{VERDE_ESCURO});color:#fff;font-size:64px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 30px rgba(95,165,31,.35);">{letra}</div>
+          <div style="font-size:43px;font-weight:900;color:{GRAFITE};margin-top:28px;">{faixa}</div>
           <div style="font-size:27px;color:#6b6b68;margin-top:14px;line-height:1.4;">{exemplos}</div>
         </div>'''
-    tarja = (f'<span style="background:{GRAFITE};color:#fff;padding:8px 26px;'
-             f'box-decoration-break:clone;-webkit-box-decoration-break:clone;">')
-    corpo = f'''<div class="canvas" style="background:linear-gradient(150deg,#f6f6f6,{CINZA});">
-      {marca_dagua(VERDE, 760, "right:-260px;top:-200px;opacity:.22;")}
-      <div style="position:absolute;left:84px;right:84px;top:120px;text-align:center;color:{GRAFITE};">
-        <div style="font-size:56px;font-weight:400;">De <b>A a Z</b>, do pequeno ao <b>GRANDE:</b></div>
-        <div style="margin-top:30px;font-size:64px;font-weight:900;letter-spacing:2px;">{tarja}TEMOS ESPAÇO PARA TUDO!</span></div>
+    def mini(txt):
+        return (f'<div style="display:inline-block;border:3px solid {VERDE};color:{VERDE_ESCURO};'
+                f'border-radius:44px;padding:10px 30px;font-size:28px;font-weight:700;">{txt}</div>')
+    corpo = f'''<div class="canvas" style="{FUNDO_CLARO}">
+      {marca_dagua(VERDE, 780, "right:-270px;top:-210px;opacity:.18;")}
+      {ruido(.04)}
+      <div style="position:absolute;left:0;right:0;top:80px;text-align:center;">{tag("TAMANHOS DOS BOXES", sobre_verde=False)}</div>
+      <div style="position:absolute;left:60px;right:60px;top:200px;text-align:center;color:{GRAFITE};">
+        <div style="font-size:54px;font-weight:400;">De <b>A a Z</b>, do pequeno ao {vazado("GRANDE:", VERDE, 3)}</div>
+        <div style="margin-top:36px;font-size:62px;font-weight:900;letter-spacing:1px;">{marcador("TEMOS ESPAÇO PARA TUDO!", rot=-1.2)}</div>
       </div>
-      <div style="position:absolute;left:70px;right:70px;top:470px;">
-        <div style="text-align:center;font-size:34px;font-weight:700;color:{GRAFITE};letter-spacing:5px;margin-bottom:34px;">TAMANHOS DOS BOXES</div>
-        <div style="display:flex;gap:28px;">
-          {card("P", "4 a 12 m²", "Caixas, malas,<br>documentos, bicicletas")}
-          {card("M", "13 a 24 m²", "Mudanças, móveis,<br>pequenos estoques")}
-          {card("G", "25 a 1.000 m²", "Estoques, maquinário,<br>operações inteiras")}
-        </div>
+      <div style="position:absolute;left:70px;right:70px;top:520px;display:flex;gap:28px;">
+        {card("P", "4 a 12 m²", "Caixas, malas,<br>documentos, bicicletas")}
+        {card("M", "13 a 24 m²", "Mudanças, móveis,<br>pequenos estoques")}
+        {card("G", "25 a 1.000 m²", "Estoques, maquinário,<br>operações inteiras")}
       </div>
-      <div style="position:absolute;left:0;right:0;bottom:190px;text-align:center;font-size:33px;color:{GRAFITE};">
-        Box dimensionado sob medida &middot; contrato flexível &middot; <b>sem fiador</b>
+      <div style="position:absolute;left:0;right:0;top:1080px;display:flex;justify-content:center;gap:22px;">
+        {mini("box sob medida")} {mini("contrato flexível")} {mini("sem fiador")}
       </div>
       {rodape_post(claro=True)}
     </div>'''
@@ -277,57 +335,60 @@ def post_05():
 
 
 def post_06():
-    def bloco(t1, t2):
-        return f'''<div style="flex:1;background:#fff;border:5px solid {VERDE};border-radius:30px;padding:40px 34px;text-align:center;">
-          <div style="font-size:52px;font-weight:900;color:{GRAFITE};line-height:1.2;">{t1}</div>
-          <div style="font-size:34px;font-weight:700;font-style:italic;color:{VERDE_ESCURO};margin-top:16px;line-height:1.3;">{t2}</div>
+    def bloco(num, t1, t2):
+        return f'''<div style="flex:1;background:#F6F6F4;border-radius:34px;padding:64px 34px 40px;text-align:center;position:relative;box-shadow:0 20px 44px rgba(40,60,0,.08);">
+          <div style="position:absolute;left:50%;top:-34px;transform:translateX(-50%);width:68px;height:68px;border-radius:50%;background:linear-gradient(145deg,{VERDE_CLARO},{VERDE_ESCURO});color:#fff;font-size:36px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 26px rgba(95,165,31,.35);">{num}</div>
+          <div style="font-size:50px;font-weight:900;color:{GRAFITE};line-height:1.2;">{t1}</div>
+          <div style="font-size:33px;font-weight:700;font-style:italic;color:{VERDE_ESCURO};margin-top:16px;line-height:1.3;">{t2}</div>
         </div>'''
-    corpo = f'''<div class="canvas" style="background:#fff;">
-      <div style="position:absolute;left:0;right:0;top:0;height:300px;background:linear-gradient(120deg,{VERDE_CLARO},{VERDE});border-radius:0 0 60% 60%/0 0 120px 120px;"></div>
-      {marca_dagua(VERDE, 700, "left:-260px;bottom:-180px;opacity:.14;")}
-      <div style="position:absolute;left:0;right:0;top:72px;text-align:center;color:#fff;">
-        <div style="font-size:44px;font-weight:700;font-style:italic;letter-spacing:14px;">P R O M O Ç Ã O</div>
+    corpo = f'''<div class="canvas" style="background:radial-gradient(760px 460px at 50% -10%, rgba(123,198,40,.28), transparent 65%),linear-gradient(180deg,#FFFFFF,#F7F7F5);">
+      {marca_dagua(VERDE, 720, "left:-270px;bottom:-190px;opacity:.12;")}
+      {ruido(.035)}
+      <div style="position:absolute;left:0;right:0;top:80px;text-align:center;">
+        <div style="display:inline-block;background:{VERDE};color:#fff;border-radius:44px;padding:12px 40px;font-size:28px;font-weight:900;letter-spacing:8px;box-shadow:0 14px 32px rgba(95,165,31,.3);">PROMOÇÃO</div>
       </div>
-      <div style="position:absolute;left:0;right:0;top:210px;text-align:center;color:{GRAFITE};">
-        <div style="font-size:120px;font-weight:900;line-height:1.08;">QUEM INDICA<br>AMIGO É</div>
+      <div style="position:absolute;left:0;right:0;top:200px;text-align:center;color:{GRAFITE};">
+        <div style="font-size:116px;font-weight:900;line-height:1.14;">QUEM INDICA<br>{marcador("AMIGO", rot=-2)} É</div>
       </div>
-      <div style="position:absolute;left:0;right:0;top:560px;display:flex;justify-content:center;">{selo(150, fundo=VERDE, faces=False, cor_cubo="#FFFFFF")}</div>
-      <div style="position:absolute;left:80px;right:80px;top:770px;display:flex;gap:30px;">
-        {bloco("INDIQUE<br>1 AMIGO", "você ganha<br>e ele também")}
-        {bloco("DESCONTO<br>PRA CADA UM", "na próxima<br>mensalidade")}
+      <div style="position:absolute;left:0;right:0;top:590px;display:flex;justify-content:center;filter:drop-shadow(0 16px 34px rgba(95,165,31,.35));">{selo(140, fundo=VERDE, faces=False, cor_cubo="#FFFFFF")}</div>
+      <div style="position:absolute;left:80px;right:80px;top:820px;display:flex;gap:34px;">
+        {bloco("1", "INDIQUE<br>1 AMIGO", "você ganha<br>e ele também")}
+        {bloco("2", "DESCONTO<br>PRA CADA UM", "na próxima<br>mensalidade")}
       </div>
-      <div style="position:absolute;left:0;right:0;bottom:200px;text-align:center;font-size:30px;color:#6b6b68;">
+      <div style="position:absolute;left:0;right:0;top:1130px;text-align:center;font-size:29px;color:#6b6b68;">
         Consulte as condições com o nosso time &darr;
       </div>
       <div style="position:absolute;left:64px;bottom:56px;display:flex;gap:16px;align-items:center;">
         <div style="background:{GRAFITE};color:#fff;border-radius:50px;padding:14px 28px;font-size:28px;font-weight:700;display:flex;gap:12px;align-items:center;">{icone("fone", 28)} {FONE}</div>
-        <div style="background:{VERDE};color:#fff;border-radius:50px;padding:14px 28px;font-size:28px;font-weight:700;display:flex;gap:12px;align-items:center;">{icone("zap", 28)} {ZAP}</div>
+        <div style="background:linear-gradient(135deg,{VERDE_CLARO},{VERDE_ESCURO});color:#fff;border-radius:50px;padding:14px 28px;font-size:28px;font-weight:700;display:flex;gap:12px;align-items:center;box-shadow:0 12px 28px rgba(95,165,31,.3);">{icone("zap", 28)} {ZAP}</div>
       </div>
-      <div style="position:absolute;right:56px;bottom:34px;">{logo("cor", 210)}</div>
+      <div style="position:absolute;right:56px;bottom:34px;">{logo("cor", 200)}</div>
     </div>'''
     return pagina("Indique um amigo — Guarde Tudo", corpo, 1080, 1350)
 
 
 def story_01():
-    corpo = f'''<div class="canvas" style="background:linear-gradient(170deg,{VERDE_CLARO},{VERDE} 45%,#63aa1c);">
-      {marca_dagua(tam=900, css="left:-320px;top:1100px;")}
-      <div style="position:absolute;left:0;right:0;top:0;display:flex;justify-content:center;">{pendente(190)}</div>
-      <div style="position:absolute;left:80px;right:80px;top:470px;text-align:center;color:#fff;">
+    corpo = f'''<div class="canvas" style="{FUNDO_VERDE}">
+      {marca_dagua(tam=920, css="left:-330px;top:1150px;")}
+      {ruido()}
+      <div style="position:absolute;left:0;right:0;top:0;display:flex;justify-content:center;">{pendente(170)}</div>
+      <div style="position:absolute;left:0;right:0;top:400px;text-align:center;">{tag("SELF STORAGE EM BH")}</div>
+      <div style="position:absolute;left:80px;right:80px;top:520px;text-align:center;color:#fff;">
         <div style="font-size:52px;font-weight:300;font-style:italic;">Venha conhecer o</div>
-        <div style="font-size:108px;font-weight:900;letter-spacing:3px;margin-top:8px;">GUARDE TUDO</div>
+        <div style="font-size:110px;font-weight:900;letter-spacing:2px;margin-top:8px;">GUARDE {vazado("TUDO")}</div>
       </div>
-      <div style="position:absolute;left:90px;right:90px;top:800px;background:#fff;border-radius:34px;padding:54px 48px;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.16);">
-        <div style="display:flex;justify-content:center;">{icone("pin", 64, VERDE)}</div>
-        <div style="font-size:40px;font-weight:900;color:{GRAFITE};margin-top:20px;line-height:1.35;">Rua dos Moicanos, 512<br>Olhos d'Água &middot; BH/MG</div>
-        <div style="font-size:31px;color:#6b6b68;margin-top:18px;">a 5 minutos do BH Shopping<br>área coberta para carga e descarga</div>
+      <div style="position:absolute;left:90px;right:90px;top:830px;{GLASS}{SOMBRA}border-radius:38px;padding:54px 48px;text-align:center;color:#fff;">
+        <div style="display:flex;justify-content:center;"><div style="width:96px;height:96px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 26px rgba(20,50,0,.2);">{icone("pin", 52, VERDE_ESCURO)}</div></div>
+        <div style="font-size:41px;font-weight:900;margin-top:24px;line-height:1.35;">Rua dos Moicanos, 512<br>Olhos d'Água &middot; BH/MG</div>
+        <div style="font-size:30px;color:rgba(255,255,255,.88);margin-top:16px;">a 5 minutos do BH Shopping<br>área coberta para carga e descarga</div>
       </div>
-      <div style="position:absolute;left:90px;right:90px;top:1330px;background:{GRAFITE};color:#fff;border-radius:60px;padding:30px 40px;display:flex;align-items:center;justify-content:center;gap:20px;font-size:37px;font-weight:900;">
-        {icone("zap", 44)} CHAMA NO WHATS &middot; {ZAP}
+      <div style="position:absolute;left:90px;right:90px;top:1400px;background:#fff;color:{GRAFITE};border-radius:70px;padding:30px 40px;display:flex;align-items:center;justify-content:center;gap:20px;font-size:37px;font-weight:900;box-shadow:0 22px 48px rgba(20,50,0,.25);">
+        {icone("zap", 44, VERDE_ESCURO)} CHAMA NO WHATS &middot; {ZAP}
       </div>
-      <div style="position:absolute;left:0;right:0;bottom:170px;text-align:center;color:#fff;font-size:33px;font-weight:700;">
+      <div style="position:absolute;left:0;right:0;bottom:175px;text-align:center;color:#fff;font-size:33px;font-weight:700;">
         {INSTA} &middot; guardetudobh.com.br
       </div>
-      <div style="position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;">{logo("branco", 220)}</div>
+      <div style="position:absolute;left:0;right:0;bottom:14px;display:flex;justify-content:center;">{logo("branco", 215)}</div>
     </div>'''
     return pagina("Story Visite — Guarde Tudo", corpo, 1080, 1920)
 
