@@ -119,14 +119,23 @@ main { padding-bottom: 96px; }
 .well--promo { position: absolute; inset: 0; aspect-ratio: auto; border-radius: 0; }
 
 /* ---------------- header ---------------- */
+/* Cabeçalho INVISÍVEL: sem fundo e sem borda, flutuando sobre o topo
+   da página — sobre o banner na home. Rola junto com a página. */
 .site-header {
-  position: sticky;
+  position: absolute;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 60;
-  background: var(--bg);
-  border-bottom: 1px solid var(--panel);
-  overflow-x: clip; /* o wordmark aberto nunca cria scroll horizontal */
+  background: transparent;
 }
+/* nas páginas internas o conteúdo não desliza para debaixo do header */
+body { padding-top: 64px; }
+@media (min-width: 1440px) { body { padding-top: 80px; } }
+body[data-template="index"] { padding-top: 0; }
+/* na home, logo e ícones em BRANCO sobre a foto do banner */
+body[data-template="index"] .site-header { color: #fff; }
+body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .18); }
 .header__grid {
   position: relative;
   display: flex;
@@ -136,8 +145,8 @@ main { padding-bottom: 96px; }
   padding: 0 16px;
 }
 @media (min-width: 1440px) { .header__grid { height: 80px; } }
-/* Lockup ESTÁTICO centrado: VÈSSE (vetor) em cima, CLUB em texto na
-   fonte padrão da casa (Helvetica Neue) embaixo. Sem animação. */
+/* Logo padrão centrada: o lockup completo do vetor master (VÈSSE +
+   CLUB©), fill herdado da cor do header. Estática, sem animação. */
 .lock {
   position: absolute;
   left: 50%;
@@ -145,28 +154,16 @@ main { padding-bottom: 96px; }
   height: 100%;
   transform: translateX(-50%);
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 3px;
   z-index: 1; /* ABAIXO dos itens clicáveis do header — nunca bloqueia clique */
 }
 .lock:hover { text-decoration: none; }
-.lock .half {
+.lock__mark {
   display: block;
-  width: 58px;                /* lockup 10% menor (era 64px) */
+  width: 96px;
   height: auto;               /* viewBox preserva a proporção do vetor */
-  color: var(--ink);
 }
-.lock__club {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 10px;
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: .34em;
-  margin-right: -.34em;       /* compensa o tracking do último glifo */
-  color: var(--ink);
-}
+@media (max-width: 599px) { .lock__mark { width: 80px; } }
 /* nav e ícones ACIMA do lockup: clique nunca é bloqueado pelo wordmark */
 .header__left { display: flex; align-items: center; gap: 10px; position: relative; z-index: 2; }
 .header__icons { display: flex; align-items: center; gap: 6px; justify-self: end; position: relative; z-index: 2; }
