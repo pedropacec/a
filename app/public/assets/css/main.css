@@ -726,21 +726,19 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
 
 /* ---------------- home ---------------- */
 .hero { position: relative; margin: 0; } /* full-bleed: sangra de borda a borda */
-/* selo da estação no PÉ do hero (ref. Casablanca): o CLUB© do wordmark
-   pousa logo acima dele no estado aberto */
+/* selo da estação ABAIXO do banner, centrado no respiro antes do rail
+   (direção do Pedro, 05/08 — saiu de cima da foto) */
 .hero__season {
-  position: absolute;
-  left: 50%;
-  bottom: 24px;
-  transform: translateX(-50%);
-  z-index: 2;
+  display: block;
+  width: fit-content;
+  margin: 36px auto 0;
   font-size: 12px;
   letter-spacing: .18em;
   text-transform: uppercase;
   text-decoration: underline;
   text-underline-offset: 4px;
   white-space: nowrap;
-  color: #fff; /* sobre a foto escura do banner */
+  color: var(--ink);
 }
 .sr-only {
   position: absolute;
