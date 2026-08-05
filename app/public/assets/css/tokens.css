@@ -5,7 +5,7 @@
    ============================================================= */
 :root{
   /* ---- cores ---- */
-  --ink:        #1C1C1C;  /* tinta única da marca: corpo, botão primário, announcement bar.
+  --ink:        #1C1C1C;  /* tinta única da marca: corpo e botão primário.
                              NUNCA #000 puro. (Na Casablanca é o verde-garrafa #14372F.) */
   --ink-muted:  #6E6E6E;  /* labels, estado mudo, metadados */
   --bg:         #FFFFFF;  /* fundo global — branco, não off-white */
@@ -31,5 +31,6 @@
 
   /* ---- raios e formas ---- */
   --r-card: 24px;         /* card / image well / promo card */
-  --r-pill: 48px;         /* botões-pílula */
+  --r-pill: 6px;          /* botões QUADRADOS com canto suave (direção do
+                             Pedro, 05/08 — antes eram pílulas de 48px) */
 }

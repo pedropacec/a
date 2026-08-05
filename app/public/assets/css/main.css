@@ -107,31 +107,16 @@ main { padding-bottom: 96px; }
 .well__face[data-slot="09"] img { object-fit: cover; }
 .face--b { opacity: 0; }
 .well--editorial { aspect-ratio: 5 / 7; } /* a foto de história é mais alta que a de produto */
-/* hero full-bleed em TELA CHEIA: mais alto, o corte do cover vira
-   horizontal e o moletom aparece inteiro (direção do Pedro) */
-.well--hero { aspect-ratio: auto; min-height: 100vh; min-height: 100svh; border-radius: 0; }
-/* banner real: preenche o quadro; foto escura pede selo branco.
-   object-position segura o modelo no enquadramento em telas estreitas */
-.well--hero img { object-fit: cover; object-position: 35% 50%; }
+/* hero = banner do site anterior (vesseclub.com) na proporção NATURAL
+   da foto: retrato no mobile, paisagem no desktop */
+.well--hero { aspect-ratio: 1200 / 1882; min-height: 0; border-radius: 0; }
+@media (min-width: 700px) { .well--hero { aspect-ratio: 2800 / 1862; } }
+.well--hero img { object-fit: cover; object-position: 50% 50%; }
+.well--hero picture { display: contents; } /* o <picture> não cria caixa: o img segue as regras do well */
 .well--hero .well__face:has(img) { background: transparent; }
 .well--mini { width: 80px; aspect-ratio: 1 / 1.25; border-radius: 12px; flex: none; }
 .well--mini .well__face::after { font-size: 7px; letter-spacing: .02em; }
 .well--promo { position: absolute; inset: 0; aspect-ratio: auto; border-radius: 0; }
-
-/* ---------------- announcement bar ---------------- */
-.announce {
-  background: var(--ink);
-  color: #fff;
-  text-align: center;
-  padding: 9px 16px;
-}
-.announce__msg {
-  font-size: 11px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  transition: opacity var(--t) var(--ease);
-}
-.announce__msg.is-fading { opacity: 0; }
 
 /* ---------------- header ---------------- */
 .site-header {
@@ -151,27 +136,36 @@ main { padding-bottom: 96px; }
   padding: 0 16px;
 }
 @media (min-width: 1440px) { .header__grid { height: 80px; } }
-/* wordmark convergente VERTICAL: as duas metades do vetor oficial.
-   O lockup fica centrado de verdade — independe da largura dos grupos
-   laterais — e as metades animam width/top via JS (initWordmark). */
+/* Lockup ESTÁTICO centrado: VÈSSE (vetor) em cima, CLUB em texto na
+   fonte padrão da casa (Helvetica Neue) embaixo. Sem animação. */
 .lock {
   position: absolute;
   left: 50%;
   top: 0;
   height: 100%;
   transform: translateX(-50%);
-  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
   z-index: 1; /* ABAIXO dos itens clicáveis do header — nunca bloqueia clique */
 }
 .lock:hover { text-decoration: none; }
 .lock .half {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   display: block;
+  width: 58px;                /* lockup 10% menor (era 64px) */
   height: auto;               /* viewBox preserva a proporção do vetor */
-  color: inherit;             /* segue a cor do header (branco sobre a foto → tinta ao fechar) */
-  will-change: width, top;
+  color: var(--ink);
+}
+.lock__club {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: .34em;
+  margin-right: -.34em;       /* compensa o tracking do último glifo */
+  color: var(--ink);
 }
 /* nav e ícones ACIMA do lockup: clique nunca é bloqueado pelo wordmark */
 .header__left { display: flex; align-items: center; gap: 10px; position: relative; z-index: 2; }
@@ -579,22 +573,6 @@ main { padding-bottom: 96px; }
 .util-coll a { text-decoration: underline; }
 .util-actions { display: inline-flex; gap: 4px; }
 .btn-fav.is-on svg { fill: var(--ink); }
-.share-tip {
-  position: absolute;
-  bottom: -26px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--ink);
-  color: #fff;
-  font-size: 10px;
-  padding: 3px 8px;
-  border-radius: 6px;
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity var(--t) var(--ease);
-  pointer-events: none;
-}
-.share-tip.is-show { opacity: 1; }
 .pdp-badge { display: block; }
 .pdp-h1 { font-size: clamp(24px, 3vw, 40px); margin: 8px 0; }
 .pdp-price { font-size: 16px; margin-bottom: 32px; }
@@ -632,17 +610,16 @@ main { padding-bottom: 96px; }
   75% { transform: translateX(5px); }
 }
 .pdp-cta { width: 100%; margin-top: 20px; }
-.info-links {
-  display: flex;
-  justify-content: center;
-  gap: 32px; /* três links a 32px */
-  margin-top: 48px;
-  flex-wrap: wrap;
+/* Accordion vertical da buy box (ref. Off-White): Descrição · Guia de
+   tamanhos · Entrega e trocas empilhados, abrindo inline. */
+.pdp-acc { margin-top: 48px; border-top: 1px solid var(--panel); }
+.pdp-acc .acc__q {
+  font-size: 12px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
 }
-/* Desktop: o bloco links + ajuda desce BEM mais (círculos do Pedro,
-   01/08) — o caminho do CTA até os links precisa respirar. */
-@media (min-width: 1024px) { .info-links { margin-top: 200px; } }
-.info-links button { font-size: 12px; text-decoration: underline; }
+.pdp-acc .acc__item.is-open .acc__a { max-height: 1400px; } /* guia + tabela cabem */
+.pdp-acc .tabpane { padding-bottom: 16px; }
 .help-row { text-align: center; font-size: 12px; color: var(--ink-muted); margin-top: 20px; }
 .help-row a { text-decoration: underline; }
 
@@ -668,18 +645,7 @@ main { padding-bottom: 96px; }
 .sticky-atc .btn { flex: 1; padding: 12px 16px; }
 @media (min-width: 1024px) { .sticky-atc { display: none; } }
 
-/* drawer de informações: 3 abas */
-.tabs { display: flex; gap: 18px; border-bottom: 1px solid var(--panel); margin-bottom: 18px; flex-wrap: wrap; }
-.tab {
-  padding: 8px 0;
-  font-size: 12px;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
-  border-bottom: 2px solid transparent;
-  transition: color var(--t) var(--ease), border-color var(--t) var(--ease);
-}
-.tab--active { color: var(--ink); border-color: var(--ink); }
+/* conteúdo das seções de informação (accordion da PDP e guias) */
 .tabpane { font-size: 14px; }
 .tabpane p { margin-bottom: 14px; }
 .tabpane ul { list-style: disc; padding-left: 18px; display: grid; gap: 5px; margin-bottom: 14px; }
@@ -763,10 +729,6 @@ main { padding-bottom: 96px; }
 
 /* ---------------- home ---------------- */
 .hero { position: relative; margin: 0; } /* full-bleed: sangra de borda a borda */
-/* na home o hero desliza para DEBAIXO do header transparente:
-   os botões ficam em cima do banner da campanha */
-body[data-template="index"] .hero { margin-top: -64px; }
-@media (min-width: 1440px) { body[data-template="index"] .hero { margin-top: -80px; } }
 /* selo da estação no PÉ do hero (ref. Casablanca): o CLUB© do wordmark
    pousa logo acima dele no estado aberto */
 .hero__season {
@@ -1035,7 +997,7 @@ body[data-template="index"] .hero { margin-top: -64px; }
 
 /* folha de impressão: o documento vai direto pro fotógrafo como PDF */
 @media print {
-  .announce, .site-header, .members, .site-footer, .sticky-atc, .scrim, .drawer { display: none !important; }
+  .site-header, .members, .site-footer, .sticky-atc, .scrim, .drawer { display: none !important; }
   * { box-shadow: none !important; }
   body { font: 400 11px/1.5 var(--font-body); color: #1C1C1C; }
   .brief-head { padding: 0 0 12px; }

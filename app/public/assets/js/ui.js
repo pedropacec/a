@@ -87,7 +87,6 @@
     cart: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 6h12l-1 11H5L4 6Z"/><path d="M7 6a3 3 0 0 1 6 0"/></svg>',
     close: '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 3l12 12M15 3 3 15"/></svg>',
     heart: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 20s-7.5-4.6-9.3-9A5.2 5.2 0 0 1 12 6.4 5.2 5.2 0 0 1 21.3 11c-1.8 4.4-9.3 9-9.3 9Z"/></svg>',
-    share: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="6" cy="12" r="2.5"/><circle cx="17" cy="5.5" r="2.5"/><circle cx="17" cy="18.5" r="2.5"/><path d="m8.2 10.9 6.6-4M8.2 13.1l6.6 4"/></svg>',
     chevron: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="m5 3 4 4-4 4"/></svg>',
     instagram: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2.5" y="2.5" width="15" height="15" rx="4.5"/><circle cx="10" cy="10" r="3.6"/><circle cx="14.6" cy="5.4" r=".9" fill="currentColor" stroke="none"/></svg>',
     whatsapp: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M10 3a7 7 0 0 0-6 10.6L3 17l3.5-.9A7 7 0 1 0 10 3Z"/><path d="M7.6 7.3c-.2 1.6 2.3 4.7 4.4 5.1.5.1 1.1-.2 1.3-.7l.1-.5-1.6-.8-.7.7c-.8-.4-1.8-1.4-2.2-2.2l.7-.7-.8-1.6-.5.1c-.4.1-.6.3-.7.6Z" stroke-width="1.1"/></svg>',
@@ -344,22 +343,6 @@
     document.body.classList.remove("no-scroll");
   }
 
-  /* ---------------- announcement bar ---------------- */
-  function initAnnounce() {
-    var el = $(".announce__msg");
-    if (!el) return;
-    var i = 0;
-    el.textContent = ANNOUNCE[0];
-    setInterval(function () {
-      el.classList.add("is-fading");
-      setTimeout(function () {
-        i = (i + 1) % ANNOUNCE.length;
-        el.textContent = ANNOUNCE[i];
-        el.classList.remove("is-fading");
-      }, 333);
-    }, 4000);
-  }
-
   /* ---------------- header + navegação ---------------- */
   /* Wordmark oficial (assets/img/vesse-wordmark.svg): duas metades do
      vetor real, fill herdado. TOP = VÈSSE · BOTTOM = CLUB — o nome no
@@ -387,14 +370,6 @@
     '<path d="M237.198 175.045H293.644C293.644 175.045 314.321 174.499 323.295 149.607H342.881L312.957 235.023H295.137C295.137 235.023 303.573 203.332 285.208 203.332H224.82L237.198 175.045Z"/>' +
     '<path d="M351.901 252.842L367.045 259.823L314.814 322.75H168.284L181.791 294.462H262.491C262.491 294.462 302.838 297.229 351.893 252.842H351.901Z"/>' +
     '</svg>';
-  var LOCK_BOTTOM =
-    '<svg class="half b" id="lockB" viewBox="265 359 447 126" fill="currentColor" aria-hidden="true" focusable="false">' +
-    '<path d="M265.894 422.126C265.894 386.835 289.823 359.867 325.099 359.867C354.523 359.867 374.101 377.346 376.61 399.986H352.537C350.362 388.003 339.137 380.173 325.099 380.173C303.035 380.173 293.037 397.955 293.037 421.596C293.037 445.237 305.21 462.859 325.266 462.859C339.478 462.859 351.704 451.543 353.204 439.059H376.944C376.277 449.55 369.561 463.579 361.542 471.068C353.348 478.724 341.805 483.938 325.251 483.938C291.65 483.938 265.894 457.917 265.894 422.126Z"/>' +
-    '<path d="M390.921 359.791H417.639V460.912H479.557V483.946H390.921V359.791Z"/>' +
-    '<path d="M488.554 442.652V359.897H516.508V442.652C516.508 455.28 522.989 464.148 539.982 464.148C556.104 464.148 563.639 454.931 563.639 442.311V359.897H591.683V442.652C591.683 468.757 572.575 483.946 540.505 483.946C508.436 483.946 488.547 469.098 488.547 442.652H488.554Z"/>' +
-    '<path d="M607.54 359.905H665.775C679.789 359.905 690.522 363.202 697.261 368.925C704.355 374.996 707.637 382.455 707.637 392.172C707.637 404.838 699.444 412.993 687.255 416.98V417.496C701.634 421.49 711.457 432.935 711.457 448.201C711.457 459.82 707.637 467.802 699.997 474.047C692.531 480.293 681.07 483.931 667.238 483.931H607.548V359.89L607.54 359.905ZM662.5 409.87C673.968 409.87 681.79 404.663 681.79 394.954C681.79 385.76 674.696 380.378 663.046 380.378H633.932V409.87H662.5ZM633.932 463.125H664.327C677.068 463.125 684.709 456.356 684.709 446.298C684.709 434.504 675.605 428.433 663.599 428.433H633.932V463.133V463.125Z"/>' +
-    '</svg>';
-
   function chromeHeaderHTML() {
     /* Estrutura do cabeçalho (direção do Pedro, ref. Casablanca):
        desktop → Menu + Busca (só ícones) à esquerda · marca no centro ·
@@ -404,7 +379,6 @@
        mobile) com as 4 abas empilhadas — sem painel horizontal, nada
        corta o wordmark no topo.                                       */
     return '' +
-      '<div class="announce"><p class="announce__msg"></p></div>' +
       '<header class="site-header">' +
       '  <div class="header__grid">' +
       '    <div class="header__left">' +
@@ -414,10 +388,12 @@
       '      <button type="button" class="icon-btn nav-burger only-mobile" aria-label="Abrir menu">' + ICONS.burger + "</button>" +
       '      <button type="button" class="icon-btn js-search" aria-label="Busca">' + ICONS.search + "</button>" +
       "    </div>" +
-      '    <a class="lock" href="' + href("index.html") + '" aria-label="Vèsse Club — início">' + LOCK_TOP + LOCK_BOTTOM + "</a>" +
+      /* Lockup estático: VÈSSE (vetor) + CLUB em texto — a fonte padrão
+         da casa (Helvetica Neue). Sem animação de scroll. */
+      '    <a class="lock" href="' + href("index.html") + '" aria-label="Vèsse Club — início">' + LOCK_TOP +
+      '      <span class="lock__club" aria-hidden="true">CLUB</span></a>' +
       '    <div class="header__icons">' +
-      /* Direita, em qualquer tela: coração · conta (desktop) · sacola. */
-      '      <button type="button" class="icon-btn js-fav" aria-label="Favoritos">' + ICONS.heart + "</button>" +
+      /* Direita, em qualquer tela: conta (desktop) · sacola. */
       /* Conta: leva à página do clube (sem login POR DECISÃO — a lista
          É o clube). Porte: customer account Shopify. */
       '      <a class="icon-btn only-desktop" href="' + href("pages/members.html") + '" aria-label="Conta">' + ICONS.account + "</a>" +
@@ -436,116 +412,8 @@
     $(".nav-burger").addEventListener("click", openMobileNav);
     $$(".js-search").forEach(function (b) { b.addEventListener("click", openSearch); });
     $$(".js-cart").forEach(function (b) { b.addEventListener("click", openCart); });
-    $$(".js-fav").forEach(function (b) { b.addEventListener("click", openFavs); });
-  }
-  /* Favoritos do header (coração): mini-lista do localStorage. */
-  function openFavs() {
-    var favs = (store("vesse_favs") || []).map(byCode).filter(Boolean);
-    var html = favs.length ?
-      '<div class="search__results">' + favs.map(function (p) {
-        return '<a class="search__hit" href="' + href("produto.html?code=" + encodeURIComponent(p.code)) + '">' +
-          '<figure class="well well--mini"' + wellAttrs(p, mainSlot(p)) + '>' + faceSpan(p.code, mainSlot(p)) + "</figure>" +
-          "<span>" + esc(p.title) + '</span><span class="search__price">' + fmtPrice(p.price) + "</span></a>";
-      }).join("") + "</div>" :
-      '<div class="cart-empty"><p>Nenhuma peça guardada ainda</p>' +
-      '<a class="btn btn--ink" href="' + href("colecao.html") + '">Descobrir</a></div>';
-    openDrawer("Favoritos", html, "drawer--favs");
   }
 
-  /* ---------------- wordmark convergente VERTICAL --------------------
-     Direção do Pedro (ref. Casablanca real): as metades se juntam em
-     VERTICAL — VÈSSE mora no header; CLUB pousa no PÉ do hero (acima
-     do selo da estação) e sobe ao encontro do VÈSSE com o scroll, até
-     o lockup compacto empilhado (o lockup oficial do vetor). A nav e
-     os ícones ficam limpos em todos os estados — era o problema da
-     versão horizontal. Interpolação CONTÍNUA (scrubbed), não limiar.
-     Páginas internas nascem fechadas; reduced-motion: fechado, sem
-     animação. A proporção interna VÈSSE/CLUB do vetor é preservada
-     em qualquer escala. */
-  function initWordmark() {
-    var T = document.getElementById('lockT'), B = document.getElementById('lockB');
-    if (!T) return;
-    var RT = 325 / 1000;   // razão h/l do SVG de cima (VÈSSE)
-    var RB = 126 / 447;    // razão h/l do SVG de baixo (CLUB, sem o ©)
-    var PROP = 447 / 1000; // largura do CLUB relativa ao VÈSSE — mesma escala
-                           // de glifo do vetor master (© cortado, letras idênticas)
-    var CLOSED_W = 64;     // largura do VÈSSE no lockup fechado (px)
-    var GAP = 3;           // folga vertical no lockup fechado (px)
-    var RANGE = 260;       // mínimo; recalculado pela posição real do hero
-    var IS_HOME = document.body.dataset.template === 'index';
-    var seasonEl = document.querySelector('.hero__season');
-    var headerEl = document.querySelector('.site-header');
-
-    function measureRange() {
-      if (!seasonEl) return;
-      var r = seasonEl.getBoundingClientRect();
-      RANGE = Math.max(260, r.top + window.scrollY - 160);
-    }
-
-    function draw(t) {                                                 // t: 0 = aberto · 1 = fechado
-      t = Math.max(0, Math.min(1, t));
-      var e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;    // easeInOut
-      var vw = window.innerWidth;
-      var desktop = vw >= 1024;
-      var lockRect = T.parentElement.getBoundingClientRect();
-      var headerH = lockRect.height;
-
-      /* VÈSSE: sempre no header; abre maior (transbordando sobre o hero,
-         como a referência) e assenta no tamanho fechado. É SEMPRE a
-         metade maior — como no lockup oficial. */
-      var wTopen = desktop ?
-        Math.min(352, Math.max(192, vw * 0.256)) :
-        Math.min(208, Math.max(120, vw * 0.36));
-      wTopen = Math.min(wTopen, vw - 24);                              // nunca vaza
-      var wT = CLOSED_W + (wTopen - CLOSED_W) * (1 - e);
-      var hTclosed = CLOSED_W * RT;
-      var stackClosed = hTclosed + GAP + CLOSED_W * PROP * RB;
-      var topClosed = (headerH - stackClosed) / 2;
-      var topT = 8 + (topClosed - 8) * e;
-      T.style.width = wT + 'px';
-      T.style.top = topT + 'px';
-
-      /* Header transparente no topo da home (botões sobre o banner);
-         ganha o fundo branco na proporção do scroll. Sobre a foto
-         escura do banner, ícones e wordmark ficam BRANCOS e voltam
-         à tinta conforme o header solidifica. Nas internas, draw(1)
-         deixa sólido e tinta. */
-      if (headerEl) {
-        headerEl.style.backgroundColor = 'rgba(255,255,255,' + e.toFixed(3) + ')';
-        headerEl.style.borderBottomColor = 'rgba(247,247,247,' + e.toFixed(3) + ')';
-        var tom = Math.round(255 - (255 - 28) * e);
-        headerEl.style.color = 'rgb(' + tom + ',' + tom + ',' + tom + ')';
-      }
-
-      /* CLUB: aberto, pousa logo acima do selo da estação no pé do
-         hero; converge para debaixo do VÈSSE. A largura deriva SEMPRE
-         da escala de glifo do vetor (44,7% do VÈSSE sem o ©) — VÈSSE
-         maior que CLUB em qualquer ponto da animação. */
-      var wB = wT * PROP;
-      var hB = wB * RB;
-      var closedBtop = topClosed + hTclosed + GAP;
-      var openBtop = closedBtop;
-      if (seasonEl) {
-        var sr = seasonEl.getBoundingClientRect();
-        openBtop = (sr.top - 14 - hB) - lockRect.top;
-      }
-      var topB = openBtop + (closedBtop - openBtop) * e;
-      B.style.width = wB + 'px';
-      B.style.top = topB + 'px';
-    }
-
-    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!IS_HOME || reduced) { draw(1); if (!IS_HOME) return; }        // páginas internas: sempre fechado
-    if (reduced) return;                                               // reduced motion: fechado, sem scrub
-
-    measureRange();
-    var ticking = false;
-    function apply() { ticking = false; draw(window.scrollY / RANGE); }
-    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(apply); } }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', function () { measureRange(); onScroll(); });
-    apply();
-  }
   function openMobileNav() {
     var body = NAV.map(function (item) {
       if (!item.mega) {
@@ -913,23 +781,21 @@
       '<p class="model-line">O modelo tem 1,84 m e veste M.</p>' +
       '<a class="tab-link" href="' + href("pages/" + g.page) + '">Guia completo de ' + esc(g.label.toLowerCase()) + "</a>";
   }
-  function openInfoDrawer(p, tab) {
-    var tabs = ["Detalhes", "Guia de tamanhos", "Entrega e trocas"];
-    var panes = [detailsTabHTML(p), guideTableHTML(guideForType(p.type)), SHIPPING_HTML];
-    var html = '<div class="tabs">' + tabs.map(function (t, i) {
-      return '<button type="button" class="tab' + (i === tab ? " tab--active" : "") + '" data-tab="' + i + '">' + t + "</button>";
-    }).join("") + "</div>" +
-      panes.map(function (pane, i) {
-        return '<div class="tabpane"' + (i === tab ? "" : ' style="display:none"') + ">" + pane + "</div>";
-      }).join("");
-    openDrawer("Informações", html, "drawer--info");
-    $$(".tab").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        var i = parseInt(btn.getAttribute("data-tab"), 10);
-        $$(".tab").forEach(function (b, j) { b.classList.toggle("tab--active", j === i); });
-        $$(".tabpane").forEach(function (pane, j) { pane.style.display = j === i ? "" : "none"; });
-      });
-    });
+  /* Accordion vertical da PDP (ref. Off-White): Descrição · Guia de
+     tamanhos · Entrega e trocas, empilhados e abrindo inline. O bind
+     de clique é o global de .acc__q em initHooks. */
+  function pdpAccHTML(p) {
+    var items = [
+      ["Descrição", detailsTabHTML(p)],
+      ["Guia de tamanhos", guideTableHTML(guideForType(p.type))],
+      ["Entrega e trocas", SHIPPING_HTML]
+    ];
+    return items.map(function (it) {
+      return '<div class="acc__item">' +
+        '<button type="button" class="acc__q">' + it[0] +
+        '<span class="mnav__chevron">' + ICONS.chevron + "</span></button>" +
+        '<div class="acc__a"><div class="tabpane">' + it[1] + "</div></div></div>";
+    }).join("");
   }
   function openNotify(p, size) {
     ensureDrawer();
@@ -1003,8 +869,9 @@
     var collLink = isA71(p) ?
       '<a href="' + href("colecao.html?c=collections") + '">Collections</a>' :
       '<a href="' + href("colecao.html?c=divine-therapy") + '">Divine Therapy</a>';
-    var badgeTag = hasTag(p, "MEMBERS") ? "MEMBERS" :
-      (p.tags.filter(function (t) { return BADGES[t]; })[0] || null);
+    /* Só o badge Members sobrevive na PDP — o título de drop
+       ("Drop 01") foi removido (direção do Pedro). */
+    var badgeTag = hasTag(p, "MEMBERS") ? "MEMBERS" : null;
     var priceHTML = fmtPrice(p.price) +
       (p.compareAt ? " <s>" + fmtPrice(p.compareAt) + "</s>" : "");
 
@@ -1036,8 +903,6 @@
       '    <div class="utilities"><span class="util-coll">' + collLink + "</span>" +
       '      <span class="util-actions">' +
       '        <button type="button" class="icon-btn btn-fav" aria-label="Favoritar" aria-pressed="false">' + ICONS.heart + "</button>" +
-      '        <button type="button" class="icon-btn btn-share" aria-label="Copiar link">' + ICONS.share +
-      '          <span class="share-tip">Link copiado!</span></button>' +
       "      </span></div>" +
       (badgeTag ? '<span class="badge pdp-badge">' + esc(BADGES[badgeTag].label) + "</span>" : "") +
       '    <h1 class="display pdp-h1">' + esc(p.title) + "</h1>" +
@@ -1045,13 +910,9 @@
       '    <p class="pdp-price">' + priceHTML + "</p>" +
       sizePicker +
       '    <button type="button" class="btn btn--muted pdp-cta">Selecionar tamanho</button>' +
-      /* Sem linha de entrega (removida pelo Pedro, 01/08) — o respiro
-         entre o CTA e os links fica no margin-top do .info-links. */
-      '    <div class="info-links">' +
-      '      <button type="button" data-tab="0">Detalhes do produto</button>' +
-      '      <button type="button" data-tab="1">Guia de tamanhos</button>' +
-      '      <button type="button" data-tab="2">Entrega e trocas</button>' +
-      "    </div>" +
+      /* Descrição, guia e entrega EMPILHADOS em accordion vertical
+         (ref. Off-White) — abrem inline, sem drawer. */
+      '    <div class="pdp-acc">' + pdpAccHTML(p) + "</div>" +
       '    <p class="help-row">Precisa de ajuda? <a href="' + CONTACT.whatsapp + '">WhatsApp</a> · ' +
       '<a href="' + CONTACT.email + '">E-mail</a></p>' +
       "  </div>" +
@@ -1139,22 +1000,6 @@
     });
     var favs0 = store("vesse_favs") || [];
     if (favs0.indexOf(p.code) !== -1) { fav.setAttribute("aria-pressed", "true"); fav.classList.add("is-on"); }
-    $(".btn-share").addEventListener("click", function () {
-      var url = location.href;
-      function done() {
-        var tip = $(".share-tip");
-        tip.classList.add("is-show");
-        setTimeout(function () { tip.classList.remove("is-show"); }, 1600);
-      }
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(url).then(done, function () { fallbackCopy(url); done(); });
-      } else { fallbackCopy(url); done(); }
-    });
-    $$(".info-links button").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        openInfoDrawer(p, parseInt(btn.getAttribute("data-tab"), 10));
-      });
-    });
     /* zoom full-viewport com trilho de thumbs de 100px */
     $$(".well--pdp").forEach(function (fig) {
       fig.addEventListener("click", function () {
@@ -1178,14 +1023,6 @@
       var i = Math.round(gallery.scrollLeft / gallery.clientWidth);
       $$(".gallery__bullet").forEach(function (b, j) { b.classList.toggle("is-active", j === i); });
     }, { passive: true });
-  }
-  function fallbackCopy(text) {
-    var ta = document.createElement("textarea");
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    try { document.execCommand("copy"); } catch (e) { }
-    ta.remove();
   }
   function openZoom(p, order, start) {
     var overlay = document.createElement("div");
@@ -1386,9 +1223,7 @@
   function boot() {
     document.body.insertAdjacentHTML("afterbegin", chromeHeaderHTML());
     document.body.insertAdjacentHTML("beforeend", chromeFooterHTML());
-    initAnnounce();
     initHeader();
-    initWordmark();
     updateCartCount();
     if (PAGE === "plp") initPLP();
     else if (PAGE === "pdp") initPDP();
