@@ -21,8 +21,8 @@
     "position:fixed;inset:0;z-index:99999;background:#FFFFFF;display:flex;" +
     "align-items:center;justify-content:center;text-align:center;");
   gate.innerHTML =
-    '<form style="display:grid;gap:16px;max-width:280px;width:90%;font-family:Montserrat,sans-serif;">' +
-    '<p style="font-family:Marcellus,serif;font-size:26px;letter-spacing:.04em;color:#1C1C1C;margin:0;">V&Egrave;SSE CLUB</p>' +
+    '<form style="display:grid;gap:16px;max-width:280px;width:90%;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;">' +
+    '<p style="font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:26px;letter-spacing:.04em;color:#1C1C1C;margin:0;">V&Egrave;SSE CLUB</p>' +
     '<p style="font-size:12px;color:#6E6E6E;margin:0;">Acesso restrito &mdash; pr&eacute;via da casa.</p>' +
     '<input type="password" inputmode="numeric" autocomplete="off" placeholder="Senha" aria-label="Senha"' +
     ' style="border:1px solid #E3E3E3;border-radius:999px;padding:13px 20px;text-align:center;outline:none;font-size:15px;">' +

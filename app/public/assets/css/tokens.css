@@ -19,9 +19,11 @@
   --season-h1:  #8C2F1B;  /* dupla cromática do drop — TROCAR POR DROP */
   --season-body:#274036;  /* distinta de --state-out e de --ink */
 
-  /* ---- tipografia ---- */
-  --font-display: 'Marcellus', Georgia, 'Times New Roman', serif;
-  --font-body:    'Montserrat', system-ui, -apple-system, sans-serif;
+  /* ---- tipografia ----
+     A fonte do CLUB da logo no site INTEIRO (direção do Pedro, 05/08):
+     Helvetica Neue em display e corpo — saíram Marcellus/Montserrat. */
+  --font-display: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-body:    'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-mono:    ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   /* ---- movimento: uma constante ---- */
