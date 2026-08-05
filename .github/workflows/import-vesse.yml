@@ -1,5 +1,8 @@
 name: Import vesse-club site
-on: workflow_dispatch
+on:
+  push:
+    paths:
+      - '.github/workflows/import-vesse.yml'
 permissions:
   contents: write
 jobs:
