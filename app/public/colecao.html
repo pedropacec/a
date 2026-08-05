@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!-- Porte Shopify (seção 9): sections/main-collection.liquid —
+     cada vista (?c=<vista>) vira uma collection real, por tag/type. -->
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Coleção — Vèsse Club</title>
+  <meta name="description" content="A coleção Vèsse Club: camisetas, moletons, calças, shorts, bonés e conjuntos streetwear confeccionados no Brasil, com entrega cortesia em todos os pedidos.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Montserrat:wght@400;450;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Coleção Vèsse Club",
+    "url": "https://www.vesseclub.com/colecao.html",
+    "inLanguage": "pt-BR",
+    "isPartOf": { "@type": "WebSite", "name": "Vèsse Club", "url": "https://www.vesseclub.com/" }
+  }
+  </script>
+</head>
+<body data-page="plp" data-root="">
+  <main class="container">
+    <!-- PLP UNIVERSAL: ui.js lê ?c=<vista>, filtra o CATALOG e troca
+         H1 (com <br> literal — lockup de pôster) / descrição / sort.
+         Sem param, renderiza a vista "novidades". -->
+    <div id="plp-root"></div>
+  </main>
+  <script src="assets/js/catalog.js"></script>
+  <script src="assets/js/ui.js"></script>
+</body>
+</html>

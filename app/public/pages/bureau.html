@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!-- Porte Shopify (seção 9): templates/page.bureau.json.
+     Therapy Bureau = o serviço da casa. NUNCA na nav de topo — vive
+     no footer, na help row da PDP e aqui. Três canais nomeados +
+     horário publicado transformam um site em concierge. -->
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Therapy Bureau — atendimento Vèsse Club</title>
+  <meta name="description" content="Therapy Bureau: o atendimento da Vèsse Club por WhatsApp, e-mail e Instagram DM, Seg–Sex das 10h às 18h. Entrega cortesia em todos os pedidos, troca em 30 dias e 7 dias de arrependimento (CDC).">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Montserrat:wght@400;450;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Therapy Bureau",
+    "url": "https://www.vesseclub.com/pages/bureau.html",
+    "inLanguage": "pt-BR",
+    "isPartOf": { "@type": "WebSite", "name": "Vèsse Club", "url": "https://www.vesseclub.com/" }
+  }
+  </script>
+</head>
+<body data-page="page" data-root="../">
+  <main>
+    <header class="page-hero">
+      <h1 class="display">Therapy Bureau</h1>
+      <p>O balcão da casa: quem cuida do seu pedido, da sua troca e da sua dúvida de tamanho.</p>
+    </header>
+
+    <div class="container">
+      <!-- 3 canais nomeados + horário publicado (MESMA string do footer,
+           via data-contact-line). -->
+      <section id="contato" class="prose anchor-target">
+        <h2 class="display">Contato</h2>
+        <p class="bureau-block__line" data-contact-line></p>
+        <p>O Bureau responde na ordem de chegada, em português, por gente da casa — ninguém precisa mandar duas vezes.</p>
+      </section>
+
+      <!-- Entrega escrita como ESPECIFICIDADE, não promessa. Texto único
+           (SHIPPING_HTML), reusado na aba 3 do drawer da PDP. -->
+      <section id="entrega" class="prose anchor-target">
+        <h2 class="display">Entrega e trocas</h2>
+        <div data-shipping></div>
+      </section>
+
+      <section id="faq" class="prose anchor-target">
+        <h2 class="display">FAQ</h2>
+        <div data-faq></div>
+      </section>
+
+      <section class="prose">
+        <h2 class="display">Guias de tamanho</h2>
+        <p>Medidas planas da peça, em centímetros, tamanho por tamanho — a resposta mais curta para a dúvida mais comum.</p>
+        <nav class="descend" aria-label="Guias de tamanho">
+          <a href="guia-camiseta.html">Camisetas</a>
+          <a href="guia-moletom.html">Moletons</a>
+          <a href="guia-bone.html">Bonés</a>
+        </nav>
+      </section>
+    </div>
+  </main>
+  <script src="../assets/js/catalog.js"></script>
+  <script src="../assets/js/ui.js"></script>
+</body>
+</html>

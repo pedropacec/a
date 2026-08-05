@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!-- Porte Shopify (seção 9): sections/main-product.liquid (URL real por
+     handle). Este arquivo é um TEMPLATE: ui.js lê ?code=<style code>,
+     busca o produto no CATALOG e renderiza tudo a partir do dado.
+     Sem query param, renderiza o âncora U-DT26-HDY-001-01.
+
+     REGRA DE OURO: zero copy de produto visível na página. Descrição e
+     bullets só existem dentro do drawer — o título carrega a ficha
+     técnica e as imagens carregam o romance.
+
+     BRIEF FOTOGRÁFICO — slots com significado fixo:
+     _01 packshot frente · _02 packshot costas · _04 macro do logo/estampa
+     _06 on-model frente (vestindo a peça coordenada do conjunto)
+     _07 on-model costas · _08 on-model lateral/detalhe
+     _09 crop de peito com rosto meio cortado.
+     Ordem ÚNICA de galeria: 01 → 06 → 07 → 08 → 09 → 04 → 02. -->
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Produto — Vèsse Club</title>
+  <meta name="description" content="Peça Vèsse Club: confeccionada no Brasil, com as estampas da casa, entrega cortesia em todos os pedidos e troca facilitada em até 30 dias.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Montserrat:wght@400;450;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <!-- JSON-LD de produto (ProductGroup variesBy size + BreadcrumbList)
+       é injetado por ui.js a partir do CATALOG. -->
+</head>
+<body data-page="pdp" data-root="">
+  <main class="container">
+    <div id="pdp-root"></div>
+  </main>
+  <script src="assets/js/catalog.js"></script>
+  <script src="assets/js/ui.js"></script>
+</body>
+</html>

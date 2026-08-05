@@ -1,0 +1,12 @@
+Vídeos de campanha — Vèsse Club
+
+Coloque aqui os masters de vídeo. O site detecta o arquivo sozinho:
+com ele presente, o módulo toca; sem ele, o placeholder fica no lugar.
+
+Arquivos esperados:
+- campanha-dt26.mp4 — home, módulo abaixo do rail "A estação".
+  Spec: 1920×1080 (16:9), H.264/MP4, loop de 10–20s, SEM ÁUDIO
+  (o vídeo roda em autoplay mudo). Peso alvo: até ~8 MB.
+
+Conteúdo (brief): o conjunto moletom Prescrição em movimento —
+a pista, o transe, o corpo que dança. Sem texto queimado no vídeo.

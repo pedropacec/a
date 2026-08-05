@@ -1,0 +1,35 @@
+/* =============================================================
+   VÈSSE CLUB — tokens.css
+   Porte Shopify (seção 9): settings_schema.json + base CSS do tema.
+   Só variáveis. Componentes moram em main.css.
+   ============================================================= */
+:root{
+  /* ---- cores ---- */
+  --ink:        #1C1C1C;  /* tinta única da marca: corpo, botão primário, announcement bar.
+                             NUNCA #000 puro. (Na Casablanca é o verde-garrafa #14372F.) */
+  --ink-muted:  #6E6E6E;  /* labels, estado mudo, metadados */
+  --bg:         #FFFFFF;  /* fundo global — branco, não off-white */
+  --panel:      #F7F7F7;  /* O CINZA QUE FAZ 4 TRABALHOS: fundo do image well do card,
+                             fundo do botão em estado mudo, fundo do hover do card,
+                             hairline de mobile. Não criar outros cinzas de superfície. */
+  --hairline:   #D1D1D1;  /* borda 1px dos radios de tamanho */
+  --state-low:  #975F0C;  /* EXCLUSIVO de "Últimas peças" */
+  --state-out:  #CE363C;  /* EXCLUSIVO de "Esgotado" */
+  --badge:      var(--ink); /* badges de merchandising ("Drop 01", "Members") */
+  --season-h1:  #8C2F1B;  /* dupla cromática do drop — TROCAR POR DROP */
+  --season-body:#274036;  /* distinta de --state-out e de --ink */
+
+  /* ---- tipografia ---- */
+  --font-display: 'Marcellus', Georgia, 'Times New Roman', serif;
+  --font-body:    'Montserrat', system-ui, -apple-system, sans-serif;
+  --font-mono:    ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* ---- movimento: uma constante ---- */
+  --t: 333ms;             /* TODA interação */
+  --t-drawer: 666ms;      /* o dobro exato — SÓ drawers */
+  --ease: ease-in-out;
+
+  /* ---- raios e formas ---- */
+  --r-card: 24px;         /* card / image well / promo card */
+  --r-pill: 48px;         /* botões-pílula */
+}

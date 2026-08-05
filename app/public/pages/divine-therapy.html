@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<!-- Porte Shopify (seção 9): templates/page.divine-therapy.json.
+     Esta é a URL PERMANENTE do drop — sobrevive ao esgotamento do
+     estoque. Ficção mora em pages/; transação mora nas coleções.
+     A página de história linka para BAIXO, para as coleções. -->
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Divine Therapy — a estação da Vèsse Club</title>
+  <meta name="description" content="Divine Therapy: a Vèsse viaja para o consultório do Therapy Bureau. A estação em que a música conduz o transe e os velhos heróis ficam na recepção — moletons, camisetas e bonés com a estampa Prescrição.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Montserrat:wght@400;450;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Divine Therapy",
+    "url": "https://www.vesseclub.com/pages/divine-therapy.html",
+    "inLanguage": "pt-BR",
+    "isPartOf": { "@type": "WebSite", "name": "Vèsse Club", "url": "https://www.vesseclub.com/" }
+  }
+  </script>
+</head>
+<body data-page="page" data-root="../">
+  <main>
+    <!-- Slot de in-page nav sticky: presente no template, entregue VAZIO.
+         A decisão é: você rola a história inteira, não pula. -->
+    <nav class="inpage-nav" aria-hidden="true"></nav>
+
+    <!-- Hero SÓ DE TEXTO — zero imagem, zero vídeo. A estação se anuncia
+         CROMATICAMENTE antes de qualquer palavra ser lida. Recusar o
+         banner faz a primeira imagem vista ser um look real ao lado de
+         produto. -->
+    <header class="page-hero page-hero--season">
+      <h1 class="display">Divine Therapy</h1>
+      <!-- Tese da estação — um parágrafo, fórmula da casa. -->
+      <p>A Vèsse viaja para o consultório do Therapy Bureau — a sala de espera onde a música conduz o transe e os velhos heróis são deixados na recepção — tecendo a liturgia dos consultórios de outro século, o alívio de quem finalmente larga o que carregava e os house codes da casa.</p>
+    </header>
+
+    <div class="container">
+      <!-- Módulo subcollection ×4, alternando: direita, esquerda,
+           direita, esquerda. O still é atmosfera (não clicável, sem
+           texto); os cards são o comércio. -->
+      <section class="sub sub--right">
+        <figure class="well well--editorial sub__promo" role="img"
+          aria-label="Foto futura editorial: a sessão Prescrição — o divã, o receituário da casa, o hoodie pendurado."
+          title="Foto futura editorial: a sessão Prescrição — o divã, o receituário da casa, o hoodie pendurado.">
+          <span class="well__face" data-code="EDITORIAL-DT26" data-slot="S1"></span>
+        </figure>
+        <div class="sub__grid" data-cards="U-DT26-HDY-001-01,U-DT26-PNT-001-01,U-DT26-TEE-002-01,U-DT26-CAP-001-01"></div>
+      </section>
+
+      <section class="sub">
+        <figure class="well well--editorial sub__promo" role="img"
+          aria-label="Foto futura editorial: o balcão do Therapy Bureau, carimbo do emblema, jersey dobrado."
+          title="Foto futura editorial: o balcão do Therapy Bureau, carimbo do emblema, jersey dobrado.">
+          <span class="well__face" data-code="EDITORIAL-DT26" data-slot="S2"></span>
+        </figure>
+        <div class="sub__grid" data-cards="U-DT26-TEE-003-01,U-DT26-SRT-001-01,U-DT26-CAP-002-01,U-DT26-SCK-001-01"></div>
+      </section>
+
+    </div>
+  </main>
+  <script src="../assets/js/catalog.js"></script>
+  <script src="../assets/js/ui.js"></script>
+</body>
+</html>
