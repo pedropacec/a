@@ -22,16 +22,19 @@
   }
   </script>
 </head>
-<body data-page="page" data-root="../">
+<body data-page="page" data-root="../" class="page--dark">
   <main>
     <!-- Slot de in-page nav sticky: presente no template, entregue VAZIO.
          A decisão é: você rola a história inteira, não pula. -->
     <nav class="inpage-nav" aria-hidden="true"></nav>
 
     <div class="container">
-      <!-- Título da página no TOPO, separado da tese; a tese fica na
-           coluna ao lado do still, em preto (direção do Pedro, 06/08). -->
-      <h1 class="display dt-title">Divine Therapy</h1>
+      <!-- Título no topo à esquerda; a LOGO da estação grande à
+           direita (direção do Pedro, 06/08). -->
+      <div class="dt-head">
+        <h1 class="display dt-title">Divine Therapy</h1>
+        <img class="dt-logo" src="../assets/img/dt26-logo.png" alt="Divine Therapy">
+      </div>
       <section class="sub sub--right">
         <div class="sub__intro">
           <!-- Tese da estação ESCORRENDO pela página: fragmentos em
@@ -46,7 +49,7 @@
           aria-label="Os hippies da Divine Therapy em três poses de yoga — estatuetas da campanha."
           title="Os hippies da Divine Therapy em três poses de yoga — estatuetas da campanha.">
           <span class="well__face" data-code="EDITORIAL-DT26" data-slot="S1">
-            <img src="../assets/img/editorial-dt26-yoga.jpg" alt="" loading="lazy">
+            <img src="../assets/img/editorial-dt26-yoga.png" alt="" loading="lazy">
           </span>
         </figure>
       </section>

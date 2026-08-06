@@ -12,8 +12,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Download assets
         run: |
-          curl -fL --retry 3 -o app/public/assets/img/dt26-logo.png "https://d2ol7oe51mr4n9.cloudfront.net/user_3G9lfxJtcGPEHBzEOF3OsZDhybl/a01b5915-c411-4a2e-9022-6e58ee971506.png"
-          curl -fL --retry 3 -o app/public/assets/img/editorial-dt26-yoga.png "https://d2ol7oe51mr4n9.cloudfront.net/user_3G9lfxJtcGPEHBzEOF3OsZDhybl/7f6f4d56-6743-4c78-b1f2-22fa0ed3f006.png"
+          curl -fL --retry 3 -o app/public/assets/img/dt26-logo.png "https://d2ol7oe51mr4n9.cloudfront.net/user_3G9lfxJtcGPEHBzEOF3OsZDhybl/a6db1b5a-2570-4879-bae1-7a7b9f21ce7d.png"
+          curl -fL --retry 3 -o app/public/assets/img/editorial-dt26-yoga.png "https://d2ol7oe51mr4n9.cloudfront.net/user_3G9lfxJtcGPEHBzEOF3OsZDhybl/9b5aea76-473f-4873-9696-87566f18c0b8.png"
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
