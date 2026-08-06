@@ -838,21 +838,26 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
 .sub__promo { /* atmosfera: NÃO clicável, SEM texto, sem hotspot */ }
 /* intro da estação na coluna ao lado do still: título + tese ao canto,
    centrados na altura da imagem (direção do Pedro, 06/08) */
-/* tese em blocos SEPARADOS pela altura da coluna: o primeiro no topo
-   à esquerda, o segundo mais abaixo, deslocado à direita (direção do
-   Pedro, 06/08) */
+/* tese ESCORRENDO pela coluna como um fluido: fragmentos em cascata,
+   cada um desce e desliza um passo à direita (direção do Pedro, 06/08) */
 .sub__intro {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-self: stretch;
-  gap: 32px;
+  gap: 24px;
   text-align: left;
 }
-.sub__intro p { font-size: 14px; font-weight: 500; max-width: 420px; }
-.sub__intro-b { align-self: flex-end; }
-/* no mobile (coluna única) os blocos apenas se empilham com respiro */
-@media (max-width: 1023px) { .sub__intro-b { align-self: flex-start; } }
+.sub__intro p { font-size: 14px; font-weight: 500; max-width: 320px; }
+.sub__intro p:nth-child(2) { margin-left: 14%; }
+.sub__intro p:nth-child(3) { margin-left: 30%; }
+.sub__intro p:nth-child(4) { margin-left: 46%; }
+/* no mobile a cascata é mais curta para o texto não espremer */
+@media (max-width: 1023px) {
+  .sub__intro p:nth-child(2) { margin-left: 8%; }
+  .sub__intro p:nth-child(3) { margin-left: 16%; }
+  .sub__intro p:nth-child(4) { margin-left: 24%; }
+}
 /* título da página do drop: no topo, separado da tese, na cor da estação */
 .dt-title {
   font-size: 28px;
