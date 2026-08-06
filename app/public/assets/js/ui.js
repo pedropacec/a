@@ -918,7 +918,7 @@
       /* Descrição, guia e entrega EMPILHADOS em accordion vertical
          (ref. Off-White) — abrem inline, sem drawer. */
       '    <div class="pdp-acc">' + pdpAccHTML(p) + "</div>" +
-      '    <p class="help-row">Precisa de ajuda? <a href="' + CONTACT.whatsapp + '">WhatsApp</a> · ' +
+      '    <p class="help-row">Ajuda: <a href="' + CONTACT.whatsapp + '">WhatsApp</a> · ' +
       '<a href="' + CONTACT.email + '">E-mail</a></p>' +
       "  </div>" +
       "</div>" +

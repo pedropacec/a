@@ -656,12 +656,11 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
 .pdp-acc { margin-top: 48px; border-top: 1px solid var(--panel); }
 .pdp-acc .acc__q {
   font-size: 12px;
-  font-weight: 700;
   letter-spacing: .06em;
   text-transform: uppercase;
 }
 .pdp-acc .tabpane { padding-bottom: 16px; }
-.help-row { text-align: center; font-size: 12px; color: var(--ink-muted); margin-top: 20px; }
+.help-row { text-align: center; font-size: 12px; color: var(--ink-muted); margin-top: 56px; }
 .help-row a { text-decoration: underline; }
 
 /* sticky ATC mobile */
@@ -839,14 +838,21 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
 .sub__promo { /* atmosfera: NÃO clicável, SEM texto, sem hotspot */ }
 /* intro da estação na coluna ao lado do still: título + tese ao canto,
    centrados na altura da imagem (direção do Pedro, 06/08) */
+/* tese em blocos SEPARADOS pela altura da coluna: o primeiro no topo
+   à esquerda, o segundo mais abaixo, deslocado à direita (direção do
+   Pedro, 06/08) */
 .sub__intro {
-  display: grid;
-  align-content: start; /* bloco no TOPO da coluna (direção do Pedro, 06/08) */
-  justify-items: start;
-  gap: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-self: stretch;
+  gap: 32px;
   text-align: left;
 }
-.sub__intro p { font-size: 14px; font-weight: 500; max-width: 480px; }
+.sub__intro p { font-size: 14px; font-weight: 500; max-width: 420px; }
+.sub__intro-b { align-self: flex-end; }
+/* no mobile (coluna única) os blocos apenas se empilham com respiro */
+@media (max-width: 1023px) { .sub__intro-b { align-self: flex-start; } }
 /* título da página do drop: no topo, separado da tese, na cor da estação */
 .dt-title {
   font-size: 28px;
