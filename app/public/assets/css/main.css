@@ -268,8 +268,6 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
   letter-spacing: .02em;
   text-align: left;
 }
-/* último item (Vèsse World) vira o grupo secundário, menor e afastado */
-.mnav > .mnav__link:last-child { margin-top: 36px; font-size: 12px; }
 /* conta no PÉ da aba */
 .drawer--nav .drawer__body { display: flex; flex-direction: column; }
 .mnav__foot { margin-top: auto; padding-top: 32px; }
