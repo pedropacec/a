@@ -263,7 +263,7 @@
     items.forEach(function (it) { if (!lookKey && COMPLETE_LOOK[it.code]) lookKey = it.code; });
     var lookHTML = "";
     if (lookKey) {
-      lookHTML = '<div class="cart-look"><p class="label">Complete o look</p><div class="cart-look__grid">' +
+      lookHTML = '<div class="cart-look"><p class="label">Style it</p><div class="cart-look__grid">' +
         COMPLETE_LOOK[lookKey].cards.slice(0, 2).map(function (c) {
           var lp = byCode(c);
           if (!lp) return "";
@@ -936,7 +936,7 @@
        na maioria dos produtos.                                        */
     var look = COMPLETE_LOOK[p.code];
     if (look) {
-      out += '<section class="complete-look"><h2 class="display">Complete o look</h2>' +
+      out += '<section class="complete-look"><h2 class="display">Style it</h2>' +
         '<div class="complete-look__grid">' +
         '<figure class="well well--editorial" role="img" aria-label="Foto futura de campanha: o look completo Prescrição em movimento." title="Foto futura de campanha: o look completo Prescrição em movimento.">' +
         faceSpan(look.well.code, look.well.slot) + "</figure>" +
