@@ -477,15 +477,15 @@ def carrossel_02():
         <div style="font-size:70px;font-weight:900;color:{GRAFITE};">QUEM SOMOS</div>
         {risco()}
       </div>
-      <div style="position:absolute;left:84px;top:320px;width:600px;color:#4A4744;font-size:33px;line-height:1.6;">
+      <div style="position:absolute;left:84px;top:320px;width:520px;color:#4A4744;font-size:33px;line-height:1.6;">
         <p>O <b>Guarde Tudo</b> é um self storage que oferece soluções para a
         autogestão de espaços com <b>flexibilidade e segurança</b>. O processo de
         locação é simplificado, sem necessidade de fiador ou avalista.</p>
         <p style="margin-top:34px;">Aqui o cliente tem <b>comodidade e privacidade</b>
         para sentir que seu box é parte da sua casa ou do seu negócio.</p>
       </div>
-      <div style="position:absolute;right:70px;top:660px;filter:drop-shadow(0 30px 60px rgba(60,90,20,.3));">
-        <svg viewBox="0 0 100 100" width="330">{cubo_colorido(sw=6)}</svg>
+      <div style="position:absolute;right:70px;top:400px;width:380px;height:540px;border-radius:38px;overflow:hidden;box-shadow:0 30px 60px rgba(60,90,20,.22);">
+        <img src="assets/homem-caixas.jpg" style="width:100%;height:100%;object-fit:cover;object-position:top;">
       </div>
       <div style="position:absolute;left:84px;top:1010px;display:flex;gap:20px;">
         <div style="border:3px solid {VERDE};color:{VERDE_ESCURO};border-radius:44px;padding:12px 32px;font-size:28px;font-weight:700;">+40 boxes</div>
@@ -525,8 +525,9 @@ def carrossel_03():
         {obj("caixa", "Estoques")}
         {obj("grade", "Coleções")}
       </div>
-      <div style="position:absolute;left:84px;right:84px;top:1030px;background:{VERDE_NOITE};color:#fff;border-radius:34px;padding:30px 40px;text-align:center;font-size:31px;">
-        <b style="color:{VERDE_CLARO};">Temos espaço para tudo!</b> &nbsp;Boxes de 4 a 1.000 m²
+      <div style="position:absolute;left:84px;right:84px;top:950px;height:260px;border-radius:38px;overflow:hidden;box-shadow:0 26px 54px rgba(60,90,20,.20);">
+        <img src="assets/casal-sofa.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center 40%;">
+        <div style="position:absolute;right:22px;top:20px;background:{VERDE_NOITE};color:#fff;border-radius:40px;padding:12px 30px;font-size:25px;"><b style="color:{VERDE_CLARO};">Temos espaço para tudo!</b> Boxes de 4 a 1.000 m²</div>
       </div>
       {pagina_pill(3)}
     </div>'''
@@ -773,7 +774,9 @@ def ed_03():  # para você
         {check_claro("Brinquedos e coleções")}
         {check_claro("Presentes de casamento")}
       </div>
-      <div style="position:absolute;right:40px;top:400px;width:520px;">{ilustracao_para_voce()}</div>
+      <div style="position:absolute;right:56px;top:420px;width:470px;height:500px;border-radius:38px;overflow:hidden;box-shadow:0 26px 54px rgba(60,90,20,.20);">
+        <img src="assets/casal-sofa.jpg" style="width:100%;height:100%;object-fit:cover;object-position:12% center;">
+      </div>
       <div style="position:absolute;left:84px;right:84px;top:1020px;background:#fff;border-radius:34px;padding:28px 40px;text-align:center;font-size:30px;color:#4A4744;box-shadow:0 18px 40px rgba(60,90,20,.08);">
         Espaços flexíveis para <b>uma pessoa ou para toda a família</b>.
       </div>
@@ -798,7 +801,9 @@ def ed_04():  # para empresas
         {check_claro("Sigilo e segurança garantidos")}
         {check_claro("Sala de reuniões com Wi-Fi")}
       </div>
-      <div style="position:absolute;right:40px;top:410px;width:520px;">{ilustracao_empresa()}</div>
+      <div style="position:absolute;right:56px;top:420px;width:470px;height:500px;border-radius:38px;overflow:hidden;box-shadow:0 26px 54px rgba(60,90,20,.20);">
+        <img src="assets/homem-caixas.jpg" style="width:100%;height:100%;object-fit:cover;object-position:top;">
+      </div>
       <div style="position:absolute;left:84px;right:84px;top:1020px;background:{VERDE_NOITE};color:#fff;border-radius:34px;padding:28px 40px;text-align:center;font-size:30px;">
         Área coberta para carga e descarga &middot; <b style="color:{VERDE_CLARO};">a 5 min do BH Shopping</b>
       </div>
