@@ -53,6 +53,9 @@ def logo(variante="cor", largura=300):
     if variante == "cor":
         cubo_svg = cubo_colorido()
         texto, sub, ponto = GRAFITE, "#8B8B85", VERDE
+    elif variante == "escuro":  # para fundos verde-noite
+        cubo_svg = cubo("#0F1A08", top="#F4F2EC", left=VERDE_CLARO, right="#6FB427")
+        texto, sub, ponto = "#FFFFFF", "rgba(255,255,255,.6)", VERDE_CLARO
     else:  # branco, para fundos verdes
         cubo_svg = cubo_outline("#FFFFFF")
         texto, sub, ponto = "#FFFFFF", "rgba(255,255,255,.85)", "#FFFFFF"
@@ -393,6 +396,222 @@ def story_01():
     return pagina("Story Visite — Guarde Tudo", corpo, 1080, 1920)
 
 
+# ------------------------------------------------------- carrossel premium
+
+VERDE_NOITE = "#16220E"
+
+FUNDO_NOITE = (
+    "background:"
+    "radial-gradient(1000px 720px at 80% -10%, rgba(123,198,40,.20), transparent 60%),"
+    "radial-gradient(900px 700px at -10% 108%, rgba(123,198,40,.10), transparent 55%),"
+    f"linear-gradient(165deg,#223313,{VERDE_NOITE} 55%,#101A08);")
+
+FUNDO_CREME = (
+    "background:"
+    "radial-gradient(800px 560px at 90% -6%, rgba(123,198,40,.10), transparent 60%),"
+    "linear-gradient(160deg,#FAF8F2,#F0EEE6);")
+
+
+def risco(cor=VERDE):
+    """Traço curto de destaque sob os títulos."""
+    return f'<div style="width:74px;height:7px;border-radius:4px;background:{cor};margin-top:18px;"></div>'
+
+
+def pagina_pill(n, escuro=True):
+    estilo = (f"background:{VERDE_NOITE};color:#fff;border:2px solid rgba(123,198,40,.5);" if escuro
+              else "background:rgba(255,255,255,.12);color:#fff;border:2px solid rgba(255,255,255,.35);")
+    return (f'<div style="position:absolute;left:50%;transform:translateX(-50%);bottom:44px;'
+            f'{estilo}border-radius:40px;padding:10px 34px;font-size:27px;font-weight:900;">{n}/6</div>')
+
+
+def check_item(txt):
+    return f'''<div style="display:flex;align-items:center;gap:22px;">
+      <div style="flex:0 0 52px;height:52px;border-radius:50%;background:linear-gradient(145deg,{VERDE_CLARO},{VERDE_ESCURO});display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(123,198,40,.3);">
+        <svg viewBox="0 0 24 24" width="28" height="28"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div style="color:#fff;font-size:34px;">{txt}</div>
+    </div>'''
+
+
+def mini_feat(ic, t1, t2):
+    return f'''<div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:0 6px;">
+      <div style="width:84px;height:84px;border-radius:50%;border:3px solid {VERDE_CLARO};display:flex;align-items:center;justify-content:center;">{icone(ic, 40, VERDE_CLARO)}</div>
+      <div style="color:#fff;font-size:25px;font-weight:900;line-height:1.2;">{t1}</div>
+      <div style="color:rgba(255,255,255,.65);font-size:20px;line-height:1.3;">{t2}</div>
+    </div>'''
+
+
+def carrossel_01():
+    corpo = f'''<div class="canvas" style="{FUNDO_NOITE}">
+      {marca_dagua("#FFFFFF", 560, "right:-180px;top:-140px;opacity:.05;")}
+      {ruido(.05)}
+      <div style="position:absolute;left:64px;top:56px;">{logo("escuro", 195)}</div>
+      <div style="position:absolute;left:64px;top:330px;width:430px;">
+        {risco()}
+        <div style="margin-top:22px;font-size:56px;font-weight:900;color:#fff;line-height:1.2;">FLEXIBILIDADE<br>E SEGURANÇA</div>
+        <div style="margin-top:6px;font-size:44px;font-weight:900;color:{VERDE_CLARO};line-height:1.25;">PARA GUARDAR<br>O QUE PRECISAR!</div>
+        <div style="margin-top:30px;font-size:28px;color:rgba(255,255,255,.75);line-height:1.5;">
+          Espaços inteligentes e seguros para facilitar a sua vida e dar
+          mais espaço ao que realmente importa.
+        </div>
+      </div>
+      <div style="position:absolute;right:56px;top:270px;width:470px;height:600px;border-radius:44px;overflow:hidden;border:3px solid rgba(123,198,40,.45);box-shadow:0 30px 70px rgba(0,0,0,.5);">
+        <img src="assets/casal-caixa.jpg" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div style="position:absolute;left:56px;right:56px;top:950px;border:2.5px solid rgba(123,198,40,.35);background:rgba(255,255,255,.05);border-radius:40px;padding:34px 22px;display:flex;">
+        {mini_feat("camera", "SEGURANÇA<br>24 HORAS", "Monitoramento e<br>acesso controlado")}
+        {mini_feat("cadeado", "PRIVACIDADE<br>TOTAL", "Sua tranquilidade em<br>primeiro lugar")}
+        {mini_feat("grade", "FLEXIBILIDADE<br>DE ESPAÇO", "Do tamanho que você<br>precisa, pelo tempo que precisar")}
+        {mini_feat("relogio", "SEM FIADOR,<br>SEM BUROCRACIA", "Locação simples,<br>rápida e sem complicações")}
+      </div>
+      {pagina_pill(1, escuro=False)}
+    </div>'''
+    return pagina("Carrossel 1/6 — Capa", corpo, 1080, 1350)
+
+
+def carrossel_02():
+    corpo = f'''<div class="canvas" style="{FUNDO_CREME}">
+      {marca_dagua(VERDE, 640, "right:-220px;top:-160px;opacity:.10;")}
+      {ruido(.035)}
+      <div style="position:absolute;left:84px;top:110px;">
+        <div style="font-size:70px;font-weight:900;color:{GRAFITE};">QUEM SOMOS</div>
+        {risco()}
+      </div>
+      <div style="position:absolute;left:84px;top:320px;width:600px;color:#4A4744;font-size:33px;line-height:1.6;">
+        <p>O <b>Guarde Tudo</b> é um self storage que oferece soluções para a
+        autogestão de espaços com <b>flexibilidade e segurança</b>. O processo de
+        locação é simplificado, sem necessidade de fiador ou avalista.</p>
+        <p style="margin-top:34px;">Aqui o cliente tem <b>comodidade e privacidade</b>
+        para sentir que seu box é parte da sua casa ou do seu negócio.</p>
+      </div>
+      <div style="position:absolute;right:70px;top:660px;filter:drop-shadow(0 30px 60px rgba(60,90,20,.3));">
+        <svg viewBox="0 0 100 100" width="330">{cubo_colorido(sw=6)}</svg>
+      </div>
+      <div style="position:absolute;left:84px;top:1010px;display:flex;gap:20px;">
+        <div style="border:3px solid {VERDE};color:{VERDE_ESCURO};border-radius:44px;padding:12px 32px;font-size:28px;font-weight:700;">+40 boxes</div>
+        <div style="border:3px solid {VERDE};color:{VERDE_ESCURO};border-radius:44px;padding:12px 32px;font-size:28px;font-weight:700;">pessoa física e jurídica</div>
+        <div style="border:3px solid {VERDE};color:{VERDE_ESCURO};border-radius:44px;padding:12px 32px;font-size:28px;font-weight:700;">a 5 min do BH Shopping</div>
+      </div>
+      {pagina_pill(2)}
+    </div>'''
+    return pagina("Carrossel 2/6 — Quem somos", corpo, 1080, 1350)
+
+
+def carrossel_03():
+    def obj(ic, t):
+        return f'''<div style="background:#fff;border-radius:30px;padding:34px 20px;text-align:center;box-shadow:0 18px 40px rgba(60,90,20,.10);">
+          <div style="width:88px;height:88px;margin:0 auto;border-radius:50%;background:linear-gradient(145deg,{VERDE_CLARO},{VERDE_ESCURO});display:flex;align-items:center;justify-content:center;">{icone(ic, 44)}</div>
+          <div style="margin-top:18px;font-size:29px;font-weight:900;color:{GRAFITE};">{t}</div>
+        </div>'''
+    corpo = f'''<div class="canvas" style="{FUNDO_CREME}">
+      {marca_dagua(VERDE, 640, "left:-240px;bottom:-200px;opacity:.10;")}
+      {ruido(.035)}
+      <div style="position:absolute;left:84px;top:110px;">
+        <div style="font-size:70px;font-weight:900;color:{GRAFITE};">O QUE GUARDAR</div>
+        {risco()}
+      </div>
+      <div style="position:absolute;left:84px;top:320px;width:520px;color:#4A4744;font-size:32px;line-height:1.6;">
+        <p>No Guarde Tudo você pode armazenar <b>de A a Z, do pequeno ao
+        grande</b>, de muito a pouco.</p>
+        <p style="margin-top:30px;">De cadeira a barco, de estoque a arquivo
+        morto, de malas a bicicletas.</p>
+        <p style="margin-top:30px;font-size:27px;color:#77746F;">Só não permitimos armazenagem de
+        combustíveis, explosivos, perecíveis, produtos ilícitos e de alto
+        valor agregado.</p>
+      </div>
+      <div style="position:absolute;right:70px;top:320px;width:360px;display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+        {obj("sofa", "Móveis")}
+        {obj("doc", "Documentos")}
+        {obj("caixa", "Estoques")}
+        {obj("grade", "Coleções")}
+      </div>
+      <div style="position:absolute;left:84px;right:84px;top:1030px;background:{VERDE_NOITE};color:#fff;border-radius:34px;padding:30px 40px;text-align:center;font-size:31px;">
+        <b style="color:{VERDE_CLARO};">Temos espaço para tudo!</b> &nbsp;Boxes de 4 a 1.000 m²
+      </div>
+      {pagina_pill(3)}
+    </div>'''
+    return pagina("Carrossel 3/6 — O que guardar", corpo, 1080, 1350)
+
+
+def carrossel_04():
+    itens = ["Para pessoa física e jurídica", "Segurança 24 horas",
+             "Espaços flexíveis e higienizados", "Área coberta para carga e descarga",
+             "Excelente localização", "Locação sem avalista e fiador",
+             "Prazos flexíveis", "Total privacidade e sigilo"]
+    lista = "".join(f'<div style="margin-top:26px;">{check_item(t)}</div>' for t in itens)
+    corpo = f'''<div class="canvas" style="{FUNDO_NOITE}">
+      {ruido(.05)}
+      <div style="position:absolute;right:-140px;top:340px;opacity:.9;filter:drop-shadow(0 30px 70px rgba(0,0,0,.5));">
+        <svg viewBox="0 0 100 100" width="520">{cubo("#0F1A08", top="#F4F2EC", left=VERDE_CLARO, right="#6FB427", sw=5)}</svg>
+      </div>
+      <div style="position:absolute;left:84px;top:110px;">
+        <div style="font-size:70px;font-weight:900;color:#fff;">INFRAESTRUTURA</div>
+        {risco(VERDE_CLARO)}
+      </div>
+      <div style="position:absolute;left:84px;top:300px;width:700px;">{lista}</div>
+      <div style="position:absolute;right:64px;bottom:110px;">{logo("escuro", 185)}</div>
+      {pagina_pill(4, escuro=False)}
+    </div>'''
+    return pagina("Carrossel 4/6 — Infraestrutura", corpo, 1080, 1350)
+
+
+def carrossel_05():
+    corpo = f'''<div class="canvas" style="{FUNDO_CREME}">
+      {marca_dagua(VERDE, 700, "right:-260px;bottom:-220px;opacity:.10;")}
+      {ruido(.035)}
+      <div style="position:absolute;left:0;right:0;top:150px;display:flex;justify-content:center;">
+        <div style="width:190px;height:190px;border-radius:50%;border:5px solid {VERDE};display:flex;align-items:center;justify-content:center;background:#fff;box-shadow:0 24px 50px rgba(60,90,20,.15);">{icone("wifi", 100, VERDE_ESCURO)}</div>
+      </div>
+      <div style="position:absolute;left:80px;right:80px;top:420px;text-align:center;color:{GRAFITE};">
+        <div style="font-size:66px;font-weight:900;line-height:1.25;">SALA DE REUNIÕES<br>COM WI-FI</div>
+        <div style="margin-top:14px;font-size:40px;font-weight:900;color:{VERDE_ESCURO};letter-spacing:3px;">PARA CLIENTES</div>
+        <div style="display:flex;justify-content:center;">{risco()}</div>
+        <div style="margin-top:40px;font-size:32px;color:#4A4744;line-height:1.6;max-width:760px;margin-left:auto;margin-right:auto;">
+          Precisa receber um cliente, assinar um contrato ou trabalhar
+          perto do seu estoque? Aqui a sua empresa tem uma
+          <b>estrutura de apoio completa</b>, sem custo extra.
+        </div>
+      </div>
+      <div style="position:absolute;left:0;right:0;top:1010px;display:flex;justify-content:center;gap:20px;">
+        <div style="border:3px solid {VERDE};color:{VERDE_ESCURO};border-radius:44px;padding:12px 32px;font-size:28px;font-weight:700;">Wi-Fi liberado</div>
+        <div style="border:3px solid {VERDE};color:{VERDE_ESCURO};border-radius:44px;padding:12px 32px;font-size:28px;font-weight:700;">agende com o time</div>
+      </div>
+      {pagina_pill(5)}
+    </div>'''
+    return pagina("Carrossel 5/6 — Sala de reuniões", corpo, 1080, 1350)
+
+
+def carrossel_06():
+    def contato(ic, txt):
+        return f'''<div style="display:flex;align-items:center;gap:24px;margin-top:28px;">
+          <div style="flex:0 0 60px;height:60px;border-radius:50%;border:3px solid {VERDE_CLARO};display:flex;align-items:center;justify-content:center;">{icone(ic, 30, VERDE_CLARO)}</div>
+          <div style="color:#fff;font-size:33px;">{txt}</div>
+        </div>'''
+    corpo = f'''<div class="canvas" style="{FUNDO_NOITE}">
+      {marca_dagua("#FFFFFF", 620, "right:-220px;bottom:-180px;opacity:.05;")}
+      {ruido(.05)}
+      <div style="position:absolute;right:64px;top:56px;">{logo("escuro", 195)}</div>
+      <div style="position:absolute;left:84px;top:130px;">
+        <div style="font-size:72px;font-weight:900;color:#fff;line-height:1.2;">SOLICITE UM<br><span style="color:{VERDE_CLARO};">ORÇAMENTO</span></div>
+        {risco(VERDE_CLARO)}
+      </div>
+      <div style="position:absolute;left:84px;top:420px;width:850px;">
+        {contato("fone", "31 3288.1555")}
+        {contato("zap", "<b>31 9.8446.6482</b>")}
+        {contato("mail", EMAIL)}
+        {contato("globo", "guardetudobh.com.br")}
+        {contato("pin", "Rua dos Moicanos, 512 | Olhos d'Água<br>Belo Horizonte | MG | CEP 30.390-050")}
+        {contato("insta", "<b>@guardetudobh</b>")}
+        {contato("face", "/guardetudobh")}
+      </div>
+      <div style="position:absolute;left:84px;bottom:120px;color:rgba(255,255,255,.65);font-size:28px;font-style:italic;">
+        Salve este post e chame a gente quando precisar de espaço. 💚
+      </div>
+      {pagina_pill(6, escuro=False)}
+    </div>'''
+    return pagina("Carrossel 6/6 — Contato", corpo, 1080, 1350)
+
+
 # ---------------------------------------------------------------- panfleto
 
 def panfleto():
@@ -504,6 +723,12 @@ ARTES = {
     "posts/html/feed-05-tamanhos-boxes.html": (post_05, 1080, 1350),
     "posts/html/feed-06-indique-um-amigo.html": (post_06, 1080, 1350),
     "posts/html/story-01-venha-conhecer.html": (story_01, 1080, 1920),
+    "posts/carrossel/html/slide-1-capa.html": (carrossel_01, 1080, 1350),
+    "posts/carrossel/html/slide-2-quem-somos.html": (carrossel_02, 1080, 1350),
+    "posts/carrossel/html/slide-3-o-que-guardar.html": (carrossel_03, 1080, 1350),
+    "posts/carrossel/html/slide-4-infraestrutura.html": (carrossel_04, 1080, 1350),
+    "posts/carrossel/html/slide-5-sala-reunioes.html": (carrossel_05, 1080, 1350),
+    "posts/carrossel/html/slide-6-contato.html": (carrossel_06, 1080, 1350),
 }
 
 CHROME = "/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell"

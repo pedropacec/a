@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Carrossel 5/6 — Sala de reuniões</title>
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --verde:#7BC628; --verde-claro:#8ED44A; --verde-escuro:#5FA51F;
+      --grafite:#383435; --cinza:#E7E7E7;
+    }
+    body { font-family:'Lato', sans-serif; }
+    .canvas { position:relative; overflow:hidden; }
+    .marca-dagua { position:absolute; opacity:.16; pointer-events:none; }
+    
+.canvas { width:1080px; height:1350px; }</style></head>
+<body><div class="canvas" style="background:radial-gradient(800px 560px at 90% -6%, rgba(123,198,40,.10), transparent 60%),linear-gradient(160deg,#FAF8F2,#F0EEE6);">
+      <div class="marca-dagua" style="right:-260px;bottom:-220px;opacity:.10;"><svg viewBox="0 0 100 100" width="700">
+      <g stroke="#7BC628" stroke-width="3.2" stroke-linejoin="round">
+        <polygon points="50,7 87,28.5 50,50 13,28.5" fill="none"/>
+        <polygon points="13,28.5 50,50 50,93 13,71.5" fill="none"/>
+        <polygon points="50,50 87,28.5 87,71.5 50,93" fill="none"/>
+      </g></svg></div>
+      <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.035;" xmlns="http://www.w3.org/2000/svg"><filter id="nz"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#nz)"/></svg>
+      <div style="position:absolute;left:0;right:0;top:150px;display:flex;justify-content:center;">
+        <div style="width:190px;height:190px;border-radius:50%;border:5px solid #7BC628;display:flex;align-items:center;justify-content:center;background:#fff;box-shadow:0 24px 50px rgba(60,90,20,.15);"><svg viewBox="0 0 24 24" width="100" height="100" fill="#5FA51F" stroke="#5FA51F" stroke-linejoin="round" stroke-linecap="round" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 9.5a14 14 0 0 1 19 0M5.5 13a9.5 9.5 0 0 1 13 0M8.6 16.4a5 5 0 0 1 6.8 0" fill="none" stroke-width="2.1" stroke-linecap="round"/><circle cx="12" cy="19.6" r="1.8" stroke="none"/></svg></div>
+      </div>
+      <div style="position:absolute;left:80px;right:80px;top:420px;text-align:center;color:#383435;">
+        <div style="font-size:66px;font-weight:900;line-height:1.25;">SALA DE REUNIÕES<br>COM WI-FI</div>
+        <div style="margin-top:14px;font-size:40px;font-weight:900;color:#5FA51F;letter-spacing:3px;">PARA CLIENTES</div>
+        <div style="display:flex;justify-content:center;"><div style="width:74px;height:7px;border-radius:4px;background:#7BC628;margin-top:18px;"></div></div>
+        <div style="margin-top:40px;font-size:32px;color:#4A4744;line-height:1.6;max-width:760px;margin-left:auto;margin-right:auto;">
+          Precisa receber um cliente, assinar um contrato ou trabalhar
+          perto do seu estoque? Aqui a sua empresa tem uma
+          <b>estrutura de apoio completa</b>, sem custo extra.
+        </div>
+      </div>
+      <div style="position:absolute;left:0;right:0;top:1010px;display:flex;justify-content:center;gap:20px;">
+        <div style="border:3px solid #7BC628;color:#5FA51F;border-radius:44px;padding:12px 32px;font-size:28px;font-weight:700;">Wi-Fi liberado</div>
+        <div style="border:3px solid #7BC628;color:#5FA51F;border-radius:44px;padding:12px 32px;font-size:28px;font-weight:700;">agende com o time</div>
+      </div>
+      <div style="position:absolute;left:50%;transform:translateX(-50%);bottom:44px;background:#16220E;color:#fff;border:2px solid rgba(123,198,40,.5);border-radius:40px;padding:10px 34px;font-size:27px;font-weight:900;">5/6</div>
+    </div></body></html>

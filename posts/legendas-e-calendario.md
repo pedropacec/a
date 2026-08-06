@@ -107,6 +107,25 @@ Cada arte em `posts/png/` tem uma legenda pronta abaixo. Publique no feed em
 >
 > #Promoção #IndiqueUmAmigo #SelfStorage #GuardeTudo #BeloHorizonte #Desconto
 
+## carrossel — Apresentação institucional (6 slides)
+
+Publique os 6 slides de `posts/carrossel/png/` como **carrossel único**, na ordem
+1 → 6. Ideal para fixar no topo do perfil.
+
+> Do tamanho de um armário ao tamanho de um galpão: bem-vindo ao Guarde Tudo. 📦💚
+>
+> Arrasta pro lado que a gente te conta:
+> 1️⃣ Quem somos
+> 2️⃣ O que você pode guardar
+> 3️⃣ Nossa infraestrutura completa
+> 4️⃣ Sala de reuniões com Wi-Fi para clientes
+> 5️⃣ Todos os contatos para pedir seu orçamento
+>
+> Salve este post para quando precisar de espaço — e chama a gente no
+> WhatsApp: (31) 9 8446-6482
+>
+> #SelfStorage #SelfStorageBH #BeloHorizonte #GuardeTudo #EspaçoExtra #Organização #Mudança
+
 ## story-01 — Venha conhecer
 
 Story sem legenda — adicione a **figurinha de localização** (Guarde Tudo Self
