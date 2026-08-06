@@ -853,7 +853,7 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
   gap: 24px;
   text-align: left;
 }
-.sub__intro p { font-size: 14px; font-weight: 500; max-width: 320px; }
+.sub__intro p { font-size: 12px; font-weight: 700; max-width: 300px; letter-spacing: .02em; }
 .sub__intro p:nth-child(2) { margin-left: 12%; }
 .sub__intro p:nth-child(3) { margin-left: 24%; }
 .sub__intro p:nth-child(4) { margin-left: 36%; }
@@ -878,9 +878,14 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
 }
 @media (max-width: 1023px) { .dt-logo { max-width: 320px; } }
 
-/* página do drop ESCURA: fundo tinta, escritos e detalhes em branco
-   (direção do Pedro, 06/08) */
-.page--dark { background: var(--ink); color: #fff; }
+/* página do drop ESCURA: fundo tinta, escritos e detalhes em branco,
+   fonte Space Mono — máquina de escrever moderna, eco das estampas do
+   Therapy Bureau (direção do Pedro, 06/08) */
+.page--dark {
+  background: var(--ink);
+  color: #fff;
+  font-family: 'Space Mono', ui-monospace, 'Courier New', monospace;
+}
 .page--dark .site-header { color: #fff; }
 .page--dark .icon-btn:hover { background: rgba(255, 255, 255, .18); }
 .page--dark .dt-title { color: #fff; }
@@ -889,6 +894,8 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
 /* o still editorial fica transparente: o recorte flutua no preto */
 .page--dark .well--editorial { background: transparent; }
 .page--dark .well--editorial .well__face:has(img) { background: transparent; }
+/* still de fechamento do capítulo — centrado, sem comércio ao lado */
+.dt-still { max-width: 620px; margin: 96px auto 0; }
 .sub__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 @media (min-width: 1024px) { .sub__grid { gap: 24px; } }
 @media (min-width: 1024px) { .sub--right .sub__promo { order: 2; } } /* lados alternam com UMA regra */
