@@ -867,8 +867,10 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
 
 /* ---------------- páginas editoriais ---------------- */
 .page-hero { text-align: center; padding: 72px 16px 40px; }
-/* título de página editorial BEM menor (direção do Pedro, 06/08) */
-.page-hero h1 { font-size: 15px; font-weight: 700; letter-spacing: .06em; }
+/* título de página editorial pequeno; texto de intro um passo menor,
+   em bold leve (direção do Pedro, 06/08) */
+.page-hero h1 { font-size: 18px; font-weight: 700; letter-spacing: .06em; }
+.page-hero p { font-size: 14px; font-weight: 500; }
 .page-hero p { max-width: 640px; margin: 24px auto 0; }
 .page-hero--season h1 { color: var(--season-h1); }
 .page-hero--season p { color: var(--season-body); }
