@@ -853,17 +853,22 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
   gap: 24px;
   text-align: left;
 }
-.sub__intro p { font-size: 12px; font-weight: 700; max-width: 300px; letter-spacing: .02em; }
-.sub__intro p:nth-child(2) { margin-left: 12%; }
-.sub__intro p:nth-child(3) { margin-left: 24%; }
-.sub__intro p:nth-child(4) { margin-left: 36%; }
-.sub__intro p:nth-child(5) { margin-left: 48%; }
-/* no mobile a cascata é mais curta para o texto não espremer */
+/* cada frase com o corpo da sua EXPRESSIVIDADE (direção do Pedro,
+   06/08): anúncio médio → detalhe sussurrado → liturgia solene →
+   O ALÍVIO no clímax → carimbo final miúdo */
+.sub__intro p { font-weight: 700; letter-spacing: .02em; line-height: 1.4; }
+.sub__intro p:nth-child(1) { font-size: 18px; max-width: 360px; }
+.sub__intro p:nth-child(2) { font-size: 11px; max-width: 300px; margin-left: 12%; }
+.sub__intro p:nth-child(3) { font-size: 22px; max-width: 440px; margin-left: 20%; }
+.sub__intro p:nth-child(4) { font-size: 27px; max-width: 480px; margin-left: 28%; }
+.sub__intro p:nth-child(5) { font-size: 11px; max-width: 280px; margin-left: 52%; }
+/* no mobile a cascata é mais curta e os corpos um passo menores */
 @media (max-width: 1023px) {
-  .sub__intro p:nth-child(2) { margin-left: 6%; }
-  .sub__intro p:nth-child(3) { margin-left: 12%; }
-  .sub__intro p:nth-child(4) { margin-left: 18%; }
-  .sub__intro p:nth-child(5) { margin-left: 24%; }
+  .sub__intro p:nth-child(1) { font-size: 15px; }
+  .sub__intro p:nth-child(2) { font-size: 10px; margin-left: 6%; }
+  .sub__intro p:nth-child(3) { font-size: 18px; margin-left: 10%; }
+  .sub__intro p:nth-child(4) { font-size: 21px; margin-left: 14%; }
+  .sub__intro p:nth-child(5) { font-size: 10px; margin-left: 30%; }
 }
 /* a LOGO da estação centralizada no topo da página do drop, com um
    BRILHO branco ao redor (direção do Pedro, 06/08) */
