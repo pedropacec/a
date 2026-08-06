@@ -860,16 +860,18 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
   .sub__intro p:nth-child(4) { margin-left: 18%; }
   .sub__intro p:nth-child(5) { margin-left: 24%; }
 }
-/* a LOGO da estação centralizada no topo da página do drop — sem
-   título escrito (direção do Pedro, 06/08) */
+/* a LOGO da estação centralizada no topo da página do drop, com um
+   BRILHO branco ao redor (direção do Pedro, 06/08) */
 .dt-logo {
   display: block;
   width: 100%;
-  max-width: 420px;
+  max-width: 500px;
   height: auto;
   margin: 12px auto 40px;
+  filter: drop-shadow(0 0 14px rgba(255, 255, 255, .45))
+          drop-shadow(0 0 48px rgba(255, 255, 255, .22));
 }
-@media (max-width: 1023px) { .dt-logo { max-width: 280px; } }
+@media (max-width: 1023px) { .dt-logo { max-width: 320px; } }
 
 /* página do drop ESCURA: fundo tinta, escritos e detalhes em branco
    (direção do Pedro, 06/08) */

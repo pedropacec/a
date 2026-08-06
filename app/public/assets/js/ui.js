@@ -393,14 +393,15 @@
       '      <button type="button" class="icon-btn btn-menu only-desktop" aria-label="Menu">' + ICONS.burger + "</button>" +
       '      <button type="button" class="icon-btn nav-burger only-mobile" aria-label="Abrir menu">' + ICONS.burger + "</button>" +
       '      <button type="button" class="icon-btn js-search" aria-label="Busca">' + ICONS.search + "</button>" +
+      /* Na página escura do drop, a CASINHA fica AO LADO da lupa e a
+         logo do topo some (direção do Pedro, 06/08). */
+      (document.body.classList.contains("page--dark") ?
+        '      <a class="icon-btn" href="' + href("index.html") + '" aria-label="Voltar para o início">' + ICONS.home + "</a>" : "") +
       "    </div>" +
       /* Logo padrão (lockup completo do vetor), estática — branca sobre
-         o banner da home, tinta nas internas. Sem animação de scroll.
-         Na página escura do drop, entra uma CASINHA no lugar da logo
-         (direção do Pedro, 06/08). */
-      '    <a class="lock" href="' + href("index.html") + '" aria-label="Voltar para o início">' +
-      (document.body.classList.contains("page--dark") ?
-        '<span class="lock__home icon-btn">' + ICONS.home + "</span>" : LOCK_FULL) + "</a>" +
+         o banner da home, tinta nas internas. Sem animação de scroll. */
+      (document.body.classList.contains("page--dark") ? "" :
+        '    <a class="lock" href="' + href("index.html") + '" aria-label="Vèsse Club — início">' + LOCK_FULL + "</a>") +
       '    <div class="header__icons">' +
       /* Direita, em qualquer tela: conta (desktop) · sacola. */
       /* Conta: leva à página do clube (sem login POR DECISÃO — a lista
