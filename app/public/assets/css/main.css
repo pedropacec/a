@@ -846,8 +846,15 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
   gap: 16px;
   text-align: left;
 }
-.sub__intro h1 { font-size: 28px; font-weight: 700; letter-spacing: .04em; }
 .sub__intro p { font-size: 14px; font-weight: 500; max-width: 480px; }
+/* título da página do drop: no topo, separado da tese, na cor da estação */
+.dt-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--season-h1);
+  margin: 8px 0 32px;
+}
 .sub__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 @media (min-width: 1024px) { .sub__grid { gap: 24px; } }
 @media (min-width: 1024px) { .sub--right .sub__promo { order: 2; } } /* lados alternam com UMA regra */
