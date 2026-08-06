@@ -107,6 +107,75 @@ Cada arte em `posts/png/` tem uma legenda pronta abaixo. Publique no feed em
 >
 > #Promoção #IndiqueUmAmigo #SelfStorage #GuardeTudo #BeloHorizonte #Desconto
 
+## feed-07 — Guarda-móveis ou self storage?
+
+> Guarda-móveis ou self storage? Entenda a diferença antes de guardar o que é seu. 🧐
+>
+> No guarda-móveis tradicional, a estrutura é genérica e compartilhada — suas
+> coisas ficam junto com as de outros clientes.
+>
+> No self storage Guarde Tudo, o box é individual, a chave é sua e você guarda
+> o que quiser: de móveis a estoque, de documentos a bicicletas.
+>
+> 📲 Faça um orçamento: (31) 9 8446-6482
+>
+> #SelfStorage #GuardaMóveis #BeloHorizonte #GuardeTudo #Organização
+
+## feed-08 — Como funciona
+
+> Alugar um box é mais simples do que você imagina: 👇
+>
+> 1️⃣ Escolha seu box — são +40 opções, de 4 a 1.000 m²
+> 2️⃣ Contrate sem fiador e sem burocracia
+> 3️⃣ Guarde e acesse quando precisar — a chave é só sua
+>
+> Pronto! Espaço extra resolvido. 💚
+>
+> 📲 Comece hoje: (31) 9 8446-6482
+>
+> #SelfStorage #SelfStorageBH #GuardeTudo #ComoFunciona #EspaçoExtra
+
+## feed-09 — Para você
+
+> Pensa no Guarde Tudo como a extensão da sua casa. 🏠📦
+>
+> Aqui cabem as malas da viagem, os móveis da reforma, a bicicleta, os
+> brinquedos, as coleções e até os presentes do casamento.
+>
+> Espaços flexíveis para uma pessoa ou para toda a família — pelo tempo que
+> você precisar.
+>
+> 📲 (31) 9 8446-6482 | guardetudobh.com.br
+>
+> #Organização #EspaçoExtra #SelfStorage #BeloHorizonte #GuardeTudo
+
+## feed-10 — Para empresas (editorial)
+
+> Sua empresa cresceu? O espaço acompanha. 📈
+>
+> No Guarde Tudo você guarda estoque, documentos, arquivo morto, móveis e
+> maquinário — com sigilo, segurança e área coberta para carga e descarga.
+> E ainda usa a sala de reuniões com Wi-Fi quando precisar.
+>
+> A 5 minutos do BH Shopping. 📍
+>
+> 💼 comercial@guardetudobh.com.br | (31) 9 8446-6482
+>
+> #Empreendedorismo #Estoque #Ecommerce #SelfStorage #BeloHorizonte #GuardeTudo
+
+## feed-11 — Dicas de organização
+
+> 4 segredos para um box (ou qualquer cantinho) bem organizado: 🤓📦
+>
+> ✅ Etiquete todas as caixas — você agradece depois
+> ✅ Itens pesados embaixo, leves e frágeis em cima
+> ✅ Deixe um corredor para alcançar o fundo
+> ✅ O que usa mais fica perto da porta
+>
+> Salve este post 📌 e compartilhe com aquele amigo que vive sem espaço!
+>
+> #DicasDeOrganização #Organização #SelfStorage #GuardeTudo #BeloHorizonte
+
 ## carrossel — Apresentação institucional (6 slides)
 
 Publique os 6 slides de `posts/carrossel/png/` como **carrossel único**, na ordem

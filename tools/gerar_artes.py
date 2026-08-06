@@ -612,6 +612,224 @@ def carrossel_06():
     return pagina("Carrossel 6/6 — Contato", corpo, 1080, 1350)
 
 
+# --------------------------------------------- série clara (editorial)
+
+def rotulo(txt):
+    """Mini etiqueta sólida verde acima dos títulos."""
+    return (f'<div style="display:inline-block;background:{VERDE};color:#fff;border-radius:40px;'
+            f'padding:8px 26px;font-size:24px;font-weight:900;letter-spacing:4px;">{txt}</div>')
+
+
+def check_claro(txt):
+    return f'''<div style="display:flex;align-items:flex-start;gap:18px;margin-top:22px;">
+      <div style="flex:0 0 44px;height:44px;border-radius:50%;background:linear-gradient(145deg,{VERDE_CLARO},{VERDE_ESCURO});display:flex;align-items:center;justify-content:center;margin-top:3px;">
+        <svg viewBox="0 0 24 24" width="24" height="24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div style="color:#4A4744;font-size:31px;line-height:1.4;">{txt}</div>
+    </div>'''
+
+
+def xis_item(txt):
+    return f'''<div style="display:flex;align-items:flex-start;gap:18px;margin-top:22px;">
+      <div style="flex:0 0 44px;height:44px;border-radius:50%;background:#B9B5AE;display:flex;align-items:center;justify-content:center;margin-top:3px;">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M7 7l10 10M17 7L7 17" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></svg>
+      </div>
+      <div style="color:#77746F;font-size:31px;line-height:1.4;">{txt}</div>
+    </div>'''
+
+
+def _caixa_kraft(x, y, w, h, tom="#D9BA8E", marca=True):
+    """Caixa de papelão flat com fita e a marca do cubo."""
+    fita = f'<rect x="{x + w/2 - 13}" y="{y}" width="26" height="{h}" fill="rgba(120,80,30,.18)"/>'
+    aba = f'<rect x="{x}" y="{y}" width="{w}" height="20" fill="rgba(255,255,255,.22)"/>'
+    cubo_m = ""
+    if marca:
+        cx, cy, s = x + w/2 - 24, y + h/2 - 18, 0.48
+        cubo_m = f'<g transform="translate({cx},{cy}) scale({s})" opacity=".75">{cubo("#6B5335", sw=9)}</g>'
+    return (f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="8" fill="{tom}" '
+            f'stroke="rgba(120,80,30,.25)" stroke-width="2"/>{aba}{fita}{cubo_m}')
+
+
+def ilustracao_para_voce():
+    """Cena flat: luminária, pilha de caixas, mala e plantinha."""
+    return f'''<svg viewBox="0 0 640 520" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="320" cy="482" rx="285" ry="24" fill="rgba(60,90,20,.10)"/>
+      <rect x="96" y="160" width="9" height="316" rx="4" fill="#8A8A85"/>
+      <rect x="62" y="470" width="78" height="13" rx="6" fill="#8A8A85"/>
+      <path d="M58 96 L152 96 L136 160 L74 160 Z" fill="#F2EEE3" stroke="#D8D2C4" stroke-width="3"/>
+      {_caixa_kraft(178, 292, 258, 188)}
+      {_caixa_kraft(206, 166, 186, 126, "#E2C79F")}
+      {_caixa_kraft(252, 98, 116, 68, "#D3AF7E", marca=False)}
+      <rect x="462" y="300" width="136" height="180" rx="16" fill="#4A4744"/>
+      <rect x="504" y="272" width="52" height="34" rx="10" fill="none" stroke="#4A4744" stroke-width="10"/>
+      <rect x="462" y="368" width="136" height="12" fill="{VERDE}"/>
+      <circle cx="484" cy="480" r="10" fill="#33302E"/><circle cx="576" cy="480" r="10" fill="#33302E"/>
+      <path d="M598 430 q-14 -52 18 -78 q6 44 -4 78 Z" fill="{VERDE}"/>
+      <path d="M614 430 q26 -34 8 -66 q-24 30 -22 66 Z" fill="{VERDE_ESCURO}"/>
+      <path d="M588 480 L636 480 L628 432 L596 432 Z" fill="#F2EEE3" stroke="#D8D2C4" stroke-width="3"/>
+    </svg>'''
+
+
+def ilustracao_empresa():
+    """Cena flat: palete com caixas etiquetadas e prancheta."""
+    etq = lambda x, y: f'<rect x="{x}" y="{y}" width="52" height="30" rx="4" fill="#fff" opacity=".85"/>'
+    return f'''<svg viewBox="0 0 640 520" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="320" cy="486" rx="290" ry="24" fill="rgba(60,90,20,.10)"/>
+      <rect x="150" y="440" width="360" height="18" rx="5" fill="#B98F5C"/>
+      <rect x="160" y="458" width="34" height="22" fill="#A87F4E"/>
+      <rect x="313" y="458" width="34" height="22" fill="#A87F4E"/>
+      <rect x="466" y="458" width="34" height="22" fill="#A87F4E"/>
+      {_caixa_kraft(168, 306, 162, 134)}{etq(196, 336)}
+      {_caixa_kraft(334, 306, 162, 134, "#E2C79F")}{etq(362, 336)}
+      {_caixa_kraft(200, 172, 150, 134, "#D3AF7E")}{etq(226, 202)}
+      {_caixa_kraft(354, 200, 120, 106, "#DDBE93", marca=False)}{etq(376, 224)}
+      <g transform="rotate(-8 555 380)">
+        <rect x="512" y="272" width="150" height="204" rx="14" fill="#fff" stroke="#D8D2C4" stroke-width="3"/>
+        <rect x="562" y="256" width="50" height="30" rx="8" fill="{VERDE_ESCURO}"/>
+        <rect x="532" y="316" width="110" height="10" rx="5" fill="#D8D2C4"/>
+        <rect x="532" y="344" width="110" height="10" rx="5" fill="#D8D2C4"/>
+        <rect x="532" y="372" width="72" height="10" rx="5" fill="#D8D2C4"/>
+        <path d="M532 412 l14 14 24 -28" fill="none" stroke="{VERDE}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </svg>'''
+
+
+def ed_01():  # guarda-móveis × self storage
+    corpo = f'''<div class="canvas" style="{FUNDO_CREME}">
+      {marca_dagua(VERDE, 620, "right:-230px;top:-170px;opacity:.10;")}
+      {ruido(.035)}
+      <div style="position:absolute;left:84px;top:90px;">
+        {rotulo("COMPARATIVO")}
+        <div style="font-size:62px;font-weight:900;color:{GRAFITE};margin-top:22px;">GUARDA-MÓVEIS OU<br>SELF STORAGE?</div>
+        {risco()}
+      </div>
+      <div style="position:absolute;left:70px;right:70px;top:400px;display:flex;gap:30px;">
+        <div style="flex:1;background:#fff;border-radius:34px;padding:40px 38px;box-shadow:0 18px 40px rgba(60,90,20,.08);">
+          <div style="font-size:36px;font-weight:900;color:#77746F;">Guarda-móveis</div>
+          {xis_item("Estrutura genérica e compartilhada")}
+          {xis_item("Sem controle sobre quem acessa")}
+          {xis_item("Limitado a móveis")}
+        </div>
+        <div style="flex:1;background:#fff;border:4px solid {VERDE};border-radius:34px;padding:40px 38px;box-shadow:0 24px 50px rgba(95,165,31,.16);">
+          <div style="font-size:36px;font-weight:900;color:{VERDE_ESCURO};">Self Storage<br>Guarde Tudo</div>
+          {check_claro("Box individual e personalizado")}
+          {check_claro("O acesso é somente seu")}
+          {check_claro("Guarde objetos pessoais ou corporativos")}
+        </div>
+      </div>
+      <div style="position:absolute;left:84px;right:84px;top:1035px;background:{VERDE_NOITE};color:#fff;border-radius:34px;padding:28px 40px;text-align:center;font-size:30px;">
+        Mais <b style="color:{VERDE_CLARO};">seguro</b>, mais <b style="color:{VERDE_CLARO};">flexível</b> e do tamanho da sua necessidade.
+      </div>
+      {rodape_post(claro=True)}
+    </div>'''
+    return pagina("Guarda-móveis ou Self Storage — Guarde Tudo", corpo, 1080, 1350)
+
+
+def ed_02():  # como funciona
+    def passo(n, ic, t1, t2):
+        return f'''<div style="flex:1;background:#fff;border-radius:34px;padding:64px 30px 38px;text-align:center;position:relative;box-shadow:0 18px 40px rgba(60,90,20,.08);">
+          <div style="position:absolute;left:50%;top:-32px;transform:translateX(-50%);width:64px;height:64px;border-radius:50%;background:linear-gradient(145deg,{VERDE_CLARO},{VERDE_ESCURO});color:#fff;font-size:34px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 26px rgba(95,165,31,.3);">{n}</div>
+          <div style="display:flex;justify-content:center;">{icone(ic, 62, VERDE_ESCURO)}</div>
+          <div style="font-size:34px;font-weight:900;color:{GRAFITE};margin-top:20px;line-height:1.25;">{t1}</div>
+          <div style="font-size:26px;color:#77746F;margin-top:12px;line-height:1.4;">{t2}</div>
+        </div>'''
+    corpo = f'''<div class="canvas" style="{FUNDO_CREME}">
+      {marca_dagua(VERDE, 620, "left:-240px;bottom:-200px;opacity:.10;")}
+      {ruido(.035)}
+      <div style="position:absolute;left:0;right:0;top:100px;text-align:center;">
+        {rotulo("SIMPLES ASSIM")}
+        <div style="font-size:66px;font-weight:900;color:{GRAFITE};margin-top:22px;">COMO FUNCIONA?</div>
+        <div style="display:flex;justify-content:center;">{risco()}</div>
+      </div>
+      <div style="position:absolute;left:70px;right:70px;top:420px;display:flex;gap:30px;">
+        {passo(1, "grade", "Escolha<br>seu box", "+40 opções, de 4 a<br>1.000 m²")}
+        {passo(2, "doc", "Contrate<br>sem fiador", "Contrato flexível,<br>sem burocracia")}
+        {passo(3, "cadeado", "Guarde e<br>acesse", "Chave só sua,<br>quando precisar")}
+      </div>
+      <div style="position:absolute;left:0;right:0;top:960px;text-align:center;">
+        <div style="display:inline-flex;align-items:center;gap:20px;background:linear-gradient(135deg,{VERDE_CLARO},{VERDE_ESCURO});color:#fff;border-radius:70px;padding:26px 50px;font-size:40px;font-weight:900;box-shadow:0 22px 48px rgba(95,165,31,.35);">
+          COMECE HOJE {icone("seta", 42)}
+        </div>
+        <div style="margin-top:24px;font-size:29px;color:#77746F;">WhatsApp (31) 9 8446-6482</div>
+      </div>
+      {rodape_post(claro=True)}
+    </div>'''
+    return pagina("Como funciona — Guarde Tudo", corpo, 1080, 1350)
+
+
+def ed_03():  # para você
+    corpo = f'''<div class="canvas" style="{FUNDO_CREME}">
+      {marca_dagua(VERDE, 620, "right:-230px;bottom:-190px;opacity:.10;")}
+      {ruido(.035)}
+      <div style="position:absolute;left:84px;top:100px;">
+        {rotulo("PARA VOCÊ")}
+        <div style="font-size:66px;font-weight:900;color:{GRAFITE};margin-top:22px;">A EXTENSÃO<br>DA SUA CASA</div>
+        {risco()}
+      </div>
+      <div style="position:absolute;left:84px;top:430px;width:450px;">
+        {check_claro("Malas e roupas de outra estação")}
+        {check_claro("Móveis e eletrodomésticos")}
+        {check_claro("Bicicletas e equipamentos esportivos")}
+        {check_claro("Brinquedos e coleções")}
+        {check_claro("Presentes de casamento")}
+      </div>
+      <div style="position:absolute;right:40px;top:400px;width:520px;">{ilustracao_para_voce()}</div>
+      <div style="position:absolute;left:84px;right:84px;top:1020px;background:#fff;border-radius:34px;padding:28px 40px;text-align:center;font-size:30px;color:#4A4744;box-shadow:0 18px 40px rgba(60,90,20,.08);">
+        Espaços flexíveis para <b>uma pessoa ou para toda a família</b>.
+      </div>
+      {rodape_post(claro=True)}
+    </div>'''
+    return pagina("Para você — Guarde Tudo", corpo, 1080, 1350)
+
+
+def ed_04():  # para empresas
+    corpo = f'''<div class="canvas" style="{FUNDO_CREME}">
+      {marca_dagua(VERDE, 620, "left:-240px;top:-180px;opacity:.10;")}
+      {ruido(.035)}
+      <div style="position:absolute;left:84px;top:100px;">
+        {rotulo("PARA EMPRESAS")}
+        <div style="font-size:66px;font-weight:900;color:{GRAFITE};margin-top:22px;">A EXTENSÃO<br>DO SEU NEGÓCIO</div>
+        {risco()}
+      </div>
+      <div style="position:absolute;left:84px;top:430px;width:450px;">
+        {check_claro("Estoques e mercadorias")}
+        {check_claro("Documentos e arquivo morto")}
+        {check_claro("Móveis e maquinário de escritório")}
+        {check_claro("Sigilo e segurança garantidos")}
+        {check_claro("Sala de reuniões com Wi-Fi")}
+      </div>
+      <div style="position:absolute;right:40px;top:410px;width:520px;">{ilustracao_empresa()}</div>
+      <div style="position:absolute;left:84px;right:84px;top:1020px;background:{VERDE_NOITE};color:#fff;border-radius:34px;padding:28px 40px;text-align:center;font-size:30px;">
+        Área coberta para carga e descarga &middot; <b style="color:{VERDE_CLARO};">a 5 min do BH Shopping</b>
+      </div>
+      {rodape_post(claro=True)}
+    </div>'''
+    return pagina("Para empresas (editorial) — Guarde Tudo", corpo, 1080, 1350)
+
+
+def ed_05():  # dicas de organização
+    corpo = f'''<div class="canvas" style="{FUNDO_CREME}">
+      {marca_dagua(VERDE, 640, "right:-240px;bottom:-210px;opacity:.10;")}
+      {ruido(.035)}
+      <div style="position:absolute;left:0;right:0;top:110px;text-align:center;">
+        {rotulo("DICA DA GUARDE TUDO")}
+        <div style="font-size:62px;font-weight:900;color:{GRAFITE};margin-top:22px;">4 SEGREDOS PARA UM<br>BOX BEM ORGANIZADO</div>
+        <div style="display:flex;justify-content:center;">{risco()}</div>
+      </div>
+      <div style="position:absolute;left:110px;right:110px;top:460px;background:#fff;border-radius:38px;padding:20px 52px 46px;box-shadow:0 18px 40px rgba(60,90,20,.08);">
+        {check_claro("<b>Etiquete todas as caixas</b> — você agradece depois")}
+        {check_claro("<b>Itens pesados embaixo</b>, leves e frágeis em cima")}
+        {check_claro("<b>Deixe um corredor</b> para alcançar o fundo do box")}
+        {check_claro("<b>O que usa mais</b> fica sempre perto da porta")}
+      </div>
+      <div style="position:absolute;left:0;right:0;top:1010px;text-align:center;font-size:31px;color:#4A4744;">
+        Salve este post 📌 e compartilhe com quem vive sem espaço!
+      </div>
+      {rodape_post(claro=True)}
+    </div>'''
+    return pagina("Dicas de organização — Guarde Tudo", corpo, 1080, 1350)
+
+
 # ---------------------------------------------------------------- panfleto
 
 def panfleto():
@@ -729,6 +947,11 @@ ARTES = {
     "posts/carrossel/html/slide-4-infraestrutura.html": (carrossel_04, 1080, 1350),
     "posts/carrossel/html/slide-5-sala-reunioes.html": (carrossel_05, 1080, 1350),
     "posts/carrossel/html/slide-6-contato.html": (carrossel_06, 1080, 1350),
+    "posts/html/feed-07-guarda-moveis-ou-self-storage.html": (ed_01, 1080, 1350),
+    "posts/html/feed-08-como-funciona.html": (ed_02, 1080, 1350),
+    "posts/html/feed-09-para-voce.html": (ed_03, 1080, 1350),
+    "posts/html/feed-10-para-empresas.html": (ed_04, 1080, 1350),
+    "posts/html/feed-11-dicas-de-organizacao.html": (ed_05, 1080, 1350),
 }
 
 CHROME = "/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell"
