@@ -122,16 +122,21 @@ main { padding-bottom: 96px; }
 .well--promo { position: absolute; inset: 0; aspect-ratio: auto; border-radius: 0; }
 
 /* ---------------- header ---------------- */
-/* Cabeçalho INVISÍVEL: sem fundo e sem borda, flutuando sobre o topo
-   da página — sobre o banner na home. Rola junto com a página. */
+/* Cabeçalho INVISÍVEL e FIXO: sem fundo e sem borda no topo da página;
+   ao rolar ele CONTINUA na tela e ganha fundo para o conteúdo não
+   atravessar os ícones (direção do Pedro, 06/08). */
 .site-header {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 60;
   background: transparent;
+  transition: background var(--t) var(--ease), color var(--t) var(--ease);
 }
+body.is-scrolled .site-header { background: var(--bg); }
+body.is-scrolled[data-template="index"] .site-header { color: var(--ink); }
+body.page--dark.is-scrolled .site-header { background: var(--ink); }
 /* nas páginas internas o conteúdo não desliza para debaixo do header */
 body { padding-top: 64px; }
 @media (min-width: 1440px) { body { padding-top: 80px; } }

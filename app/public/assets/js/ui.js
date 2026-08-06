@@ -422,6 +422,12 @@
     $(".nav-burger").addEventListener("click", openMobileNav);
     $$(".js-search").forEach(function (b) { b.addEventListener("click", openSearch); });
     $$(".js-cart").forEach(function (b) { b.addEventListener("click", openCart); });
+    /* cabeçalho fixo: ao rolar, ganha fundo (sem sumir da tela) */
+    function onScroll() {
+      document.body.classList.toggle("is-scrolled", window.scrollY > 8);
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
   }
 
   function openMobileNav() {
