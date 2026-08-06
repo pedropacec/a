@@ -238,6 +238,8 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
   left: 0;
   transform: translateX(-100%);
 }
+.drawer--nav { background: #F6F6F6; width: min(440px, 100%); }
+.drawer--nav .drawer__head { border-bottom: 0; }
 .drawer--nav.drawer--open,
 .drawer--search.drawer--open { transform: translateX(0); }
 .drawer__head {
@@ -260,10 +262,24 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 13px 0;
+  padding: 10px 0;
   font-size: 14px;
-  border-bottom: 1px solid var(--panel);
+  font-weight: 500;
+  letter-spacing: .02em;
   text-align: left;
+}
+/* último item (Vèsse World) vira o grupo secundário, menor e afastado */
+.mnav > .mnav__link:last-child { margin-top: 36px; font-size: 12px; }
+/* conta no PÉ da aba */
+.drawer--nav .drawer__body { display: flex; flex-direction: column; }
+.mnav__foot { margin-top: auto; padding-top: 32px; }
+.mnav__account {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: underline;
 }
 .mnav__link:hover { text-decoration: none; }
 .mnav__chevron { display: inline-flex; transition: transform var(--t) var(--ease); }
@@ -571,7 +587,16 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
    do topo), max 518px, coluna interna de texto 406px */
 .pdp__buybox { padding-top: 8px; }
 @media (min-width: 1024px) {
-  .pdp__buybox { position: sticky; top: 24px; max-width: 518px; }
+  .pdp__buybox {
+    position: sticky;
+    top: 24px;
+    max-width: 518px;
+    /* accordion aberto pode passar da tela: a caixa rola por dentro */
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .pdp__buybox::-webkit-scrollbar { display: none; }
 }
 .pdp__buybox > * { max-width: 406px; margin-left: auto; margin-right: auto; }
 .utilities {
@@ -637,7 +662,6 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
   letter-spacing: .06em;
   text-transform: uppercase;
 }
-.pdp-acc .acc__item.is-open .acc__a { max-height: 1400px; } /* guia + tabela cabem */
 .pdp-acc .tabpane { padding-bottom: 16px; }
 .help-row { text-align: center; font-size: 12px; color: var(--ink-muted); margin-top: 20px; }
 .help-row a { text-decoration: underline; }
@@ -917,8 +941,8 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
 }
 .acc__q .mnav__chevron { transition: transform var(--t) var(--ease); }
 .acc__item.is-open .acc__q .mnav__chevron { transform: rotate(90deg); }
-.acc__a { max-height: 0; overflow: hidden; transition: max-height var(--t) var(--ease); }
-.acc__item.is-open .acc__a { max-height: 400px; }
+.acc__a { display: none; } /* abre instantâneo, sem clipe de altura */
+.acc__item.is-open .acc__a { display: block; }
 .acc__a p { padding-bottom: 16px; color: var(--ink-muted); font-size: 14px; }
 
 /* página do clube (pages/members.html): 3 benefícios com fatos +

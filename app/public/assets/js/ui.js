@@ -435,10 +435,13 @@
         '<span class="mnav__chevron">' + ICONS.chevron + "</span></button>" +
         '<div class="mnav__panel">' + cols + "</div></div>";
     }).join("");
-    /* No cabeçalho da gaveta, o monograma VÈ — clicável, leva à home. */
+    /* No cabeçalho da gaveta, o monograma VÈ — clicável, leva à home.
+       No PÉ, a conta (ref. AMIRI). */
     openDrawer(
       '<a class="drawer__home" href="' + href("index.html") + '" aria-label="Vèsse Club — início">' + VE_MARK + "</a>",
-      '<nav class="mnav" aria-label="Menu">' + body + "</nav>", "drawer--nav");
+      '<nav class="mnav" aria-label="Menu">' + body + "</nav>" +
+      '<div class="mnav__foot"><a class="mnav__account" href="' + href("pages/members.html") + '">' +
+      ICONS.account + "<span>Conta</span></a></div>", "drawer--nav");
     $$(".mnav__toggle").forEach(function (btn) {
       btn.addEventListener("click", function () {
         btn.parentElement.classList.toggle("is-open");
