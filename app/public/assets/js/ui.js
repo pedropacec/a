@@ -953,16 +953,8 @@
       out += '<section class="recent"><h2 class="display">Vistos recentemente</h2>' +
         '<div class="rail__grid">' + recent.map(function (rp) { return cardHTML(rp); }).join("") + "</div></section>";
     }
-    /* 3. Breadcrumb no PÉ, máx 3 níveis. */
-    var crumb;
-    {
-      var typeKeys = { "Camiseta": "camisetas", "Moletom": "moletons", "Calça": "calcas", "Shorts": "shorts", "Boné": "bones", "Meia": "meias" };
-      crumb = '<a href="' + href("index.html") + '">Home</a><span>|</span>' +
-        '<a href="' + href("colecao.html?c=collections") + '">Collections</a><span>|</span>' +
-        '<a href="' + href("colecao.html?c=" + typeKeys[p.type]) + '">' + esc(typePlural(p.type)) + "</a><span>|</span>" +
-        "<span>" + esc(p.title) + "</span>";
-    }
-    out += '<nav class="breadcrumb" aria-label="Localização">' + crumb + "</nav>";
+    /* (breadcrumb visível removido — direção do Pedro, 06/08. O
+       BreadcrumbList do JSON-LD continua para SEO.) */
     return out;
   }
   function bindPDP(p, order) {

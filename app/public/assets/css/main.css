@@ -758,17 +758,6 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
 .recent .rail__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 @media (min-width: 1024px) { .recent .rail__grid { grid-template-columns: repeat(4, 1fr); gap: 40px; } }
 
-.breadcrumb {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  font-size: 14px;
-  margin: 64px 0 40px;
-}
-.breadcrumb span { opacity: 1; }
-.breadcrumb > span:not(:last-child) { opacity: .5; } /* separador | a .5 */
-.breadcrumb a { text-decoration: underline; }
-
 /* ---------------- home ---------------- */
 .hero { position: relative; margin: 0; } /* full-bleed: sangra de borda a borda */
 /* selo da estação ABAIXO do banner, centrado no respiro antes do rail
