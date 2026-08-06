@@ -298,12 +298,18 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
 .search__world:hover { text-decoration: none; color: var(--ink-muted); }
 
 /* ---------------- card de produto ---------------- */
-.card { position: relative; }
+/* min-width 0: o título nowrap NÃO alarga a coluna da grade — ele
+   corta com reticências dentro do card */
+.card { position: relative; min-width: 0; }
 .card__media { position: relative; }
 .card__link { display: block; }
 /* zoom-off nos packshots do card: a peça respira dentro do quadro
    (on-model continua preenchendo) */
 .well--card .well__face img { box-sizing: border-box; padding: 9%; }
+/* mobile: a peça ocupa mais do quadro (direção do Pedro, 06/08) */
+@media (max-width: 1023px) {
+  .well--card .well__face img { padding: 4%; }
+}
 .well--card .well__face[data-slot="06"] img,
 .well--card .well__face[data-slot="07"] img,
 .well--card .well__face[data-slot="08"] img,
@@ -356,13 +362,23 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
 .chip--out:hover { background: var(--bg); color: var(--state-out); border-color: var(--hairline); }
 .quickadd__details { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; text-decoration: underline; }
 .card__info {
-  text-align: center; /* info centralizada: título → preço → cores */
-  padding: 12px 8px 0;
+  text-align: left; /* info ao canto: título bold → preço menor */
+  padding: 10px 2px 0;
   transition: transform var(--t) var(--ease);
 }
-.card__title { display: block; font-size: 14px; line-height: 1.4; }
+.card__title {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  line-height: 1.4;
+  white-space: nowrap;   /* título em UMA linha */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .card__title:hover { text-decoration: none; }
-.card__price { font-size: 16px; margin-top: 4px; }
+.card__price { font-size: 10px; margin-top: 3px; }
 /* Esgotado (direção do Pedro, 01/08): nome e preço em cinza, etiqueta
    "Sold out" discreta embaixo — sem badge, o card segue limpo. */
 .card--soldout .card__title, .card--soldout .card__price { color: var(--ink-muted); }
@@ -401,20 +417,24 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
 }
 
 /* ---------------- PLP ---------------- */
+/* título da vista: pequeno, bold, ao canto (direção do Pedro, 06/08) */
 .plp-h1 {
-  text-align: center;
-  font-size: clamp(28px, 4.4vw, 50px);
-  margin: 40px 0 8px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  margin: 36px 0 6px;
 }
-/* monograma VÈ como segunda linha do H1 (no lugar de "Vèsse Club") */
+/* monograma VÈ como segunda linha do H1 (no lugar de "Vèsse Club") —
+   altura fixa: não encolhe junto com o título */
 .plp-h1 .ve-mark {
   display: inline-block;
-  height: 1.05em;
+  height: 22px;
   width: auto;
-  margin-top: .18em;
+  margin-top: 6px;
   color: var(--ink);
 }
-.plp-desc { text-align: center; max-width: 560px; margin: 0 auto 8px; color: var(--ink-muted); font-size: 14px; }
+.plp-desc { text-align: left; max-width: 560px; margin: 0 0 8px; color: var(--ink-muted); font-size: 12px; }
 .refine-bar {
   display: flex;
   align-items: center;
@@ -448,7 +468,7 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
   text-align: center;
 }
 .promo:hover { text-decoration: none; }
-.promo__title { position: relative; z-index: 1; font-size: clamp(22px, 3vw, 36px); }
+.promo__title { position: relative; z-index: 1; font-size: 13px; font-weight: 700; letter-spacing: .04em; }
 .promo__cta {
   position: relative;
   z-index: 1;
@@ -539,6 +559,11 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
 }
 .gallery__bullet.is-active { width: 16px; background: var(--ink); } /* ativo estica p/ 16px */
 .pdp__gallery { position: relative; }
+/* no mobile a galeria sangra de borda a borda: foto maior no quadro
+   (direção do Pedro, 06/08) */
+@media (max-width: 1023px) {
+  .pdp__gallery { margin-left: -16px; margin-right: -16px; }
+}
 /* buy box: sticky no desktop (o header não é mais fixo — cola a 24px
    do topo), max 518px, coluna interna de texto 406px */
 .pdp__buybox { padding-top: 8px; }
@@ -557,8 +582,15 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
 .util-actions { display: inline-flex; gap: 4px; }
 .btn-fav.is-on svg { fill: var(--ink); }
 .pdp-badge { display: block; }
-.pdp-h1 { font-size: clamp(24px, 3vw, 40px); margin: 8px 0; }
-.pdp-price { font-size: 16px; margin-bottom: 32px; }
+/* título e preço pequenos, bold no título, uma linha só, ao canto —
+   preço um pouco MENOR que o título (direção do Pedro, 06/08) */
+.pdp-h1 {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .03em;
+  margin: 10px 0 4px;
+}
+.pdp-price { font-size: 11px; margin-bottom: 28px; }
 .pdp-price s { opacity: .6; margin-left: 8px; } /* riscado SÓ na buy box */
 /* Seletor de tamanhos inline (mockup do Pedro): fila centrada,
    esgotado riscado, o escolhido ganha uma caixa. Boné não renderiza. */
@@ -598,6 +630,7 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
 .pdp-acc { margin-top: 48px; border-top: 1px solid var(--panel); }
 .pdp-acc .acc__q {
   font-size: 12px;
+  font-weight: 700;
   letter-spacing: .06em;
   text-transform: uppercase;
 }
@@ -625,6 +658,7 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
   padding: 6px 6px 6px 20px;
 }
 .sticky-atc.is-show { transform: translate(-50%, 0); }
+.sticky-atc__price { font-size: 11px; }
 .sticky-atc .btn { flex: 1; padding: 12px 16px; }
 @media (min-width: 1024px) { .sticky-atc { display: none; } }
 
@@ -687,7 +721,7 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
 
 /* abaixo da dobra */
 .complete-look, .recent { margin: 72px 0 0; }
-.complete-look h2, .recent h2 { font-size: clamp(24px, 3.4vw, 40px); margin-bottom: 24px; }
+.complete-look h2, .recent h2 { font-size: 13px; font-weight: 700; letter-spacing: .04em; margin-bottom: 18px; }
 .complete-look__grid { display: grid; gap: 16px; }
 @media (min-width: 1024px) { .complete-look__grid { grid-template-columns: 1fr 1fr; gap: 40px; } }
 .complete-look__cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -748,7 +782,8 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
   flex-wrap: wrap;
 }
 .rail__head--center { justify-content: center; }
-.rail__title { font-size: clamp(24px, 3.4vw, 40px); }
+/* títulos de seção: pequenos, bold, ao canto (direção do Pedro, 06/08) */
+.rail__title { font-size: 13px; font-weight: 700; letter-spacing: .04em; }
 /* (toggle do rail removido — direção do Pedro) */
 .rail__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 @media (min-width: 768px) { .rail__grid { grid-template-columns: repeat(4, 1fr); gap: 32px; } }
@@ -885,7 +920,7 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
   margin-top: 88px;
   border-top: 1px solid var(--panel);
 }
-.members__title { font-size: clamp(28px, 4.4vw, 50px); margin-bottom: 24px; }
+.members__title { font-size: 13px; font-weight: 700; letter-spacing: .04em; margin-bottom: 20px; }
 .members__benefits { display: grid; gap: 6px; margin-bottom: 28px; font-size: 14px; color: var(--ink-muted); }
 .members__form { display: grid; gap: 14px; max-width: 380px; margin: 0 auto; }
 .members__form input[type="email"] {
