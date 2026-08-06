@@ -873,9 +873,11 @@
 
     /* A página Archive 71 foi removida (direção do Pedro): as peças de
        arquivo apontam para Collections. */
+    /* O selo da estação leva à PÁGINA da coleção (editorial), não à
+       listagem de produtos (direção do Pedro, 06/08). */
     var collLink = isA71(p) ?
       '<a href="' + href("colecao.html?c=collections") + '">Collections</a>' :
-      '<a href="' + href("colecao.html?c=divine-therapy") + '">Divine Therapy</a>';
+      '<a href="' + href("pages/divine-therapy.html") + '">Divine Therapy</a>';
     /* Só o badge Members sobrevive na PDP — o título de drop
        ("Drop 01") foi removido (direção do Pedro). */
     var badgeTag = hasTag(p, "MEMBERS") ? "MEMBERS" : null;
