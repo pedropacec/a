@@ -849,14 +849,16 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
   text-align: left;
 }
 .sub__intro p { font-size: 14px; font-weight: 500; max-width: 320px; }
-.sub__intro p:nth-child(2) { margin-left: 14%; }
-.sub__intro p:nth-child(3) { margin-left: 30%; }
-.sub__intro p:nth-child(4) { margin-left: 46%; }
+.sub__intro p:nth-child(2) { margin-left: 12%; }
+.sub__intro p:nth-child(3) { margin-left: 24%; }
+.sub__intro p:nth-child(4) { margin-left: 36%; }
+.sub__intro p:nth-child(5) { margin-left: 48%; }
 /* no mobile a cascata é mais curta para o texto não espremer */
 @media (max-width: 1023px) {
-  .sub__intro p:nth-child(2) { margin-left: 8%; }
-  .sub__intro p:nth-child(3) { margin-left: 16%; }
-  .sub__intro p:nth-child(4) { margin-left: 24%; }
+  .sub__intro p:nth-child(2) { margin-left: 6%; }
+  .sub__intro p:nth-child(3) { margin-left: 12%; }
+  .sub__intro p:nth-child(4) { margin-left: 18%; }
+  .sub__intro p:nth-child(5) { margin-left: 24%; }
 }
 /* título da página do drop: no topo à esquerda; a LOGO da estação
    grande à direita (direção do Pedro, 06/08) */
