@@ -830,13 +830,12 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
    centrados na altura da imagem (direção do Pedro, 06/08) */
 .sub__intro {
   display: grid;
-  align-self: stretch;  /* ocupa a altura da linha mesmo com o grid em align-items:start */
-  align-content: center;
+  align-content: start; /* bloco no TOPO da coluna (direção do Pedro, 06/08) */
   justify-items: start;
-  gap: 14px;
+  gap: 16px;
   text-align: left;
 }
-.sub__intro h1 { font-size: 18px; font-weight: 700; letter-spacing: .06em; }
+.sub__intro h1 { font-size: 28px; font-weight: 700; letter-spacing: .04em; }
 .sub__intro p { font-size: 14px; font-weight: 500; max-width: 480px; }
 .sub__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 @media (min-width: 1024px) { .sub__grid { gap: 24px; } }
