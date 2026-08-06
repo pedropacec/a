@@ -826,6 +826,18 @@ body[data-template="index"] .icon-btn:hover { background: rgba(255, 255, 255, .1
 .sub { display: grid; gap: 16px; margin: 64px 0; }
 @media (min-width: 1024px) { .sub { grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; } }
 .sub__promo { /* atmosfera: NÃO clicável, SEM texto, sem hotspot */ }
+/* intro da estação na coluna ao lado do still: título + tese ao canto,
+   centrados na altura da imagem (direção do Pedro, 06/08) */
+.sub__intro {
+  display: grid;
+  align-self: stretch;  /* ocupa a altura da linha mesmo com o grid em align-items:start */
+  align-content: center;
+  justify-items: start;
+  gap: 14px;
+  text-align: left;
+}
+.sub__intro h1 { font-size: 18px; font-weight: 700; letter-spacing: .06em; }
+.sub__intro p { font-size: 14px; font-weight: 500; max-width: 480px; }
 .sub__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 @media (min-width: 1024px) { .sub__grid { gap: 24px; } }
 @media (min-width: 1024px) { .sub--right .sub__promo { order: 2; } } /* lados alternam com UMA regra */
