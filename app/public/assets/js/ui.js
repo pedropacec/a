@@ -82,6 +82,7 @@
 
   var ICONS = {
     burger: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 5h16M2 10h16M2 15h16"/></svg>',
+    home: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="m3 11 9-7 9 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-6h4v6"/></svg>',
     search: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="9" r="6"/><path d="M13.5 13.5 18 18"/></svg>',
     account: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="10" cy="6.5" r="3.5"/><path d="M3 17.5c1.4-3.2 4-4.7 7-4.7s5.6 1.5 7 4.7"/></svg>',
     cart: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 6h12l-1 11H5L4 6Z"/><path d="M7 6a3 3 0 0 1 6 0"/></svg>',
@@ -394,8 +395,12 @@
       '      <button type="button" class="icon-btn js-search" aria-label="Busca">' + ICONS.search + "</button>" +
       "    </div>" +
       /* Logo padrão (lockup completo do vetor), estática — branca sobre
-         o banner da home, tinta nas internas. Sem animação de scroll. */
-      '    <a class="lock" href="' + href("index.html") + '" aria-label="Vèsse Club — início">' + LOCK_FULL + "</a>" +
+         o banner da home, tinta nas internas. Sem animação de scroll.
+         Na página escura do drop, entra uma CASINHA no lugar da logo
+         (direção do Pedro, 06/08). */
+      '    <a class="lock" href="' + href("index.html") + '" aria-label="Voltar para o início">' +
+      (document.body.classList.contains("page--dark") ?
+        '<span class="lock__home icon-btn">' + ICONS.home + "</span>" : LOCK_FULL) + "</a>" +
       '    <div class="header__icons">' +
       /* Direita, em qualquer tela: conta (desktop) · sacola. */
       /* Conta: leva à página do clube (sem login POR DECISÃO — a lista
