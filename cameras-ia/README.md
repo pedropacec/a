@@ -21,6 +21,25 @@ Sem ele, o analisador é ignorado com aviso e o resto segue funcionando.
 
 Severidades: `info` · `alerta` · `critico`.
 
+## Área de notificação (pontos de atenção)
+
+Acima dos eventos brutos, um motor de regras (`app/core/notifier.py`) roda a
+cada 30 s e mantém **pontos de atenção** legíveis para o cliente — com
+agregação (rollup), releitura automática quando há novas ocorrências e
+auto-resolução quando a situação normaliza:
+
+| Ponto de atenção | Regra |
+|---|---|
+| `camera_sem_sinal` | Câmera caiu e não voltou (auto-resolve quando volta) |
+| `monitoramento_parado` | Câmera habilitada mas worker morto (auto-resolve) |
+| `sabotagem` | Eventos de sabotagem nas últimas 24h (agregado) |
+| `intrusao_recorrente` | Intrusões em zona restrita nas últimas 24h (agregado) |
+| `atividade_fora_horario` | Atividade fora do expediente nas últimas 24h (agregado) |
+| `pico_criticos` | 10+ eventos críticos na última hora (global) |
+
+No painel: card "Pontos de atenção" com contador no topo, ações de marcar
+lida e resolver.
+
 ## Como rodar
 
 ```bash
@@ -71,6 +90,8 @@ caminho de arquivo de vídeo e `synthetic://motion|static|black`.
 | `GET /api/cameras/{id}/snapshot` | Último quadro em JPEG |
 | `GET /api/events` (filtros: câmera, tipo, severidade, desde, ack) | Histórico de eventos |
 | `POST /api/events/{id}/ack` | Marca evento como tratado |
+| `GET /api/notifications` · `/summary` · `POST …/refresh` | Pontos de atenção (área de notificação) |
+| `POST /api/notifications/{id}/read` · `/resolve` · `/read-all` | Gestão dos pontos de atenção |
 | `GET /api/status` | Resumo: câmeras online, eventos 24h, analisadores |
 | `WS /ws/events` | Eventos ao vivo (alimenta o painel) |
 | `GET /docs` | Documentação interativa (Swagger) |

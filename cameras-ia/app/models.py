@@ -51,3 +51,29 @@ class Event(Base):
     details: Mapped[dict] = mapped_column(JSON, default=dict)
     acknowledged: Mapped[bool] = mapped_column(Boolean, default=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, index=True)
+
+
+class Notification(Base):
+    """Ponto de atenção: resumo acionável derivado dos eventos brutos.
+
+    Um por (kind, camera) enquanto não resolvido — novas ocorrências
+    atualizam o mesmo registro (rollup) em vez de criar outro.
+    """
+
+    __tablename__ = "notifications"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    # camera_sem_sinal | monitoramento_parado | sabotagem | intrusao_recorrente |
+    # atividade_fora_horario | pico_criticos
+    kind: Mapped[str] = mapped_column(String(50), index=True)
+    severity: Mapped[str] = mapped_column(String(20), default="alerta")
+    title: Mapped[str] = mapped_column(String(200))
+    body: Mapped[str] = mapped_column(Text, default="")
+    camera_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    camera_name: Mapped[str] = mapped_column(String(120), default="")
+    details: Mapped[dict] = mapped_column(JSON, default=dict)
+    count: Mapped[int] = mapped_column(Integer, default=1)  # ocorrências agregadas
+    read: Mapped[bool] = mapped_column(Boolean, default=False)
+    resolved: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, index=True)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)

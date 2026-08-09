@@ -54,8 +54,33 @@ class EventOut(BaseModel):
     created_at: datetime
 
 
+class NotificationOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    kind: str
+    severity: str
+    title: str
+    body: str
+    camera_id: int | None
+    camera_name: str
+    details: dict
+    count: int
+    read: bool
+    resolved: bool
+    created_at: datetime
+    updated_at: datetime
+
+
+class NotificationSummary(BaseModel):
+    unread: int
+    open: int  # não resolvidas
+    by_severity: dict
+
+
 class StatusOut(BaseModel):
     cameras_total: int
     cameras_online: int
     events_24h: dict
+    notifications_unread: int
     analyzers_available: list[str]

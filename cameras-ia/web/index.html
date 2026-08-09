@@ -80,7 +80,34 @@
   }
   .badge.on { background: rgba(123,198,40,.15); color: var(--verde); }
   .badge.off { background: rgba(229,72,77,.15); color: var(--critico); }
-  .events { background: var(--grafite); border: 1px solid #4a4547; border-radius: 10px; padding: 14px; max-height: 75vh; overflow-y: auto; }
+  .attention { background: var(--grafite); border: 1px solid #4a4547; border-radius: 10px; padding: 14px; margin-bottom: 18px; }
+  .attention-head { display: flex; align-items: center; margin-bottom: 10px; }
+  .attention-head h2 { margin-bottom: 0; }
+  .attention-head button {
+    margin-left: auto; background: none; border: 1px solid #4a4547; color: #a9a5a6;
+    font-size: 11px; padding: 4px 8px; border-radius: 6px; cursor: pointer;
+  }
+  .notice {
+    border-left: 3px solid var(--info); background: var(--grafite-escuro);
+    border-radius: 0 6px 6px 0; padding: 9px 10px; margin-bottom: 8px;
+  }
+  .notice.alerta { border-color: var(--alerta); }
+  .notice.critico { border-color: var(--critico); }
+  .notice.unread { box-shadow: inset 0 0 0 1px rgba(123,198,40,.35); }
+  .notice .title { font-size: 13px; font-weight: 700; color: #fff; display: flex; gap: 6px; align-items: baseline; }
+  .notice .title .count {
+    font-size: 11px; background: rgba(255,255,255,.08); border-radius: 10px; padding: 1px 7px;
+  }
+  .notice .body { font-size: 12px; color: #c9c5c6; margin-top: 3px; }
+  .notice .actions { margin-top: 6px; display: flex; gap: 6px; }
+  .notice .actions button {
+    background: none; border: 1px solid #4a4547; color: #a9a5a6; font-size: 11px;
+    padding: 3px 8px; border-radius: 6px; cursor: pointer;
+  }
+  .notice .actions button:hover { color: var(--verde); border-color: var(--verde); }
+  .empty { font-size: 12px; color: #6b6668; padding: 6px 2px; }
+  .stat.pulse b { color: var(--critico); }
+  .events { background: var(--grafite); border: 1px solid #4a4547; border-radius: 10px; padding: 14px; max-height: 50vh; overflow-y: auto; }
   .event { border-left: 3px solid var(--info); padding: 8px 10px; margin-bottom: 8px; background: var(--grafite-escuro); border-radius: 0 6px 6px 0; }
   .event.alerta { border-color: var(--alerta); }
   .event.critico { border-color: var(--critico); }
@@ -109,6 +136,7 @@
     <div class="stat"><b id="stat-online">–</b><small>câmeras on</small></div>
     <div class="stat"><b id="stat-total">–</b><small>câmeras</small></div>
     <div class="stat"><b id="stat-events">–</b><small>eventos 24h</small></div>
+    <div class="stat" id="stat-notif-box"><b id="stat-notif">–</b><small>atenção</small></div>
   </div>
 </header>
 <main>
@@ -124,6 +152,13 @@
     </form>
   </section>
   <aside>
+    <div class="attention">
+      <div class="attention-head">
+        <h2>Pontos de atenção</h2>
+        <button onclick="readAllNotices()">marcar lidas</button>
+      </div>
+      <div id="notices"><div class="empty">Nenhum ponto de atenção. Tudo em ordem.</div></div>
+    </div>
     <h2>Eventos ao vivo</h2>
     <div class="events" id="events"></div>
   </aside>
@@ -157,6 +192,37 @@ async function loadStatus() {
   document.getElementById('stat-online').textContent = s.cameras_online;
   document.getElementById('stat-total').textContent = s.cameras_total;
   document.getElementById('stat-events').textContent = s.events_24h.total ?? 0;
+  document.getElementById('stat-notif').textContent = s.notifications_unread;
+  document.getElementById('stat-notif-box').classList.toggle('pulse', s.notifications_unread > 0);
+}
+
+async function loadNotices() {
+  const res = await fetch('/api/notifications?resolved=false');
+  const items = await res.json();
+  const el = document.getElementById('notices');
+  if (!items.length) {
+    el.innerHTML = '<div class="empty">Nenhum ponto de atenção. Tudo em ordem.</div>';
+    return;
+  }
+  el.innerHTML = items.map(n => `
+    <div class="notice ${n.severity} ${n.read ? '' : 'unread'}">
+      <div class="title">${n.title}${n.count > 1 ? `<span class="count">×${n.count}</span>` : ''}</div>
+      <div class="body">${n.body}</div>
+      <div class="actions">
+        ${n.read ? '' : `<button onclick="noticeAction(${n.id}, 'read')">lida</button>`}
+        <button onclick="noticeAction(${n.id}, 'resolve')">resolver</button>
+      </div>
+    </div>`).join('');
+}
+
+async function noticeAction(id, action) {
+  await fetch(`/api/notifications/${id}/${action}`, { method: 'POST' });
+  loadNotices(); loadStatus();
+}
+
+async function readAllNotices() {
+  await fetch('/api/notifications/read-all', { method: 'POST' });
+  loadNotices(); loadStatus();
 }
 
 async function loadCameras() {
@@ -198,9 +264,10 @@ function connectWs() {
   ws.onclose = () => setTimeout(connectWs, 3000);
 }
 
-loadEvents(); loadStatus(); loadCameras(); connectWs();
+loadEvents(); loadStatus(); loadCameras(); loadNotices(); connectWs();
 setInterval(loadCameras, 3000);
 setInterval(loadStatus, 10000);
+setInterval(loadNotices, 15000);
 </script>
 </body>
 </html>

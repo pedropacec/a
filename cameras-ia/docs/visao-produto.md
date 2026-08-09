@@ -92,6 +92,15 @@ notificação (WhatsApp/Telegram/e-mail) com miniatura + link → painel abre o
 clipe → operador marca como tratado / falso positivo (vira feedback para
 calibrar limiares).
 
+### Área de notificação (pontos de atenção) — ✅ implementada na v1
+
+O cliente não deve ler 200 eventos brutos: um motor de regras agrega tudo em
+**pontos de atenção** acionáveis ("Câmera Doca 1 sem sinal", "3 intrusões na
+zona restrita em 24h", "pico de eventos críticos na última hora"), com
+estado lida/resolvida, rollup de ocorrências e auto-resolução quando a
+situação normaliza. É a mesma camada que depois alimentará WhatsApp/Telegram
+e, na Fase 3, receberá as descrições geradas pelo VLM.
+
 ---
 
 ## Pilar 3 — Conversa com a IA sobre as gravações (busca forense)

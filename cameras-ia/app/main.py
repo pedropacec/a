@@ -8,10 +8,11 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 
-from app.api import cameras, events, system, ws
+from app.api import cameras, events, notifications, system, ws
 from app.config import Settings
 from app.core.bus import EventBus
 from app.core.manager import CameraManager
+from app.core.notifier import Notifier
 from app.database import init_db
 from app.models import Camera, Event
 
@@ -25,6 +26,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     engine, session_factory = init_db(settings.db_url)
     bus = EventBus()
     manager = CameraManager(bus)
+    notifier = Notifier(session_factory, manager)
 
     def persist_event(event: dict) -> dict:
         created_at = datetime.fromisoformat(event["created_at"])
@@ -48,8 +50,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         with session_factory() as session:
             enabled = [c.as_dict() for c in session.query(Camera).filter(Camera.enabled).all()]
         manager.start_enabled(enabled)
+        await notifier.start()
         log.info("Sentinela IA iniciado — %d câmera(s) ativa(s)", len(enabled))
         yield
+        await notifier.stop()
         manager.stop_all()
         await bus.stop()
 
@@ -63,9 +67,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.session_factory = session_factory
     app.state.bus = bus
     app.state.manager = manager
+    app.state.notifier = notifier
 
     app.include_router(cameras.router)
     app.include_router(events.router)
+    app.include_router(notifications.router)
     app.include_router(system.router)
     app.include_router(ws.router)
 
