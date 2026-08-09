@@ -98,10 +98,13 @@ Cada worker reconecta sozinho em caso de queda e emite `camera_offline` /
 
 ## Roadmap
 
-- [ ] Detecção de pessoas/veículos com YOLO ativada por padrão (`objects`)
-- [ ] Gravação de clipes dos eventos (pré/pós alarme) e miniaturas
-- [ ] Notificações: WhatsApp/Telegram/e-mail em eventos críticos
-- [ ] Autenticação e perfis de usuário (operador × administrador)
-- [ ] Editor visual de zonas restritas sobre o snapshot no painel
-- [ ] Contagem de pessoas, permanência (loitering) e cruzamento de linha
-- [ ] Descrição de cena por modelo de visão (VLM) para busca em linguagem natural
+A visão completa do produto — os três pilares (produtividade industrial,
+vigilância inteligente com clipes e busca conversacional nas gravações),
+arquitetura alvo, fases, custos e LGPD — está em
+[`docs/visao-produto.md`](docs/visao-produto.md).
+
+- [ ] **Fase 1** — Gravação contínua + clipes de evento + player no painel
+- [ ] **Fase 2** — YOLO + rastreamento + `presence`/`activity`/`cycle_count` (produtividade v1)
+- [ ] **Fase 3** — Triagem VLM dos alertas + notificações WhatsApp/Telegram
+- [ ] **Fase 4** — Indexação semântica das gravações + agente de busca conversacional
+- [ ] **Fase 5** — Relatórios avançados, linha de base estatística, pose/EPI, autenticação
