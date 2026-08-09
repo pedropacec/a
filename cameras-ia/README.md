@@ -101,7 +101,10 @@ Cada worker reconecta sozinho em caso de queda e emite `camera_offline` /
 A visão completa do produto — os três pilares (produtividade industrial,
 vigilância inteligente com clipes e busca conversacional nas gravações),
 arquitetura alvo, fases, custos e LGPD — está em
-[`docs/visao-produto.md`](docs/visao-produto.md).
+[`docs/visao-produto.md`](docs/visao-produto.md). A estratégia de negócio
+(posicionamento, edge+nuvem, modelo de assinatura, canal de integradores,
+etapas até virar empresa) está em
+[`docs/estrategia-empresa.md`](docs/estrategia-empresa.md).
 
 - [ ] **Fase 1** — Gravação contínua + clipes de evento + player no painel
 - [ ] **Fase 2** — YOLO + rastreamento + `presence`/`activity`/`cycle_count` (produtividade v1)
