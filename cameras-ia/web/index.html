@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sentinela IA — Gestão de Câmeras</title>
+<style>
+  :root {
+    --verde: #7BC628;
+    --grafite: #383435;
+    --grafite-escuro: #2A2728;
+    --cinza: #E7E7E7;
+    --critico: #E5484D;
+    --alerta: #F5A623;
+    --info: #8B8B8B;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Lato', system-ui, -apple-system, sans-serif;
+    background: var(--grafite-escuro);
+    color: var(--cinza);
+    min-height: 100vh;
+  }
+  header {
+    background: var(--grafite);
+    border-bottom: 3px solid var(--verde);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  header h1 { font-size: 20px; text-transform: uppercase; letter-spacing: 1px; color: #fff; }
+  header h1 span { color: var(--verde); }
+  .stats { display: flex; gap: 12px; margin-left: auto; flex-wrap: wrap; }
+  .stat {
+    background: var(--grafite-escuro);
+    border: 1px solid #4a4547;
+    border-radius: 8px;
+    padding: 8px 14px;
+    text-align: center;
+    min-width: 90px;
+  }
+  .stat b { display: block; font-size: 20px; color: var(--verde); }
+  .stat small { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: #a9a5a6; }
+  main {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 20px;
+    padding: 20px 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+  h2 {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #a9a5a6;
+    margin-bottom: 12px;
+  }
+  .cameras { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .camera {
+    background: var(--grafite);
+    border: 1px solid #4a4547;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .camera img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; background: #000; }
+  .camera .placeholder {
+    width: 100%; aspect-ratio: 4/3; display: flex; align-items: center;
+    justify-content: center; color: #6b6668; font-size: 13px; background: #1e1c1d;
+  }
+  .camera .meta { padding: 10px 12px; display: flex; align-items: center; gap: 8px; }
+  .camera .meta .name { font-weight: 700; color: #fff; font-size: 14px; }
+  .camera .meta .loc { font-size: 12px; color: #a9a5a6; }
+  .badge {
+    margin-left: auto; font-size: 11px; font-weight: 700; padding: 3px 8px;
+    border-radius: 20px; text-transform: uppercase;
+  }
+  .badge.on { background: rgba(123,198,40,.15); color: var(--verde); }
+  .badge.off { background: rgba(229,72,77,.15); color: var(--critico); }
+  .events { background: var(--grafite); border: 1px solid #4a4547; border-radius: 10px; padding: 14px; max-height: 75vh; overflow-y: auto; }
+  .event { border-left: 3px solid var(--info); padding: 8px 10px; margin-bottom: 8px; background: var(--grafite-escuro); border-radius: 0 6px 6px 0; }
+  .event.alerta { border-color: var(--alerta); }
+  .event.critico { border-color: var(--critico); }
+  .event .msg { font-size: 13px; color: #fff; }
+  .event .sub { font-size: 11px; color: #a9a5a6; margin-top: 2px; }
+  form.add {
+    margin-top: 18px; background: var(--grafite); border: 1px solid #4a4547;
+    border-radius: 10px; padding: 14px; display: grid; gap: 8px;
+  }
+  form.add input, form.add select {
+    background: var(--grafite-escuro); border: 1px solid #4a4547; color: var(--cinza);
+    border-radius: 6px; padding: 8px 10px; font-size: 13px;
+  }
+  form.add button {
+    background: var(--verde); border: 0; color: var(--grafite); font-weight: 800;
+    text-transform: uppercase; letter-spacing: .5px; padding: 10px; border-radius: 6px;
+    cursor: pointer; font-size: 13px;
+  }
+  form.add button:hover { filter: brightness(1.08); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Sentinela <span>IA</span> · Gestão de Câmeras</h1>
+  <div class="stats">
+    <div class="stat"><b id="stat-online">–</b><small>câmeras on</small></div>
+    <div class="stat"><b id="stat-total">–</b><small>câmeras</small></div>
+    <div class="stat"><b id="stat-events">–</b><small>eventos 24h</small></div>
+  </div>
+</header>
+<main>
+  <section>
+    <h2>Câmeras</h2>
+    <div class="cameras" id="cameras"></div>
+    <form class="add" id="add-form">
+      <h2>Adicionar câmera</h2>
+      <input name="name" placeholder="Nome (ex.: Corredor A)" required>
+      <input name="url" placeholder="URL (rtsp://…, http://…, 0 ou synthetic://motion)" required>
+      <input name="location" placeholder="Local (opcional)">
+      <button type="submit">Adicionar e monitorar</button>
+    </form>
+  </section>
+  <aside>
+    <h2>Eventos ao vivo</h2>
+    <div class="events" id="events"></div>
+  </aside>
+</main>
+<script>
+const eventsEl = document.getElementById('events');
+const camerasEl = document.getElementById('cameras');
+
+function eventHtml(ev) {
+  const when = (ev.created_at || '').replace('T', ' ').slice(0, 19);
+  return `<div class="event ${ev.severity}">
+    <div class="msg">${ev.message}</div>
+    <div class="sub">${ev.camera_name || 'sistema'} · ${ev.type} · ${when}</div>
+  </div>`;
+}
+
+function addEvent(ev) {
+  eventsEl.insertAdjacentHTML('afterbegin', eventHtml(ev));
+  while (eventsEl.children.length > 100) eventsEl.lastChild.remove();
+}
+
+async function loadEvents() {
+  const res = await fetch('/api/events?limit=50');
+  const items = await res.json();
+  eventsEl.innerHTML = items.map(eventHtml).join('');
+}
+
+async function loadStatus() {
+  const res = await fetch('/api/status');
+  const s = await res.json();
+  document.getElementById('stat-online').textContent = s.cameras_online;
+  document.getElementById('stat-total').textContent = s.cameras_total;
+  document.getElementById('stat-events').textContent = s.events_24h.total ?? 0;
+}
+
+async function loadCameras() {
+  const res = await fetch('/api/cameras');
+  const cams = await res.json();
+  camerasEl.innerHTML = cams.map(c => `
+    <div class="camera">
+      ${c.online
+        ? `<img src="/api/cameras/${c.id}/snapshot?ts=${Date.now()}" onerror="this.outerHTML='<div class=placeholder>sem sinal</div>'">`
+        : `<div class="placeholder">câmera parada</div>`}
+      <div class="meta">
+        <div>
+          <div class="name">${c.name}</div>
+          <div class="loc">${c.location || ''}</div>
+        </div>
+        <span class="badge ${c.online ? 'on' : 'off'}">${c.online ? 'ao vivo' : 'parada'}</span>
+      </div>
+    </div>`).join('');
+}
+
+document.getElementById('add-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(e.target));
+  if (!data.location) delete data.location;
+  data.analyzers = ['motion', 'tamper'];
+  await fetch('/api/cameras', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  e.target.reset();
+  loadCameras(); loadStatus();
+});
+
+function connectWs() {
+  const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+  const ws = new WebSocket(`${proto}://${location.host}/ws/events`);
+  ws.onmessage = (m) => { addEvent(JSON.parse(m.data)); loadStatus(); };
+  ws.onclose = () => setTimeout(connectWs, 3000);
+}
+
+loadEvents(); loadStatus(); loadCameras(); connectWs();
+setInterval(loadCameras, 3000);
+setInterval(loadStatus, 10000);
+</script>
+</body>
+</html>

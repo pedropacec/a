@@ -1,5 +1,9 @@
 # Guarde Tudo Self Storage — Kit de marca e redes sociais
 
+> **Novo:** [`cameras-ia/`](cameras-ia/) — Sentinela IA, sistema de gestão de
+> câmeras com análise contínua por inteligência artificial (movimento, zonas
+> restritas, horário, sabotagem). Veja o [README do projeto](cameras-ia/README.md).
+
 Material criado a partir do estudo do PDF geral da marca (panfletos, posts,
 folder, embalagens e banners originais).
 
