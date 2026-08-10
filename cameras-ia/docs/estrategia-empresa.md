@@ -118,6 +118,27 @@ onboarding ONVIF automático. Primeiros integradores parceiros.
 **Etapa D — Escala pelo canal**
 Playbook de instalação para integradores, white-label, expansão de verticais.
 
+## Veredito honesto sobre a oportunidade (09/08/2026, pós-pesquisa)
+
+**Sim, condicional e específica.** NÃO há oportunidade em "VMS genérico"
+(detecção virou commodity embarcada). HÁ oportunidade comprovada em:
+(1) **produtividade industrial por vídeo** — ROI documentado, líder
+mundial sumiu (Drishti→Apple), zero players nacionais encontrados; e
+(2) **camada de IA para centrais/portaria remota** — dor aritmética
+(custo de operador, falsos alarmes), distribuição já existe, empresas
+como a Emive licenciariam em vez de construir. Busca conversacional =
+demo que abre portas, não o negócio.
+
+Janela estimada: 18–36 meses. Defesa: distribuição local + dados
+verticais + serviço (tecnologia VLM nivelou — é o que permite equipe
+pequena competir). Maior risco: EXECUÇÃO, não mercado (negócio de
+campo, ciclo B2B, 12–18 meses até receita relevante — exige dedicação
+e fôlego financeiro).
+
+**Critério falsificável:** se em 6 meses de esforço comercial não
+houver 1 indústria pagando piloto de produtividade OU 1 central de
+porte testando o conector, revisar a tese sem dó.
+
 ## Questões em aberto (nível empresa)
 
 1. Dedicação: fundador em tempo integral? Sócio técnico ou comercial?
