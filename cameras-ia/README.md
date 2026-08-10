@@ -125,7 +125,11 @@ arquitetura alvo, fases, custos e LGPD — está em
 [`docs/visao-produto.md`](docs/visao-produto.md). A estratégia de negócio
 (posicionamento, edge+nuvem, modelo de assinatura, canal de integradores,
 etapas até virar empresa) está em
-[`docs/estrategia-empresa.md`](docs/estrategia-empresa.md).
+[`docs/estrategia-empresa.md`](docs/estrategia-empresa.md). A pesquisa de
+mercado (Brasil + global) está em
+[`docs/pesquisa-mercado.md`](docs/pesquisa-mercado.md), e o estudo
+funcional dos concorrentes com os adendos de escopo priorizados (roadmap
+revisado em 6 fases) em [`docs/adendos-escopo.md`](docs/adendos-escopo.md).
 
 - [ ] **Fase 1** — Gravação contínua + clipes de evento + player no painel
 - [ ] **Fase 2** — YOLO + rastreamento + `presence`/`activity`/`cycle_count` (produtividade v1)
