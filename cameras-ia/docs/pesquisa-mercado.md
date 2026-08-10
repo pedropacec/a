@@ -87,6 +87,19 @@ canal de integradores, edge para internet ruim, preço em reais).**
   (R$ 399–699/mês), integrada ao Smart Sampa e polícias.
 - Startups de IA em centrais: Octos.ai, Ôguen (filtragem de alarmes),
   Avantia, CoSecurity (12 mil câmeras de calçada), Noleak (Agatha).
+- **Emive** (BH/MG, 30+ anos, 140 mil+ clientes; rede de franquias em 22
+  estados, ~800 franqueados): gigante regional de monitoramento
+  (alarmes + câmeras + central 24h). Lançou o **"Raio-X do Negócio"**:
+  BI a partir das câmeras para varejo/restaurantes — mapa de calor,
+  fluxo de clientes, tempo de permanência, horários de pico, apoiando
+  decisões operacionais e comerciais. A linha "câmera inteligente"
+  divulga análise de comportamento em tempo real (violência, movimento
+  incomum, aglomeração). Leitura estratégica: (1) valida no mercado
+  local (inclusive BH) a tese "câmera vira inteligência de negócio";
+  (2) empresas-Emive são CANAL/cliente ideal do nosso white label —
+  operação e carteira enormes, tecnologia própria rasa; (3) lição de
+  empacotamento: vender insight com nome de produto e linguagem de
+  negócio ("Raio-X"), não "dashboard de analytics". (emive.com.br, 2026)
 
 ### Canal e tendências
 
