@@ -230,6 +230,39 @@ vídeo no Brasil (US$ 0,5–1,5 bi) — usar ABESE como âncora.
 
 ---
 
+## 4. Nosso diferencial contra as soluções brasileiras
+
+Três capacidades que nenhum player nacional tem + dois posicionamentos:
+
+1. **Entendimento de cena (VLM), não só detecção.** O mercado nacional
+   gera detecções (movimento, pessoa, placa, EPI); o mais avançado
+   (Noleak/Agatha) permite ESCREVER regras em linguagem natural — ainda
+   regra fixa. Nós descrevemos o que está acontecendo, com gravidade e
+   ação sugerida. Intelbras Defense IA, Digifort, Monuv, Camerite e
+   Gabriel não fazem.
+2. **Investigação conversacional nas gravações** (agente multi-turno com
+   linha do tempo e clipes como prova). Vigiaê alega busca NL one-shot;
+   agente investigador não existe no país (e globalmente só Ambient/Coram
+   estão começando — sem atuação aqui).
+3. **Produtividade industrial na mesma plataforma.** Inexistente no
+   Brasil (Easypro = cronoanálise manual assistida; Quickium/Pix Force =
+   EPI/EHS). Segurança + produtividade + investigação juntos não existe
+   nem globalmente (Drishti, que fazia só produtividade, virou Apple).
+4. **Agnóstico de hardware** vs modelos presos: Intelbras prende ao
+   ecossistema (Mibo só grava câmera própria); Gabriel instala câmeras
+   próprias em comodato de 4 anos. Contra Monuv/Digifort (também
+   agnósticos) o desempate são os itens 1–3.
+5. **Insight sem biometria** num mercado correndo para reconhecimento
+   facial sob fiscalização da ANPD e PL 2338 — menos risco jurídico para
+   o cliente e imunidade a restrição regulatória futura.
+
+Onde NÃO temos diferencial (e não devemos brigar): distribuição
+(capilaridade Intelbras; Sigma em 80% das centrais — integração
+obrigatória) e preço de detecção básica (commodity embarcada). A vitória
+é vender o que eles estruturalmente não têm, PELO canal deles.
+
+---
+
 ## Fontes principais
 
 ABESE/Panoramas via NetSeg e IT Forum · Genial Investimentos (Intelbras) ·
