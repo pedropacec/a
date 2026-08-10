@@ -252,9 +252,18 @@ Três capacidades que nenhum player nacional tem + dois posicionamentos:
    ecossistema (Mibo só grava câmera própria); Gabriel instala câmeras
    próprias em comodato de 4 anos. Contra Monuv/Digifort (também
    agnósticos) o desempate são os itens 1–3.
-5. **Insight sem biometria** num mercado correndo para reconhecimento
-   facial sob fiscalização da ANPD e PL 2338 — menos risco jurídico para
-   o cliente e imunidade a restrição regulatória futura.
+5. **Biometria sob controle** (refinado após debate em 09/08/2026 — a
+   ausência total seria malefício: perde checklist de concorrência, e
+   estádios >20 mil têm biometria OBRIGATÓRIA por lei). Três níveis:
+   (a) detecção/contagem de pessoas — sempre ligada, sem identificação;
+   (b) **reidentificação por atributos** (aparência/roupa numa janela de
+   tempo, sem template facial) — dá o "siga essa pessoa" do agente
+   investigador com ~90% do valor forense e fração do risco;
+   (c) reconhecimento facial como módulo OPT-IN premium com governança
+   embutida (RIPD pré-preenchido, avisos, contrato controlador×operador,
+   retenção, auditoria). O mercado vende facial no faroeste; nós
+   vendemos "desligada por padrão, pronta quando precisar, blindada
+   quando ligar".
 
 Onde NÃO temos diferencial (e não devemos brigar): distribuição
 (capilaridade Intelbras; Sigma em 80% das centrais — integração

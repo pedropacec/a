@@ -95,7 +95,7 @@ O custo de API de visão escala com quadros analisados. Defesas:
 | Incumbentes adicionam IA de checkbox | Profundidade (busca conversacional, relatórios de produtividade), não lista de features |
 | Compatibilidade infinita de câmeras/DVRs zumbis | Lista de marcas homologadas no início; ONVIF Profile S/T; expandir com demanda |
 | Custo de VLM come a margem | Ver seção acima; medir custo/câmera desde o piloto |
-| LGPD (biometria, monitoramento de funcionários) | Minimização por padrão (zonas, não rostos); DPA; retenção configurável; trilha de auditoria — vira argumento de venda |
+| LGPD (biometria, monitoramento de funcionários) | Três níveis: contagem sem identificação (padrão) → reidentificação por atributos sem template facial (investigações) → facial como módulo opt-in premium com governança embutida (RIPD, avisos, contratos). "Biometria sob controle" vira produto, não limitação |
 | Complexidade de operar frota edge | Auto-update, telemetria de saúde, acesso remoto de suporte desde a v1 |
 | Solo founder / equipe pequena | Fatiar: 1 vertical, 1 cliente-piloto, 1 caso de sucesso antes de escalar |
 
