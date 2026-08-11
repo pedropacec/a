@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Divine Therapy — revelação cósmica</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { background:#000; }
+  body { width:1080px; }
+
+  .page { width:1080px; height:1350px; background:#000; overflow:hidden;
+          display:flex; align-items:center; justify-content:center; position:relative; }
+  body.story .page { height:1920px; }
+
+  .stage-clip { width:1080px; height:1350px; position:relative; overflow:hidden; background:#000; }
+  .stage { width:1080px; height:1350px; position:absolute; inset:0; transform-origin:50% 50%; }
+
+  #cv { position:absolute; inset:0; width:100%; height:100%; }
+
+  .smoke-layer { position:absolute; inset:0; width:100%; height:100%; overflow:visible; z-index:3; }
+  .wisp { fill:none; stroke:#fff; stroke-linecap:round; }
+
+  #grain { position:absolute; inset:0; z-index:6; pointer-events:none; opacity:.045;
+           image-rendering:pixelated; mix-blend-mode:screen; width:100%; height:100%; }
+</style>
+</head>
+<body>
+<div class="page">
+ <div class="stage-clip">
+  <div class="stage" id="stage">
+
+    <canvas id="cv" width="1080" height="1350"></canvas>
+
+    <svg class="smoke-layer" id="smokeLayer" viewBox="0 0 1080 1350" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="smokeBoil" x="-60%" y="-60%" width="220%" height="220%">
+          <feTurbulence id="smokeNoise" type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="1" result="n"/>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="10" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <radialGradient id="emberGrad">
+          <stop offset="0%" stop-color="#fff" stop-opacity="1"/>
+          <stop offset="60%" stop-color="#fff" stop-opacity=".35"/>
+          <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <g id="gSmoke"
+         style="filter:url(#smokeBoil) blur(1.4px) drop-shadow(0 0 6px rgba(255,255,255,.9)) drop-shadow(0 0 18px rgba(255,255,255,.4));">
+        <path id="wisp1" class="wisp" style="stroke-width:5;   opacity:.85" d=""/>
+        <path id="wisp2" class="wisp" style="stroke-width:3.6; opacity:.6"  d=""/>
+        <path id="wisp3" class="wisp" style="stroke-width:2.8; opacity:.4"  d=""/>
+      </g>
+      <circle id="ember" r="10" fill="url(#emberGrad)"/>
+    </svg>
+
+    <canvas id="grain" width="270" height="338"></canvas>
+  </div>
+ </div>
+</div>
+
+<script>
+/* ============================================================
+   Revelação cósmica do flyer Divine Therapy.
+   Roteiro (loop de 10s a 24fps):
+     0.0-1.2s  poeira estelar ambiente no preto
+     0.8-4.2s  o boneco se materializa em partículas cintilantes
+     3.2-5.8s  DIVINE e THERAPY: contorno brilhante -> preenchimento
+     5.0-6.4s  data e bloco VÈSSE: contorno -> preenchimento
+     5.4s      fumaça começa a subir do charuto
+     6.4-8.4s  flyer completo, tudo vivo (cintilação, fumaça, brilho)
+     8.4-10s   dissolve de volta em poeira -> loop perfeito
+   Determinístico: todo o estado é função do índice do frame.
+   ============================================================ */
+const FPS = 24, DUR = 10, TOTAL = FPS * DUR;   // 240 frames
+const BOIL_FPS = 8, TICKS = DUR * BOIL_FPS;
+
+const qs = new URLSearchParams(location.search);
+if (qs.get('format') === 'story') document.body.classList.add('story');
+const DEBUG = !!qs.get('debug');
+
+const W = 1080, H = 1350;
+const $ = id => document.getElementById(id);
+const stage = $('stage'), cv = $('cv'), ctx = cv.getContext('2d');
+const smokeNoise = $('smokeNoise'), smokeLayer = $('smokeLayer');
+const grain = $('grain'), gtx = grain.getContext('2d');
+
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+const clamp01 = v => Math.max(0, Math.min(1, v));
+const ramp = (t,a,b) => clamp01((t-a)/(b-a));
+const smooth = v => v*v*(3-2*v);
+
+/* ---------- zonas de texto (contorno -> preenchimento) ---------- */
+/* box generoso (inclui o glow) para recorte/preenchimento e bordas */
+const TEXT_ZONES = [
+  { name:'divine',  box:[0,   5,1080,252], c0:3.2, c1:4.2, f0:4.0, f1:5.2 },
+  { name:'therapy', box:[0, 252,1080,478], c0:3.8, c1:4.8, f0:4.6, f1:5.8 },
+  { name:'date',    box:[10,450, 520,705], c0:5.0, c1:5.8, f0:5.6, f1:6.4 },
+  { name:'right',   box:[600,436,1080,620], c0:5.0, c1:5.8, f0:5.6, f1:6.4 },
+];
+/* faixas apagadas da camada de ilustração (texto + halo de glow);
+   escolhidas para não tocar a mão/charuto (x~440+, y~550+) nem o cabelo */
+const EXCLUDES = [
+  [0, 0, 1080, 545],
+  [0, 545, 445, 725],
+  [600, 545, 1080, 580],
+];
+
+/* ---------- fumaça (mesma do modo original) ---------- */
+const SX = 0.429, SY = 0.480;
+const ox = SX * W, oy = SY * H;
+const WISPS = [
+  { id:'wisp1', h:220, sway:24, dash:'110 70', k:2 },
+  { id:'wisp2', h:280, sway:38, dash:'90 90',  k:3 },
+  { id:'wisp3', h:330, sway:52, dash:'70 110', k:4 },
+];
+for (const w of WISPS){
+  $(w.id).setAttribute('d',
+    `M ${ox},${oy - 6}` +
+    ` C ${ox + w.sway},${oy - w.h*0.28} ${ox - w.sway},${oy - w.h*0.52} ${ox + w.sway*0.7},${oy - w.h*0.76}` +
+    ` C ${ox + w.sway*1.3},${oy - w.h*0.9} ${ox + w.sway*0.4},${oy - w.h*0.97} ${ox + w.sway*0.9},${oy - w.h}`);
+}
+$('ember').setAttribute('cx', ox); $('ember').setAttribute('cy', oy);
+
+/* ---------- pré-processamento da arte ---------- */
+let illoCanvas, zoneData = [], particles = [], ambient = [], ready = false;
+
+const img = new Image();
+img.src = 'arte/flyer-original.png';
+img.onload = () => {
+  const src = document.createElement('canvas');
+  src.width = W; src.height = H;
+  const sctx = src.getContext('2d', { willReadFrequently: true });
+  sctx.drawImage(img, 0, 0, W, H);
+  const px = sctx.getImageData(0, 0, W, H).data;
+  const lum = (x, y) => px[(y * W + x) * 4];
+  const inZone = (x, y) => EXCLUDES.some(r => x >= r[0] && x < r[2] && y >= r[1] && y < r[3]);
+
+  /* ilustração = original com as faixas de texto (e halos) apagadas */
+  illoCanvas = document.createElement('canvas');
+  illoCanvas.width = W; illoCanvas.height = H;
+  const ictx = illoCanvas.getContext('2d');
+  ictx.drawImage(img, 0, 0, W, H);
+  ictx.fillStyle = '#000';
+  for (const r of EXCLUDES) ictx.fillRect(r[0], r[1], r[2]-r[0], r[3]-r[1]);
+
+  /* por zona: recorte do original + mapa de contorno (borda brilhante) */
+  for (const z of TEXT_ZONES){
+    const [x0,y0,x1,y1] = z.box, zw = x1-x0, zh = y1-y0;
+    const fill = document.createElement('canvas');
+    fill.width = zw; fill.height = zh;
+    fill.getContext('2d').drawImage(img, x0, y0, zw, zh, 0, 0, zw, zh);
+    const edge = document.createElement('canvas');
+    edge.width = zw; edge.height = zh;
+    const ectx = edge.getContext('2d');
+    /* contorno: pixels sólidos da letra com vizinho fora da máscara
+       (o glow em volta é suave, então a máscara é binária em 245) */
+    const eimg = ectx.createImageData(zw, zh);
+    const solid = (x,y) => lum(x,y) >= 245;
+    for (let y = Math.max(2,y0); y < Math.min(H-2,y1); y++)
+      for (let x = Math.max(2,x0); x < Math.min(W-2,x1); x++){
+        if (solid(x,y) && (!solid(x-2,y) || !solid(x+2,y) || !solid(x,y-2) || !solid(x,y+2))){
+          const o = ((y-y0) * zw + (x-x0)) * 4;
+          eimg.data[o]=eimg.data[o+1]=eimg.data[o+2]=255; eimg.data[o+3]=255;
+        }
+      }
+    ectx.putImageData(eimg, 0, 0);
+    zoneData.push({ z, fill, edge });
+  }
+
+  /* partículas da ilustração (pixels claros fora das zonas de texto) */
+  const rnd = mulberry32(20260829);
+  for (let y = 0; y < H; y += 2)
+    for (let x = 0; x < W; x += 2){
+      if (inZone(x, y)) continue;
+      const v = lum(x, y);
+      if (v > 55 && rnd() < 0.42 * (v/255)){
+        particles.push({
+          x: x + (rnd()-0.5)*3, y: y + (rnd()-0.5)*3,
+          size: 0.5 + rnd()*1.7,
+          k: 6 + Math.floor(rnd()*18),        // cintilações por loop (inteiro -> loop fecha)
+          ph: rnd(),
+          birth: rnd(),                        // ordem de materialização
+          scat: 30 + rnd()*90,                 // dispersão no dissolve
+          ang: rnd()*Math.PI*2,
+          hero: rnd() < 0.012,                 // brilhos maiores em cruz
+        });
+      }
+    }
+
+  /* poeira ambiente */
+  for (let i = 0; i < 260; i++){
+    ambient.push({ x: rnd()*W, y: rnd()*H, size: 0.5 + rnd()*1.3,
+                   k: 2 + Math.floor(rnd()*6), ph: rnd(), swx: 10+rnd()*24, swy: 6+rnd()*16, a: .12 + rnd()*.3 });
+  }
+
+  ready = true;
+  renderFrame(qs.get('render') ? 0 : frameNow());
+};
+
+/* ---------- linha do tempo ---------- */
+function master(t){          /* 0 -> 1 -> 0 : materializa, segura, dissolve */
+  return smooth(ramp(t, 0.8, 4.2)) * (1 - smooth(ramp(t, 8.4, 9.9)));
+}
+function smokeGate(t){ return smooth(ramp(t, 5.4, 6.8)) * (1 - smooth(ramp(t, 8.2, 9.0))); }
+
+function renderFrame(i){
+  if (!ready) return;
+  const t = (i % TOTAL) / FPS;
+  const tick = Math.floor(t * BOIL_FPS) % TICKS;
+  const m = master(t);
+
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, W, H);
+
+  /* poeira ambiente */
+  ctx.fillStyle = '#fff';
+  for (const p of ambient){
+    const tw = Math.pow(.5 + .5*Math.sin(2*Math.PI*(p.k*t/DUR + p.ph)), 2);
+    ctx.globalAlpha = p.a * (0.35 + 0.65*tw);
+    ctx.fillRect(p.x + p.swx*Math.sin(2*Math.PI*(t/DUR)+p.ph*7),
+                 p.y + p.swy*Math.sin(2*Math.PI*(t/DUR)*2+p.ph*13), p.size, p.size);
+  }
+
+  /* base da ilustração (linhas originais, corroídas pela poeira) */
+  ctx.globalAlpha = 0.82 * Math.pow(m, 1.6);
+  ctx.drawImage(illoCanvas, 0, 0);
+
+  /* partículas da ilustração */
+  ctx.globalCompositeOperation = 'lighter';
+  for (const p of particles){
+    const gate = smooth(clamp01((m - p.birth) / 0.14));
+    if (gate <= 0.004) continue;
+    const flash = clamp01(1 - (m - p.birth) / 0.1);          // pop ao nascer
+    const tw = Math.pow(.5 + .5*Math.sin(2*Math.PI*(p.k*t/DUR + p.ph)), 3);
+    const a = gate * (0.18 + 0.62*tw + flash*0.9);
+    const sc = (1 - gate) * p.scat;                          // dispersa fora do gate
+    const x = p.x + Math.cos(p.ang)*sc, y = p.y + Math.sin(p.ang)*sc;
+    ctx.globalAlpha = Math.min(1, a);
+    const s = p.size * (1 + flash*1.4);
+    ctx.fillRect(x - s/2, y - s/2, s, s);
+    if (p.hero && tw > 0.6){                                 /* brilho em cruz */
+      ctx.globalAlpha = Math.min(1, a) * (tw - 0.6) * 2.2;
+      const r = 5 + p.size*3;
+      ctx.fillRect(x - r, y - .5, 2*r, 1);
+      ctx.fillRect(x - .5, y - r, 1, 2*r);
+    }
+  }
+  ctx.globalCompositeOperation = 'source-over';
+
+  /* escritos: contorno brilhante -> preenchimento */
+  const dEnd = 1 - smooth(ramp(t, 8.4, 9.4));                 // saem primeiro no dissolve
+  for (const { z, fill, edge } of zoneData){
+    const [x0,y0,x1,y1] = z.box, zw = x1-x0, zh = y1-y0;
+    const cA = smooth(ramp(t, z.c0, z.c1));
+    const fA = smooth(ramp(t, z.f0, z.f1));
+    if (cA <= 0) continue;
+
+    /* contorno com glow (fica mais discreto quando o preenchimento chega) */
+    ctx.globalAlpha = cA * (1 - 0.75*fA) * dEnd;
+    if (ctx.globalAlpha > 0.005){
+      ctx.shadowColor = 'rgba(255,255,255,.9)';
+      ctx.shadowBlur = 14;
+      ctx.drawImage(edge, x0, y0);
+      /* varredura de energia durante o surgimento do contorno */
+      if (cA > 0 && cA < 1){
+        const sx = x0 + (zw + 240) * cA - 120;
+        ctx.save();
+        ctx.beginPath(); ctx.rect(sx, y0, 120, zh); ctx.clip();
+        ctx.globalAlpha = Math.min(1, cA * 1.8) * dEnd;
+        ctx.shadowBlur = 26;
+        ctx.drawImage(edge, x0, y0);
+        ctx.restore();
+      }
+      ctx.shadowBlur = 0;
+    }
+
+    /* preenchimento: o texto original por cima */
+    ctx.globalAlpha = fA * dEnd;
+    if (ctx.globalAlpha > 0.005) ctx.drawImage(fill, x0, y0);
+
+    if (DEBUG){ ctx.globalAlpha = 1; ctx.strokeStyle = 'red'; ctx.strokeRect(x0, y0, zw, zh); ctx.strokeStyle = '#fff'; }
+  }
+  ctx.globalAlpha = 1;
+
+  /* fumaça do charuto */
+  const sg = smokeGate(t);
+  smokeLayer.style.opacity = sg.toFixed(3);
+  if (sg > 0){
+    smokeNoise.setAttribute('seed', String(tick + 1));
+    for (const w of WISPS){
+      const el = $(w.id);
+      const [a, b] = w.dash.split(' ').map(Number);
+      el.style.strokeDasharray = w.dash;
+      el.style.strokeDashoffset = String(-(t / DUR) * (a + b) * w.k);
+    }
+    $('gSmoke').setAttribute('transform', `rotate(${2.2*Math.sin(2*Math.PI*t/3.3333333)} ${ox} ${oy})`);
+    const e = .55 + .45*Math.sin(2*Math.PI*t/2);
+    $('ember').style.opacity = (0.35 + 0.65*e).toFixed(3);
+    $('ember').setAttribute('r', String(8 + 4*e));
+  }
+
+  /* deriva de câmera (período = loop) */
+  const s = 1.008 + .008 * Math.sin(2 * Math.PI * t / DUR);
+  const ty = 2 * Math.sin(2 * Math.PI * t / DUR + Math.PI / 3);
+  stage.style.transform = `scale(${s}) translateY(${ty}px)`;
+
+  /* granulação determinística a 8fps */
+  const rnd = mulberry32(1234 + tick);
+  const gimg = gtx.createImageData(270, 338);
+  for (let p = 0; p < gimg.data.length; p += 4){
+    const v = rnd() * 255 | 0;
+    gimg.data[p] = gimg.data[p+1] = gimg.data[p+2] = v;
+    gimg.data[p+3] = 255;
+  }
+  gtx.putImageData(gimg, 0, 0);
+}
+
+window.renderFrame = renderFrame;
+window.TOTAL_FRAMES = TOTAL;
+window.isReady = () => ready;
+
+const t0 = performance.now();
+const frameNow = () => Math.floor(((performance.now() - t0) / 1000 % DUR) * FPS);
+if (!qs.get('render')){
+  (function loop(){ renderFrame(frameNow()); requestAnimationFrame(loop); })();
+}
+</script>
+</body>
+</html>
