@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Divine Therapy — flyer animado</title>
+<style>
+  @font-face { font-family:'Poppins';          font-weight:800; src:url('fonts/poppins-800.woff2') format('woff2'); }
+  @font-face { font-family:'Inter';            font-weight:700; src:url('fonts/inter-700.woff2') format('woff2'); }
+  @font-face { font-family:'Inter';            font-weight:800; src:url('fonts/inter-800.woff2') format('woff2'); }
+  @font-face { font-family:'Archivo Narrow';   font-weight:700; src:url('fonts/archivonarrow-700.woff2') format('woff2'); }
+  @font-face { font-family:'Playfair Display'; font-weight:700; src:url('fonts/playfair-700.woff2') format('woff2'); }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { background:#000; }
+  body { width:1080px; }
+
+  /* page = área capturada (feed 1080x1350 / story 1080x1920) */
+  .page { width:1080px; height:1350px; background:#000; overflow:hidden;
+          display:flex; align-items:center; justify-content:center; position:relative; }
+  body.story .page { height:1920px; }
+
+  .stage-clip { width:1080px; height:1350px; position:relative; overflow:hidden; background:#000; }
+  .stage { width:1080px; height:1350px; position:absolute; inset:0; transform-origin:50% 50%; }
+
+  /* ---------- tipografia ---------- */
+  .type { position:absolute; inset:0; color:#fff; z-index:3; }
+
+  .title { position:absolute; left:52px; top:48px;
+           font-family:'Poppins'; font-weight:800; font-size:197px; line-height:.93;
+           letter-spacing:-.012em; white-space:nowrap;
+           text-shadow:0 0 8px rgba(255,255,255,.55), 0 0 26px rgba(255,255,255,.28), 0 0 60px rgba(255,255,255,.14); }
+  .title .l2 { display:block; }
+
+  .date { position:absolute; left:56px; top:462px;
+          font-family:'Inter'; font-weight:800; font-size:86px; line-height:1.06; letter-spacing:.012em;
+          text-shadow:0 0 8px rgba(255,255,255,.5), 0 0 24px rgba(255,255,255,.22); }
+
+  .right { position:absolute; right:56px; top:452px; text-align:right;
+           text-shadow:0 0 7px rgba(255,255,255,.5), 0 0 20px rgba(255,255,255,.2); }
+  .vesse { font-family:'Playfair Display'; font-weight:700; font-size:60px; letter-spacing:.02em; line-height:1; }
+  .info  { margin-top:10px; font-family:'Archivo Narrow'; font-weight:700; font-size:34px;
+           letter-spacing:.015em; line-height:1.18; }
+
+  /* ---------- ilustração ---------- */
+  .illo { position:absolute; left:0; top:520px; width:1080px; height:830px; z-index:2; }
+  .illo svg { width:100%; height:100%; overflow:visible; }
+  .illo { filter:
+      drop-shadow(0 0 5px  rgba(255,255,255,.85))
+      drop-shadow(0 0 16px rgba(255,255,255,.45))
+      drop-shadow(0 0 42px rgba(255,255,255,.18)); }
+
+  .stroke { fill:none; stroke:#fff; stroke-width:4.6; stroke-linecap:round; stroke-linejoin:round; }
+  .thin   { stroke-width:3.4; }
+  .thick  { stroke-width:5.6; }
+
+  /* ---------- overlays ---------- */
+  #grain { position:absolute; inset:0; z-index:6; pointer-events:none; opacity:.055;
+           image-rendering:pixelated; mix-blend-mode:screen; width:100%; height:100%; }
+  .vignette { position:absolute; inset:0; z-index:5; pointer-events:none;
+              background:radial-gradient(130% 110% at 50% 42%, transparent 62%, rgba(0,0,0,.5) 100%); }
+</style>
+</head>
+<body>
+<div class="page">
+ <div class="stage-clip">
+  <div class="stage" id="stage">
+
+    <div class="type">
+      <h1 class="title" id="title">DIVINE<span class="l2" id="titleL2">THERAPY</span></h1>
+      <div class="date">AUGUST<br>29TH</div>
+      <div class="right">
+        <div class="vesse">V&Egrave;SSE</div>
+        <div class="info">APPOINTMENT 10PM / 5AM<br>FULL OPEN BAR</div>
+      </div>
+    </div>
+
+    <div class="illo" id="illo">
+      <svg viewBox="0 0 1080 830" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="boil" x="-8%" y="-8%" width="116%" height="116%">
+            <feTurbulence id="boilNoise" type="fractalNoise" baseFrequency="0.013" numOctaves="2" seed="1" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+        </defs>
+
+        <g filter="url(#boil)">
+
+          <!-- ==================== fumaça ==================== -->
+          <g id="gSmoke">
+            <path id="smoke1" class="stroke thin" d="M 546,-2 C 558,-30 530,-52 544,-82 C 554,-104 542,-122 548,-140"/>
+            <path id="smoke2" class="stroke thin" d="M 560,-8 C 576,-28 566,-52 582,-72 C 594,-88 590,-108 598,-124"/>
+          </g>
+
+          <!-- ==================== braço erguido com cigarro ==================== -->
+          <g id="gArm">
+            <!-- manga do casaco (dois traços) -->
+            <path class="stroke thick" d="M 664,452 C 636,396 616,340 606,282 C 600,248 594,214 590,186"/>
+            <path class="stroke thick" d="M 724,446 C 696,392 680,338 668,284 C 662,256 656,228 650,202"/>
+            <!-- punho de pelo -->
+            <path class="stroke" d="M 586,190 L 600,172 L 612,192 L 626,172 L 640,192 L 654,174 L 664,196"/>
+            <!-- mão: punho fechado -->
+            <path class="stroke" d="M 596,168 C 586,146 588,124 604,112 C 620,102 640,104 652,116 C 662,128 664,146 656,162"/>
+            <!-- dois dedos estendidos juntos -->
+            <path class="stroke" d="M 606,116 C 592,96 580,78 570,60"/>
+            <path class="stroke" d="M 622,108 C 610,88 600,70 592,52"/>
+            <path class="stroke thin" d="M 570,60 C 576,52 584,48 592,52"/>
+            <!-- dedos dobrados sobre o punho -->
+            <path class="stroke thin" d="M 634,106 C 634,96 638,89 645,87"/>
+            <!-- cigarro saindo da ponta dos dedos -->
+            <path class="stroke" d="M 580,54 L 548,12"/>
+            <path class="stroke" d="M 592,50 L 560,8"/>
+            <circle cx="552" cy="8" r="6" fill="#fff" stroke="none"/>
+          </g>
+
+          <!-- ==================== cabeça ==================== -->
+          <g id="gHead">
+            <!-- cabelo: rabiscos -->
+            <path class="stroke" d="M 706,196 C 694,168 706,138 734,124 C 726,104 744,84 770,84 C 776,62 806,52 830,64 C 852,48 886,56 898,80 C 924,78 944,98 940,122 C 962,132 968,160 952,180 C 966,196 962,222 944,232"/>
+            <path class="stroke thin" d="M 742,132 C 752,120 770,116 782,122 M 800,96 C 812,86 830,86 840,94 M 866,92 C 880,86 896,92 902,104 M 918,128 C 930,126 940,134 942,146"/>
+            <path class="stroke thin" d="M 716,178 C 708,162 714,144 728,136 M 936,168 C 948,172 954,184 950,196"/>
+            <!-- rosto -->
+            <path class="stroke" d="M 712,222 C 706,272 716,318 748,346 C 776,370 822,372 850,352 C 878,332 892,296 892,254"/>
+            <!-- orelha esquerda -->
+            <path class="stroke thin" d="M 706,244 C 696,240 690,250 696,262 C 700,270 708,272 712,266"/>
+            <!-- óculos: lente esquerda -->
+            <path class="stroke thick" d="M 716,214 L 792,210 C 800,210 804,214 804,222 L 800,262 C 799,270 794,274 786,274 L 730,270 C 722,270 717,265 716,257 Z"/>
+            <!-- óculos: lente direita -->
+            <path class="stroke thick" d="M 824,208 L 894,204 C 902,204 906,208 906,216 L 902,254 C 901,262 896,266 888,266 L 838,264 C 830,264 825,259 824,251 Z"/>
+            <!-- ponte + haste -->
+            <path class="stroke" d="M 804,238 C 810,234 818,234 824,236"/>
+            <path class="stroke thin" d="M 906,224 L 928,218"/>
+            <!-- reflexo nas lentes -->
+            <path class="stroke thin" d="M 736,258 L 768,222 M 846,250 L 874,218"/>
+            <!-- nariz -->
+            <path class="stroke thin" d="M 810,280 C 808,292 804,300 798,306"/>
+            <!-- bigode retrô, pontas curvando para cima -->
+            <path class="stroke" d="M 806,316 C 796,306 780,306 770,314 C 764,319 756,318 752,310"/>
+            <path class="stroke" d="M 810,316 C 820,306 836,306 846,314 C 852,319 860,318 864,310"/>
+            <!-- boca reta, discreta -->
+            <path class="stroke thin" d="M 800,345 L 826,342"/>
+            <!-- pescoço -->
+            <path class="stroke thin" d="M 764,372 C 766,390 770,404 778,416"/>
+            <path class="stroke thin" d="M 846,360 C 848,380 850,396 848,412"/>
+          </g>
+
+          <!-- ==================== corpo: gola de pelo, casaco, braço de apoio ==================== -->
+          <g id="gBodyStatic">
+            <!-- gola de pelo (duas fileiras de zigue-zague) -->
+            <path class="stroke" d="M 655,448 L 682,414 L 706,446 L 732,412 L 758,444 L 786,410 L 814,442 L 842,410 L 868,442 L 896,412 L 922,446"/>
+            <path class="stroke" d="M 662,492 L 688,462 L 712,494 L 738,460 L 764,492 L 792,458 L 820,490 L 848,458 L 874,490 L 902,462 L 926,494"/>
+            <!-- borda esquerda do casaco caindo + pelo na borda -->
+            <path class="stroke thick" d="M 668,494 C 650,554 640,614 648,676"/>
+            <path class="stroke" d="M 668,494 L 652,522 L 670,540 L 654,570 L 671,588 L 656,620 L 673,638 L 658,668"/>
+            <!-- costas (lado direito) -->
+            <path class="stroke thick" d="M 918,490 C 952,534 972,590 966,648"/>
+            <!-- linha do colo ligando ao quadril -->
+            <path class="stroke thick" d="M 648,676 C 720,702 800,702 862,678"/>
+            <!-- dobras internas do casaco -->
+            <path class="stroke thin" d="M 760,510 C 754,562 740,610 716,650"/>
+            <path class="stroke thin" d="M 840,516 C 842,570 832,620 812,660"/>
+            <!-- braço de apoio: ombro -> cotovelo -> mão no chão -->
+            <path class="stroke thick" d="M 966,648 C 980,694 972,730 948,754"/>
+            <path class="stroke" d="M 948,754 C 924,768 896,772 868,766"/>
+            <!-- dedos da mão de apoio -->
+            <path class="stroke thin" d="M 916,768 C 912,784 902,794 888,798"/>
+            <path class="stroke thin" d="M 940,764 C 938,780 930,792 918,798"/>
+            <path class="stroke thin" d="M 890,768 C 882,780 870,786 856,786"/>
+            <!-- anéis -->
+            <circle class="stroke thin" cx="906" cy="782" r="8" fill="none"/>
+            <circle class="stroke thin" cx="932" cy="778" r="8" fill="none"/>
+          </g>
+
+          <!-- ==================== pernas com botas pontudas ==================== -->
+          <g id="gLeg">
+            <!-- perna de cima: coxa -> canela -->
+            <path class="stroke thick" d="M 660,690 C 566,664 478,650 404,658"/>
+            <path class="stroke thick" d="M 404,658 C 348,668 306,684 280,710"/>
+            <!-- bota 1 (bico erguido): linha de cima até o bico, sola de volta ao calcanhar -->
+            <g transform="rotate(10 282 722)">
+              <path class="stroke thick" d="M 282,708 C 240,698 190,696 148,704 C 112,711 84,724 64,740"/>
+              <path class="stroke thick" d="M 64,740 C 108,752 162,754 210,748 C 246,743 270,732 284,736"/>
+              <path class="stroke thin" d="M 226,750 L 230,772"/>
+            </g>
+            <!-- perna de baixo -->
+            <path class="stroke thick" d="M 706,706 C 620,708 532,718 462,738"/>
+            <path class="stroke" d="M 462,738 C 418,750 384,762 360,778"/>
+            <!-- bota 2 -->
+            <path class="stroke thick" d="M 362,776 C 324,768 280,768 242,776 C 208,783 182,794 164,806"/>
+            <path class="stroke thick" d="M 164,806 C 204,816 252,817 294,810 C 322,805 348,792 362,796"/>
+            <path class="stroke thin" d="M 300,812 L 304,830"/>
+            <!-- vinco da calça -->
+            <path class="stroke thin" d="M 540,674 L 534,698"/>
+          </g>
+
+          <!-- ==================== rosa ==================== -->
+          <g id="gRose">
+            <!-- caule -->
+            <path class="stroke" d="M 230,650 C 236,614 246,582 262,556"/>
+            <!-- folhas -->
+            <path class="stroke thin" d="M 244,620 C 228,612 212,614 200,624 C 214,634 232,632 244,620 Z"/>
+            <path class="stroke thin" d="M 254,590 C 270,580 286,578 300,584 C 290,598 270,602 254,590 Z"/>
+            <!-- flor: espiral -->
+            <path class="stroke" d="M 262,556 C 246,540 246,514 264,500 C 284,484 314,490 326,512 C 337,532 326,558 302,564 C 282,569 264,558 262,542 C 261,528 272,518 285,520 C 295,522 300,532 294,539 C 290,544 282,544 279,538"/>
+          </g>
+
+        </g>
+      </svg>
+    </div>
+
+    <div class="vignette"></div>
+    <canvas id="grain" width="270" height="338"></canvas>
+  </div>
+ </div>
+</div>
+
+<script>
+/* ============================================================
+   Animação determinística — tudo é função do índice do frame.
+   FPS=24, DUR=6s -> 144 frames, loop perfeito.
+   ============================================================ */
+const FPS = 24, DUR = 6, TOTAL = FPS * DUR;   // 144
+const BOIL_FPS = 8;                            // "fervura" das linhas
+const TICKS = DUR * BOIL_FPS;                  // 48 ticks por loop
+
+const qs = new URLSearchParams(location.search);
+if (qs.get('format') === 'story') document.body.classList.add('story');
+
+const $ = id => document.getElementById(id);
+const stage = $('stage'), illo = $('illo'), title = $('title');
+const boilNoise = $('boilNoise');
+const grain = $('grain'), gtx = grain.getContext('2d');
+
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+
+/* padrões de "dança" (passos de 8fps, períodos que dividem 48 ticks) */
+const armPat  = [0,-2,-4,-5.5,-4,-2,0,2,4,5.5,4,2];          // 12 ticks (1.5s)
+const headPat = [0,1.6,3.2,1.6,0,-1.6,-3.2,-1.6];            // 8 ticks (1s)
+const legPat  = [0,1,2,1,0,-1,-2,-1];                        // 8 ticks
+const bobPat  = [0,1.5,3,1.5,0,-1.5,-3,-1.5];                // 8 ticks
+const rosePat = [0,1.2,2.4,3,2.4,1.2,0,-1.2,-2.4,-3,-2.4,-1.2]; // 12 ticks
+const handPat = [0,.8,1.6,.8,0,-.8,-1.6,-.8];                // 8 ticks
+
+function rot(el,a,cx,cy,dx=0,dy=0){el.setAttribute('transform',`translate(${dx} ${dy}) rotate(${a} ${cx} ${cy})`);}
+
+/* flicker de neon no título — envelope determinístico, periódico em 6s */
+function titleAlpha(t){
+  const hum = .97 + .03*Math.sin(2*Math.PI*t/2);
+  if (t>=2.80 && t<2.86) return .38;
+  if (t>=2.86 && t<2.92) return 1;
+  if (t>=2.92 && t<3.00) return .55;
+  if (t>=3.00 && t<3.04) return .85;
+  return hum;
+}
+
+function renderFrame(i){
+  const t = (i % TOTAL) / FPS;
+  const tick = Math.floor(t * BOIL_FPS) % TICKS;
+
+  /* fervura das linhas: semente do ruído muda a 8fps */
+  boilNoise.setAttribute('seed', String(tick + 1));
+
+  /* dança do personagem */
+  rot($('gArm'),  armPat[tick % 12], 694, 450);
+  rot($('gHead'), headPat[tick % 8], 800, 395);
+  rot($('gLeg'),  legPat[tick % 8],  680, 690);
+  rot($('gRose'), rosePat[tick % 12], 230, 650);
+  $('gBodyStatic').setAttribute('transform', `translate(0 ${bobPat[tick % 8] * .6})`);
+  rot($('gSmoke'), armPat[tick % 12] * .5, 552, 8);
+
+  /* fumaça sobe: dash escorre em ciclo fechado */
+  const dashLen = 150;
+  for (const id of ['smoke1','smoke2']){
+    const el = $(id);
+    el.style.strokeDasharray = '58 92';
+    el.style.strokeDashoffset = String(-(t / DUR) * dashLen * 2);
+  }
+
+  /* pulso do glow do neon (período 3s) */
+  const g = 1 + .14 * Math.sin(2 * Math.PI * t / 3);
+  illo.style.filter =
+    `drop-shadow(0 0 ${5*g}px rgba(255,255,255,${Math.min(1,.85*g)}))` +
+    `drop-shadow(0 0 ${16*g}px rgba(255,255,255,.45))` +
+    `drop-shadow(0 0 ${42*g}px rgba(255,255,255,.18))`;
+
+  /* flicker do título */
+  title.style.opacity = titleAlpha(t).toFixed(3);
+
+  /* deriva de câmera (período 6s = loop) */
+  const s = 1.012 + .009 * Math.sin(2 * Math.PI * t / DUR);
+  const ty = 2.5 * Math.sin(2 * Math.PI * t / DUR + Math.PI / 3);
+  stage.style.transform = `scale(${s}) translateY(${ty}px)`;
+
+  /* granulação (regenerada a cada tick, determinística) */
+  const rnd = mulberry32(1234 + tick);
+  const img = gtx.createImageData(270, 338);
+  for (let p = 0; p < img.data.length; p += 4){
+    const v = rnd() * 255 | 0;
+    img.data[p] = img.data[p+1] = img.data[p+2] = v;
+    img.data[p+3] = 255;
+  }
+  gtx.putImageData(img, 0, 0);
+}
+
+window.renderFrame = renderFrame;
+window.TOTAL_FRAMES = TOTAL;
+
+/* preview ao vivo quando aberto no navegador (sem ?render=1) */
+if (!qs.get('render')){
+  const t0 = performance.now();
+  (function loop(){
+    const t = ((performance.now() - t0) / 1000) % DUR;
+    renderFrame(Math.floor(t * FPS));
+    requestAnimationFrame(loop);
+  })();
+} else {
+  renderFrame(0);
+}
+</script>
+</body>
+</html>
