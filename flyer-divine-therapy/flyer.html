@@ -77,132 +77,150 @@
     <div class="illo" id="illo">
       <svg viewBox="0 0 1080 830" xmlns="http://www.w3.org/2000/svg">
         <defs>
+          <!-- fervura grossa + jitter fino = traço elétrico desenhado à mão -->
           <filter id="boil" x="-8%" y="-8%" width="116%" height="116%">
-            <feTurbulence id="boilNoise" type="fractalNoise" baseFrequency="0.013" numOctaves="2" seed="1" result="n"/>
-            <feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+            <feTurbulence id="boilNoise" type="fractalNoise" baseFrequency="0.013" numOctaves="2" seed="1" result="n1"/>
+            <feDisplacementMap in="SourceGraphic" in2="n1" scale="7" xChannelSelector="R" yChannelSelector="G" result="d1"/>
+            <feTurbulence id="boilNoise2" type="fractalNoise" baseFrequency="0.09" numOctaves="1" seed="11" result="n2"/>
+            <feDisplacementMap in="d1" in2="n2" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+          <!-- eco: cópia deslocada a 38% = linha "traçada duas vezes" -->
+          <filter id="echo" x="-8%" y="-8%" width="116%" height="116%">
+            <feOffset in="SourceGraphic" dx="3.5" dy="-2.5" result="o"/>
+            <feComponentTransfer in="o" result="of"><feFuncA type="linear" slope="0.38"/></feComponentTransfer>
+            <feMerge><feMergeNode in="of"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
         </defs>
 
         <g filter="url(#boil)">
+         <g filter="url(#echo)">
 
           <!-- ==================== fumaça ==================== -->
           <g id="gSmoke">
-            <path id="smoke1" class="stroke thin" d="M 546,-2 C 558,-30 530,-52 544,-82 C 554,-104 542,-122 548,-140"/>
-            <path id="smoke2" class="stroke thin" d="M 560,-8 C 576,-28 566,-52 582,-72 C 594,-88 590,-108 598,-124"/>
+            <path id="smoke1" class="stroke thin" d="M 502,-18 C 514,-46 486,-68 500,-98 C 510,-120 498,-138 504,-156"/>
+            <path id="smoke2" class="stroke thin" d="M 516,-24 C 532,-44 522,-68 538,-88 C 550,-104 546,-124 554,-140"/>
           </g>
 
           <!-- ==================== braço erguido com cigarro ==================== -->
           <g id="gArm">
             <!-- manga do casaco (dois traços) -->
-            <path class="stroke thick" d="M 664,452 C 636,396 616,340 606,282 C 600,248 594,214 590,186"/>
-            <path class="stroke thick" d="M 724,446 C 696,392 680,338 668,284 C 662,256 656,228 650,202"/>
+            <path class="stroke thick" d="M 630,462 C 600,402 585,342 570,282 C 562,246 553,206 548,172"/>
+            <path class="stroke thick" d="M 692,454 C 664,398 650,342 638,288 C 630,254 622,218 616,188"/>
             <!-- punho de pelo -->
-            <path class="stroke" d="M 586,190 L 600,172 L 612,192 L 626,172 L 640,192 L 654,174 L 664,196"/>
+            <path class="stroke" d="M 544,176 L 558,158 L 570,178 L 584,158 L 598,178 L 612,160 L 622,184"/>
             <!-- mão: punho fechado -->
-            <path class="stroke" d="M 596,168 C 586,146 588,124 604,112 C 620,102 640,104 652,116 C 662,128 664,146 656,162"/>
+            <path class="stroke" d="M 552,154 C 542,132 544,110 560,98 C 576,88 596,90 608,102 C 618,114 620,132 612,148"/>
             <!-- dois dedos estendidos juntos -->
-            <path class="stroke" d="M 606,116 C 592,96 580,78 570,60"/>
-            <path class="stroke" d="M 622,108 C 610,88 600,70 592,52"/>
-            <path class="stroke thin" d="M 570,60 C 576,52 584,48 592,52"/>
-            <!-- dedos dobrados sobre o punho -->
-            <path class="stroke thin" d="M 634,106 C 634,96 638,89 645,87"/>
+            <path class="stroke" d="M 562,102 C 548,82 536,64 526,46"/>
+            <path class="stroke" d="M 578,94 C 566,74 556,56 548,38"/>
+            <path class="stroke thin" d="M 526,46 C 532,38 540,34 548,38"/>
+            <!-- dedo dobrado sobre o punho -->
+            <path class="stroke thin" d="M 590,92 C 590,82 594,75 601,73"/>
             <!-- cigarro saindo da ponta dos dedos -->
-            <path class="stroke" d="M 580,54 L 548,12"/>
-            <path class="stroke" d="M 592,50 L 560,8"/>
-            <circle cx="552" cy="8" r="6" fill="#fff" stroke="none"/>
+            <path class="stroke" d="M 536,40 L 504,-2"/>
+            <path class="stroke" d="M 548,36 L 516,-6"/>
+            <circle cx="508" cy="-6" r="6" fill="#fff" stroke="none"/>
           </g>
 
           <!-- ==================== cabeça ==================== -->
           <g id="gHead">
-            <!-- cabelo: rabiscos -->
-            <path class="stroke" d="M 706,196 C 694,168 706,138 734,124 C 726,104 744,84 770,84 C 776,62 806,52 830,64 C 852,48 886,56 898,80 C 924,78 944,98 940,122 C 962,132 968,160 952,180 C 966,196 962,222 944,232"/>
-            <path class="stroke thin" d="M 742,132 C 752,120 770,116 782,122 M 800,96 C 812,86 830,86 840,94 M 866,92 C 880,86 896,92 902,104 M 918,128 C 930,126 940,134 942,146"/>
-            <path class="stroke thin" d="M 716,178 C 708,162 714,144 728,136 M 936,168 C 948,172 954,184 950,196"/>
+            <!-- cabelo: coroa de cachos -->
+            <path class="stroke" d="M 700,205 C 688,175 702,145 730,133 C 724,111 744,92 770,92 C 778,68 810,58 834,70 C 858,54 892,63 903,88 C 928,86 947,106 942,130 C 963,141 968,168 953,187 C 966,203 961,228 944,237"/>
+            <path class="stroke thin" d="M 738,140 C 748,127 766,123 778,129 M 796,104 C 808,94 826,94 836,102 M 862,100 C 876,94 892,100 898,112 M 914,136 C 926,134 936,142 938,154"/>
+            <path class="stroke thin" d="M 722,186 C 714,170 720,152 734,144 M 936,175 C 948,179 954,191 950,203"/>
+            <path class="stroke thin" d="M 706,215 C 698,203 700,189 710,180 M 948,215 C 958,209 966,197 964,185"/>
             <!-- rosto -->
-            <path class="stroke" d="M 712,222 C 706,272 716,318 748,346 C 776,370 822,372 850,352 C 878,332 892,296 892,254"/>
+            <path class="stroke" d="M 714,230 C 708,280 718,326 750,354 C 778,378 824,380 852,360 C 880,340 894,304 894,262"/>
             <!-- orelha esquerda -->
-            <path class="stroke thin" d="M 706,244 C 696,240 690,250 696,262 C 700,270 708,272 712,266"/>
+            <path class="stroke thin" d="M 708,252 C 698,248 692,258 698,270 C 702,278 710,280 714,274"/>
+            <!-- óculos: sobrancelha grossa da armação -->
+            <path class="stroke thick" d="M 714,220 C 744,215 776,213 806,215 M 824,214 C 852,210 882,208 910,210"/>
             <!-- óculos: lente esquerda -->
-            <path class="stroke thick" d="M 716,214 L 792,210 C 800,210 804,214 804,222 L 800,262 C 799,270 794,274 786,274 L 730,270 C 722,270 717,265 716,257 Z"/>
+            <path class="stroke thick" d="M 716,222 L 794,217 C 802,217 806,221 806,229 L 802,271 C 801,279 796,283 788,283 L 732,279 C 724,279 719,274 718,266 Z"/>
             <!-- óculos: lente direita -->
-            <path class="stroke thick" d="M 824,208 L 894,204 C 902,204 906,208 906,216 L 902,254 C 901,262 896,266 888,266 L 838,264 C 830,264 825,259 824,251 Z"/>
+            <path class="stroke thick" d="M 826,215 L 898,210 C 906,210 910,214 910,222 L 906,262 C 905,270 900,274 892,274 L 840,272 C 832,272 827,267 826,259 Z"/>
             <!-- ponte + haste -->
-            <path class="stroke" d="M 804,238 C 810,234 818,234 824,236"/>
-            <path class="stroke thin" d="M 906,224 L 928,218"/>
-            <!-- reflexo nas lentes -->
-            <path class="stroke thin" d="M 736,258 L 768,222 M 846,250 L 874,218"/>
+            <path class="stroke" d="M 806,245 C 812,241 820,241 826,243"/>
+            <path class="stroke thin" d="M 910,230 L 932,224"/>
+            <!-- reflexo duplo nas lentes -->
+            <path class="stroke thin" d="M 738,267 L 772,229 M 750,272 L 780,236 M 848,258 L 878,224 M 860,264 L 886,232"/>
             <!-- nariz -->
-            <path class="stroke thin" d="M 810,280 C 808,292 804,300 798,306"/>
+            <path class="stroke thin" d="M 812,288 C 810,300 806,308 800,314"/>
             <!-- bigode retrô, pontas curvando para cima -->
-            <path class="stroke" d="M 806,316 C 796,306 780,306 770,314 C 764,319 756,318 752,310"/>
-            <path class="stroke" d="M 810,316 C 820,306 836,306 846,314 C 852,319 860,318 864,310"/>
+            <path class="stroke" d="M 808,324 C 798,314 782,314 772,322 C 766,327 758,326 754,318"/>
+            <path class="stroke" d="M 812,324 C 822,314 838,314 848,322 C 854,327 862,326 866,318"/>
             <!-- boca reta, discreta -->
-            <path class="stroke thin" d="M 800,345 L 826,342"/>
+            <path class="stroke thin" d="M 802,352 L 828,349"/>
             <!-- pescoço -->
-            <path class="stroke thin" d="M 764,372 C 766,390 770,404 778,416"/>
-            <path class="stroke thin" d="M 846,360 C 848,380 850,396 848,412"/>
+            <path class="stroke thin" d="M 766,380 C 768,396 772,410 780,422"/>
+            <path class="stroke thin" d="M 848,368 C 850,388 852,404 850,420"/>
           </g>
 
           <!-- ==================== corpo: gola de pelo, casaco, braço de apoio ==================== -->
           <g id="gBodyStatic">
             <!-- gola de pelo (duas fileiras de zigue-zague) -->
-            <path class="stroke" d="M 655,448 L 682,414 L 706,446 L 732,412 L 758,444 L 786,410 L 814,442 L 842,410 L 868,442 L 896,412 L 922,446"/>
-            <path class="stroke" d="M 662,492 L 688,462 L 712,494 L 738,460 L 764,492 L 792,458 L 820,490 L 848,458 L 874,490 L 902,462 L 926,494"/>
+            <path class="stroke" d="M 640,455 L 668,420 L 692,452 L 718,418 L 744,450 L 772,416 L 800,448 L 828,416 L 854,448 L 882,418 L 908,452"/>
+            <path class="stroke" d="M 648,500 L 674,468 L 698,500 L 724,466 L 750,498 L 778,464 L 806,496 L 834,464 L 860,496 L 888,468 L 912,500"/>
             <!-- borda esquerda do casaco caindo + pelo na borda -->
-            <path class="stroke thick" d="M 668,494 C 650,554 640,614 648,676"/>
-            <path class="stroke" d="M 668,494 L 652,522 L 670,540 L 654,570 L 671,588 L 656,620 L 673,638 L 658,668"/>
+            <path class="stroke thick" d="M 654,502 C 636,560 628,620 636,678"/>
+            <path class="stroke" d="M 654,502 L 640,530 L 656,548 L 642,578 L 658,596 L 644,626 L 660,644 L 646,674"/>
             <!-- costas (lado direito) -->
-            <path class="stroke thick" d="M 918,490 C 952,534 972,590 966,648"/>
+            <path class="stroke thick" d="M 904,496 C 940,540 962,596 956,652"/>
             <!-- linha do colo ligando ao quadril -->
-            <path class="stroke thick" d="M 648,676 C 720,702 800,702 862,678"/>
+            <path class="stroke thick" d="M 636,678 C 700,704 780,706 848,684"/>
             <!-- dobras internas do casaco -->
-            <path class="stroke thin" d="M 760,510 C 754,562 740,610 716,650"/>
-            <path class="stroke thin" d="M 840,516 C 842,570 832,620 812,660"/>
+            <path class="stroke thin" d="M 748,520 C 742,570 728,618 704,656"/>
+            <path class="stroke thin" d="M 828,524 C 830,576 820,624 800,662"/>
+            <!-- textura de pelo do casaco (tiques) -->
+            <path class="stroke thin" d="M 700,560 l 10,-14 M 716,566 l 10,-14 M 732,572 l 10,-14"/>
+            <path class="stroke thin" d="M 770,600 l 10,-14 M 786,606 l 10,-14"/>
+            <path class="stroke thin" d="M 860,560 l 10,-14 M 876,566 l 10,-14"/>
             <!-- braço de apoio: ombro -> cotovelo -> mão no chão -->
-            <path class="stroke thick" d="M 966,648 C 980,694 972,730 948,754"/>
-            <path class="stroke" d="M 948,754 C 924,768 896,772 868,766"/>
+            <path class="stroke thick" d="M 956,652 C 970,696 962,730 938,754"/>
+            <path class="stroke" d="M 938,754 C 914,768 886,772 858,766"/>
             <!-- dedos da mão de apoio -->
-            <path class="stroke thin" d="M 916,768 C 912,784 902,794 888,798"/>
-            <path class="stroke thin" d="M 940,764 C 938,780 930,792 918,798"/>
-            <path class="stroke thin" d="M 890,768 C 882,780 870,786 856,786"/>
+            <path class="stroke thin" d="M 906,768 C 902,784 892,794 878,798"/>
+            <path class="stroke thin" d="M 930,764 C 928,780 920,792 908,798"/>
+            <path class="stroke thin" d="M 880,768 C 872,780 860,786 846,786"/>
             <!-- anéis -->
-            <circle class="stroke thin" cx="906" cy="782" r="8" fill="none"/>
-            <circle class="stroke thin" cx="932" cy="778" r="8" fill="none"/>
+            <circle class="stroke thin" cx="896" cy="782" r="8" fill="none"/>
+            <circle class="stroke thin" cx="922" cy="778" r="8" fill="none"/>
           </g>
 
-          <!-- ==================== pernas com botas pontudas ==================== -->
-          <g id="gLeg">
-            <!-- perna de cima: coxa -> canela -->
-            <path class="stroke thick" d="M 660,690 C 566,664 478,650 404,658"/>
-            <path class="stroke thick" d="M 404,658 C 348,668 306,684 280,710"/>
-            <!-- bota 1 (bico erguido): linha de cima até o bico, sola de volta ao calcanhar -->
-            <g transform="rotate(10 282 722)">
-              <path class="stroke thick" d="M 282,708 C 240,698 190,696 148,704 C 112,711 84,724 64,740"/>
-              <path class="stroke thick" d="M 64,740 C 108,752 162,754 210,748 C 246,743 270,732 284,736"/>
-              <path class="stroke thin" d="M 226,750 L 230,772"/>
-            </g>
-            <!-- perna de baixo -->
-            <path class="stroke thick" d="M 706,706 C 620,708 532,718 462,738"/>
-            <path class="stroke" d="M 462,738 C 418,750 384,762 360,778"/>
+          <!-- ==================== perna com joelho erguido ==================== -->
+          <g id="gLegKnee">
+            <!-- coxa até o joelho (bend suave) -->
+            <path class="stroke thick" d="M 640,690 C 545,650 445,600 366,562"/>
+            <!-- canela descendo do joelho -->
+            <path class="stroke thick" d="M 366,562 C 322,584 286,614 260,652"/>
+            <!-- bota pontuda -->
+            <path class="stroke thick" d="M 262,648 C 230,636 188,630 150,636 C 116,641 88,652 70,664"/>
+            <path class="stroke thick" d="M 70,664 C 108,678 156,682 200,678 C 236,675 264,678 284,672"/>
+            <path class="stroke thin" d="M 208,680 L 212,700"/>
+          </g>
+
+          <!-- ==================== perna de baixo ==================== -->
+          <g id="gLeg2">
+            <path class="stroke thick" d="M 720,706 C 630,716 540,734 468,758"/>
+            <path class="stroke" d="M 468,758 C 434,770 410,780 394,792"/>
             <!-- bota 2 -->
-            <path class="stroke thick" d="M 362,776 C 324,768 280,768 242,776 C 208,783 182,794 164,806"/>
-            <path class="stroke thick" d="M 164,806 C 204,816 252,817 294,810 C 322,805 348,792 362,796"/>
-            <path class="stroke thin" d="M 300,812 L 304,830"/>
-            <!-- vinco da calça -->
-            <path class="stroke thin" d="M 540,674 L 534,698"/>
+            <path class="stroke thick" d="M 394,790 C 360,782 320,782 284,790 C 250,797 224,806 206,816"/>
+            <path class="stroke thick" d="M 206,816 C 246,826 292,827 332,820 C 360,815 382,804 396,800"/>
+            <path class="stroke thin" d="M 336,822 L 340,838"/>
           </g>
 
           <!-- ==================== rosa ==================== -->
           <g id="gRose">
             <!-- caule -->
-            <path class="stroke" d="M 230,650 C 236,614 246,582 262,556"/>
+            <path class="stroke" d="M 480,776 C 430,762 385,748 345,740"/>
             <!-- folhas -->
-            <path class="stroke thin" d="M 244,620 C 228,612 212,614 200,624 C 214,634 232,632 244,620 Z"/>
-            <path class="stroke thin" d="M 254,590 C 270,580 286,578 300,584 C 290,598 270,602 254,590 Z"/>
+            <path class="stroke thin" d="M 428,762 C 416,748 400,744 386,750 C 396,762 414,766 428,762 Z"/>
+            <path class="stroke thin" d="M 390,750 C 384,734 372,726 358,728 C 362,742 376,750 390,750 Z"/>
             <!-- flor: espiral -->
-            <path class="stroke" d="M 262,556 C 246,540 246,514 264,500 C 284,484 314,490 326,512 C 337,532 326,558 302,564 C 282,569 264,558 262,542 C 261,528 272,518 285,520 C 295,522 300,532 294,539 C 290,544 282,544 279,538"/>
+            <path class="stroke" d="M 345,740 C 321,744 297,734 287,714 C 275,692 285,664 309,656 C 331,649 355,662 359,684 C 362,702 351,720 333,724 C 317,727 303,718 301,704 C 300,692 309,683 321,685 C 330,687 334,696 329,702 C 325,707 318,706 316,701"/>
           </g>
 
+         </g>
         </g>
       </svg>
     </div>
@@ -227,7 +245,7 @@ if (qs.get('format') === 'story') document.body.classList.add('story');
 
 const $ = id => document.getElementById(id);
 const stage = $('stage'), illo = $('illo'), title = $('title');
-const boilNoise = $('boilNoise');
+const boilNoise = $('boilNoise'), boilNoise2 = $('boilNoise2');
 const grain = $('grain'), gtx = grain.getContext('2d');
 
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
@@ -256,16 +274,18 @@ function renderFrame(i){
   const t = (i % TOTAL) / FPS;
   const tick = Math.floor(t * BOIL_FPS) % TICKS;
 
-  /* fervura das linhas: semente do ruído muda a 8fps */
+  /* fervura das linhas: sementes dos ruídos mudam a 8fps */
   boilNoise.setAttribute('seed', String(tick + 1));
+  boilNoise2.setAttribute('seed', String((tick * 7 + 11) % 997));
 
   /* dança do personagem */
-  rot($('gArm'),  armPat[tick % 12], 694, 450);
-  rot($('gHead'), headPat[tick % 8], 800, 395);
-  rot($('gLeg'),  legPat[tick % 8],  680, 690);
-  rot($('gRose'), rosePat[tick % 12], 230, 650);
+  rot($('gArm'),  armPat[tick % 12], 660, 455);
+  rot($('gHead'), headPat[tick % 8], 800, 400);
+  rot($('gLegKnee'), legPat[tick % 8], 650, 695);
+  rot($('gLeg2'), legPat[(tick + 4) % 8] * .7, 730, 710);
+  rot($('gRose'), rosePat[tick % 12] * .6, 480, 776);
   $('gBodyStatic').setAttribute('transform', `translate(0 ${bobPat[tick % 8] * .6})`);
-  rot($('gSmoke'), armPat[tick % 12] * .5, 552, 8);
+  rot($('gSmoke'), armPat[tick % 12] * .5, 508, -6);
 
   /* fumaça sobe: dash escorre em ciclo fechado */
   const dashLen = 150;
