@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Divine Therapy — presença viva</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { background:#000; }
+  body { width:1080px; }
+
+  .page { width:1080px; height:1350px; background:#000; overflow:hidden;
+          display:flex; align-items:center; justify-content:center; position:relative; }
+  body.story .page { height:1920px; }
+
+  .stage-clip { width:1080px; height:1350px; position:relative; overflow:hidden; background:#000; }
+  .stage { width:1080px; height:1350px; position:absolute; inset:0; }
+
+  #cv { position:absolute; inset:0; width:100%; height:100%; }
+
+  .smoke-layer { position:absolute; inset:0; width:100%; height:100%; overflow:visible; z-index:3; }
+  .wisp { fill:none; stroke:#fff; stroke-linecap:round; }
+
+  #grain { position:absolute; inset:0; z-index:6; pointer-events:none; opacity:.04;
+           image-rendering:pixelated; mix-blend-mode:screen; width:100%; height:100%; }
+</style>
+</head>
+<body>
+<div class="page">
+ <div class="stage-clip">
+  <div class="stage" id="stage">
+
+    <canvas id="cv" width="1080" height="1350"></canvas>
+
+    <svg class="smoke-layer" id="smokeLayer" viewBox="0 0 1080 1350" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="smokeBoil" x="-60%" y="-60%" width="220%" height="220%">
+          <feTurbulence id="smokeNoise" type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="1" result="n"/>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <radialGradient id="emberGrad">
+          <stop offset="0%" stop-color="#fff" stop-opacity="1"/>
+          <stop offset="60%" stop-color="#fff" stop-opacity=".35"/>
+          <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <g id="gSmoke"
+         style="filter:url(#smokeBoil) blur(1.3px) drop-shadow(0 0 5px rgba(255,255,255,.8)) drop-shadow(0 0 14px rgba(255,255,255,.3));">
+        <path id="wisp1" class="wisp" style="stroke-width:3;   opacity:.7"  d=""/>
+        <path id="wisp2" class="wisp" style="stroke-width:2.2; opacity:.5"  d=""/>
+        <path id="wisp3" class="wisp" style="stroke-width:1.6; opacity:.35" d=""/>
+      </g>
+      <circle id="ember" r="8" fill="url(#emberGrad)"/>
+    </svg>
+
+    <canvas id="grain" width="270" height="338"></canvas>
+  </div>
+ </div>
+</div>
+
+<script>
+/* ============================================================
+   "Presença viva" — roteiro do designer, 7s a 24fps:
+     0.0-0.8s  textos se condensam a partir de ruído luminoso fino
+               (título -> data -> infos), halo discreto que estabiliza
+     0.2-1.8s  o personagem é DESENHADO pelos próprios contornos:
+               energia percorre as linhas a partir de várias sementes
+               (BFS sobre os pixels do traço) até a figura se fechar
+     1.5-2.0s  brilho curto na ponta do cigarro; nasce um fio de fumaça
+     1.9-2.5s  clímax: a aura intensifica de leve e estabiliza
+     2.3-7.0s  estado vivo: balanço orgânico de ~1.2° (cabeça/tronco/
+               pernas defasados), aura com inércia, fragmentos se
+               desprendendo das extremidades e se regenerando, textos
+               imóveis com micro pulsação de glow
+   Determinístico: todo o estado é função do índice do frame.
+   ============================================================ */
+const FPS = 24, DUR = 7, TOTAL = FPS * DUR;   // 168 frames
+const BOIL_FPS = 8;
+
+const qs = new URLSearchParams(location.search);
+if (qs.get('format') === 'story') document.body.classList.add('story');
+
+const W = 1080, H = 1350;
+const $ = id => document.getElementById(id);
+const cv = $('cv'), ctx = cv.getContext('2d');
+const smokeNoise = $('smokeNoise'), smokeLayer = $('smokeLayer');
+const grain = $('grain'), gtx = grain.getContext('2d');
+
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+function hash2(x,y){let h=(x*374761393+y*668265263)|0;h=Math.imul(h^(h>>>13),1274126177);return(((h^(h>>>16))>>>0)%100000)/100000;}
+const clamp01 = v => Math.max(0, Math.min(1, v));
+const ramp = (t,a,b) => clamp01((t-a)/(b-a));
+const smooth = v => v*v*(3-2*v);
+const gauss = (t,c,w) => Math.exp(-((t-c)*(t-c))/(2*w*w));
+
+/* ---------- zonas de texto e faixas onde o texto vive ---------- */
+const ZONES = [
+  { name:'title', box:[0,   5,1080,478], a:0.00, b:0.50 },
+  { name:'date',  box:[10,450, 520,705], a:0.22, b:0.66 },
+  { name:'right', box:[600,436,1080,620], a:0.40, b:0.82 },
+];
+const EXCLUDES = [
+  [0, 0, 1080, 545],
+  [0, 545, 445, 725],
+  [600, 545, 1080, 580],
+];
+const inExclude = (x, y) => EXCLUDES.some(r => x >= r[0] && x < r[2] && y >= r[1] && y < r[3]);
+
+/* ---------- fumaça ---------- */
+const ox = 0.429 * W, oy = 0.480 * H;
+const WISPS = [
+  { id:'wisp1', h:200, sway:20, dash:'110 70', k:2 },
+  { id:'wisp2', h:260, sway:32, dash:'90 90',  k:3 },
+  { id:'wisp3', h:310, sway:46, dash:'70 110', k:4 },
+];
+for (const w of WISPS){
+  $(w.id).setAttribute('d',
+    `M ${ox},${oy - 6}` +
+    ` C ${ox + w.sway},${oy - w.h*0.28} ${ox - w.sway},${oy - w.h*0.52} ${ox + w.sway*0.7},${oy - w.h*0.76}` +
+    ` C ${ox + w.sway*1.3},${oy - w.h*0.9} ${ox + w.sway*0.4},${oy - w.h*0.97} ${ox + w.sway*0.9},${oy - w.h}`);
+}
+$('ember').setAttribute('cx', ox); $('ember').setAttribute('cy', oy);
+
+/* ---------- balanço orgânico (fatias com fase defasada) ---------- */
+const PIVOT_X = 660, PIVOT_Y = 1150, SWAY_P = 3.6;
+function swayAngle(t, y){
+  const A = 0.021 * smooth(ramp(t, 2.3, 3.5));      /* ~1.2 graus */
+  return A * Math.sin(2*Math.PI*t/SWAY_P + (PIVOT_Y - y)/H * 1.1);
+}
+
+/* ---------- estado pré-processado ---------- */
+let ready = false;
+let maskN = 0, mX, mY, mLum, mReveal, mErode, mBlock;   // pixels do traço
+let lineCanvas, lineCtx, lineImg;
+let zoneData = [];                                       // {zone, fill, pix(idx,lum), edgePix}
+let particles = [], ambient = [];
+
+const img = new Image();
+img.src = 'arte/flyer-original.png';
+img.onload = () => {
+  const src = document.createElement('canvas');
+  src.width = W; src.height = H;
+  const sctx = src.getContext('2d', { willReadFrequently: true });
+  sctx.drawImage(img, 0, 0, W, H);
+  const px = sctx.getImageData(0, 0, W, H).data;
+  const lum = i => px[i * 4];
+
+  /* ----- máscara do traço da ilustração ----- */
+  const pos = new Int32Array(W * H).fill(-1);
+  const tmpX = [], tmpY = [], tmpL = [];
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++){
+      if (inExclude(x, y)) continue;
+      const v = lum(y * W + x);
+      if (v > 55){ pos[y * W + x] = tmpX.length; tmpX.push(x); tmpY.push(y); tmpL.push(v); }
+    }
+  maskN = tmpX.length;
+  mX = Int16Array.from(tmpX); mY = Int16Array.from(tmpY); mLum = Uint8Array.from(tmpL);
+
+  /* ----- BFS multi-semente: a energia percorre o traço ----- */
+  const dist = new Float64Array(maskN).fill(Infinity);
+  const queue = new Int32Array(maskN);
+  function bfs(seeds){
+    dist.fill(Infinity);
+    let qh = 0, qt = 0;
+    for (const s of seeds){ dist[s] = 0; queue[qt++] = s; }
+    while (qh < qt){
+      const i = queue[qh++], x = mX[i], y = mY[i], d = dist[i] + 1;
+      for (let dy = -1; dy <= 1; dy++)
+        for (let dx = -1; dx <= 1; dx++){
+          if (!dx && !dy) continue;
+          const nx = x + dx, ny = y + dy;
+          if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+          const j = pos[ny * W + nx];
+          if (j >= 0 && dist[j] === Infinity){ dist[j] = d; queue[qt++] = j; }
+        }
+    }
+  }
+  /* semente 1: perto do rosto; demais: amostragem do ponto mais distante
+     (cobre cabeça, casaco, braços, pernas e componentes soltos) */
+  let best = 0, bd = Infinity;
+  for (let i = 0; i < maskN; i += 7){
+    const d = (mX[i]-860)*(mX[i]-860) + (mY[i]-790)*(mY[i]-790);
+    if (d < bd){ bd = d; best = i; }
+  }
+  const seeds = [best];
+  for (let r = 0; r < 11; r++){
+    bfs(seeds);
+    let far = -1, fd = -1;
+    for (let i = 0; i < maskN; i++){
+      const d = dist[i] === Infinity ? 1e18 : dist[i];
+      if (d > fd){ fd = d; far = i; }
+    }
+    seeds.push(far);
+  }
+  bfs(seeds);
+  let maxD = 1;
+  for (let i = 0; i < maskN; i++) if (dist[i] !== Infinity && dist[i] > maxD) maxD = dist[i];
+
+  /* tempo de revelação, peso de extremidade e bloco de erosão por pixel */
+  mReveal = new Float32Array(maskN);
+  mErode  = new Float32Array(maskN);
+  mBlock  = new Float32Array(maskN);
+  for (let i = 0; i < maskN; i++){
+    const d = dist[i] === Infinity ? maxD : dist[i];
+    mReveal[i] = 0.2 + 1.55 * Math.pow(d / maxD, 0.92);
+    const dEuc = Math.hypot(mX[i]-860, mY[i]-790) / 1150;
+    const down = clamp01((mY[i] - 760) / 560);
+    mErode[i] = clamp01(0.5*dEuc + 0.5*down);          /* 0 no rosto, 1 nas pontas */
+    mBlock[i] = hash2(mX[i] >> 3, mY[i] >> 3);          /* fragmentos de ~8px */
+  }
+
+  lineCanvas = document.createElement('canvas');
+  lineCanvas.width = W; lineCanvas.height = H;
+  lineCtx = lineCanvas.getContext('2d');
+  lineImg = lineCtx.createImageData(W, H);
+
+  /* ----- zonas de texto ----- */
+  for (const zone of ZONES){
+    const [x0,y0,x1,y1] = zone.box, zw = x1-x0, zh = y1-y0;
+    const fill = document.createElement('canvas');
+    fill.width = zw; fill.height = zh;
+    fill.getContext('2d').drawImage(img, x0, y0, zw, zh, 0, 0, zw, zh);
+    const pix = [], edgePix = [];
+    const solid = (x,y) => lum(y*W+x) >= 245;
+    for (let y = y0; y < y1; y++)
+      for (let x = x0; x < x1; x++){
+        if (!inExclude(x, y)) continue;
+        const v = lum(y * W + x);
+        if (v > 10) pix.push(((y-y0)*zw + (x-x0)), v);
+        if (x>1 && y>1 && x<W-2 && y<H-2 && solid(x,y) &&
+            (!solid(x-2,y) || !solid(x+2,y) || !solid(x,y-2) || !solid(x,y+2)))
+          edgePix.push(x, y);
+      }
+    const stip = document.createElement('canvas');
+    stip.width = zw; stip.height = zh;
+    zoneData.push({ zone, fill, zw, zh,
+                    pix: Int32Array.from(pix), edgePix: Int32Array.from(edgePix),
+                    stip, simg: stip.getContext('2d').createImageData(zw, zh) });
+  }
+
+  /* ----- partículas da aura (parte da matéria do traço) ----- */
+  const rnd = mulberry32(20260829);
+  for (let i = 0; i < maskN; i++){
+    if (rnd() < 0.085){
+      particles.push({
+        x: mX[i] + (rnd()-0.5)*2.5, y: mY[i] + (rnd()-0.5)*2.5,
+        size: 0.5 + rnd()*1.3,
+        k: 0.6 + rnd()*2.2, ph: rnd(),                 /* cintilação */
+        birth: mReveal[i],
+        w: mErode[i],
+        detP: 2.2 + rnd()*3.4, detPh: rnd(),           /* ciclo de desprender */
+        drift: 16 + rnd()*36, dx: (rnd()-0.5)*10,
+      });
+    }
+  }
+  for (let i = 0; i < 120; i++){
+    ambient.push({ x: rnd()*W, y: rnd()*H, size: 0.5 + rnd()*1.1,
+                   k: 0.3 + rnd()*0.8, ph: rnd(), a: .08 + rnd()*.2 });
+  }
+
+  ready = true;
+  renderFrame(qs.get('render') ? 0 : frameNow());
+};
+
+/* ============================================================ */
+function renderFrame(fi){
+  if (!ready) return;
+  const t = (fi % TOTAL) / FPS;
+  const tick = Math.floor(t * BOIL_FPS);
+
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, W, H);
+
+  /* poeira ambiente, mínima */
+  ctx.fillStyle = '#fff';
+  for (const p of ambient){
+    const tw = Math.pow(.5 + .5*Math.sin(2*Math.PI*(p.k*t + p.ph)), 2);
+    ctx.globalAlpha = p.a * (0.3 + 0.7*tw);
+    ctx.fillRect(p.x, p.y, p.size, p.size);
+  }
+  ctx.globalAlpha = 1;
+
+  /* ---------- traço do personagem ---------- */
+  const living = smooth(ramp(t, 2.5, 3.4));
+  const endBoost = 1 + 0.35 * smooth(ramp(t, 6.55, 7.0));  /* leve desestabilização p/ fechar o ciclo */
+  const data = lineImg.data;
+  data.fill(0);
+  for (let i = 0; i < maskN; i++){
+    const rv = mReveal[i];
+    let a = 0;
+    if (t >= rv){
+      a = (mLum[i] / 255) * (0.78 + 0.22 * clamp01((t - rv) / 0.35));
+      /* cabeça de energia recém-traçada, mais brilhante e trêmula */
+      const fresh = clamp01(1 - (t - rv) / 0.14);
+      if (fresh > 0){
+        a *= 1 + fresh * (0.9 + 0.35 * Math.sin(t * 90 + mBlock[i] * 40));
+      }
+      /* erosão em fragmentos nas extremidades (estado vivo) */
+      if (living > 0){
+        const depth = (0.05 + 0.4 * mErode[i]) * living * endBoost;
+        const c = (t / 3.9 + mBlock[i] * 11.3) % 1;
+        if (c < depth){
+          const k = c / depth;
+          a *= 0.12 + 0.88 * Math.abs(k * 2 - 1);
+        }
+      }
+    }
+    if (a > 0.008){
+      const o = (mY[i] * W + mX[i]) * 4;
+      const v = Math.min(255, a * 255) | 0;
+      data[o] = data[o+1] = data[o+2] = 255;
+      data[o+3] = v;
+    }
+  }
+  lineCtx.putImageData(lineImg, 0, 0);
+
+  /* clímax da aura ao terminar a materialização */
+  const climax = 1 + 0.4 * gauss(t, 2.15, 0.28);
+  ctx.shadowColor = 'rgba(255,255,255,.85)';
+  ctx.shadowBlur = 7 * climax;
+
+  /* balanço orgânico: fatias horizontais com fase defasada */
+  const SLICES = 15, sh = Math.ceil(H / SLICES);
+  for (let s = 0; s < SLICES; s++){
+    const y0 = s * sh, ymid = y0 + sh / 2;
+    const th = swayAngle(t, ymid);
+    ctx.save();
+    ctx.translate(PIVOT_X, PIVOT_Y);
+    ctx.rotate(th);
+    ctx.translate(-PIVOT_X, -PIVOT_Y);
+    ctx.drawImage(lineCanvas, 0, y0, W, sh, 0, y0, W, sh);
+    ctx.restore();
+  }
+  ctx.shadowBlur = 0;
+
+  /* ---------- aura de partículas (com inércia e desprendimento) ---------- */
+  ctx.globalCompositeOperation = 'lighter';
+  const tLag = t - 0.13;                                   /* a matéria demora a acompanhar */
+  for (const p of particles){
+    if (t < p.birth) continue;
+    const pop = clamp01(1 - (t - p.birth) / 0.12);
+    const tw = Math.pow(.5 + .5*Math.sin(2*Math.PI*(p.k*t + p.ph)), 3);
+    let a = 0.1 + 0.5 * tw + pop * 0.9;
+    let x = p.x, y = p.y;
+    /* ciclo desprender -> cair/evaporar -> regenerar (extremidades) */
+    if (living > 0 && p.w > 0.3){
+      const c = ((t / p.detP) + p.detPh) % 1;
+      if (c < 0.3){
+        const k = c / 0.3;
+        y += k * p.drift; x += k * p.dx;
+        a *= (1 - k) * 0.9;
+      } else if (c < 0.42){
+        a *= smooth((c - 0.3) / 0.12) * 0.8;
+      }
+      a *= living;
+      if (c >= 0.42) a = Math.max(a, (0.1 + 0.5*tw) * 0.6);
+    }
+    const th = swayAngle(Math.max(0, tLag), y);
+    const rx = x - PIVOT_X, ry = y - PIVOT_Y;
+    const xx = PIVOT_X + rx * Math.cos(th) - ry * Math.sin(th);
+    const yy = PIVOT_Y + rx * Math.sin(th) + ry * Math.cos(th);
+    ctx.globalAlpha = Math.min(1, a);
+    ctx.fillRect(xx - p.size/2, yy - p.size/2, p.size, p.size);
+  }
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.globalAlpha = 1;
+
+  /* ---------- textos: condensação de ruído -> sólidos e imóveis ---------- */
+  for (const zd of zoneData){
+    const { zone, fill, zw, zh, pix, simg, stip } = zd;
+    const [x0, y0] = zone.box;
+    if (t < zone.a) continue;
+
+    if (t < zone.b + 0.1){
+      /* formação: grãos luminosos se condensando nas letras */
+      const p = smooth(ramp(t, zone.a, zone.b));
+      const sd = simg.data; sd.fill(0);
+      const thr = p * p * 1.04;
+      for (let n = 0; n < pix.length; n += 2){
+        const idx = pix[n], v = pix[n+1];
+        const hx = idx % zw, hy = (idx / zw) | 0;
+        const h = hash2(hx * 3 + 1, hy * 3 + 7);
+        if (h < thr){
+          const o = idx * 4;
+          const recent = clamp01((thr - h) / 0.25);
+          sd[o] = sd[o+1] = sd[o+2] = 255;
+          sd[o+3] = Math.min(255, v * (0.55 + 0.45 * recent) * (h < thr - 0.02 ? 1 : 1.6));
+        }
+      }
+      stip.getContext('2d').putImageData(simg, 0, 0);
+      ctx.shadowColor = 'rgba(255,255,255,.9)';
+      ctx.shadowBlur = 13 * (1 - p);                       /* halo que estabiliza */
+      ctx.drawImage(stip, x0, y0);
+      ctx.shadowBlur = 0;
+    } else {
+      /* estável: arte original + micro pulsação de glow */
+      ctx.drawImage(fill, x0, y0);
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = 0.03 + 0.025 * (0.5 + 0.5 * Math.sin(2*Math.PI*t/4.6 + x0));
+      ctx.drawImage(fill, x0, y0);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = 1;
+      /* grãos ocasionais nas bordas das letras */
+      const ep = zd.edgePix;
+      if (ep.length){
+        ctx.fillStyle = '#fff';
+        for (let g = 0; g < 26; g++){
+          const n = (Math.floor(hash2(g * 13 + 5, Math.floor(t * 2.4)) * (ep.length / 2))) * 2;
+          const tw = Math.pow(.5 + .5*Math.sin(2*Math.PI*(t*1.7 + g*0.37)), 6);
+          ctx.globalAlpha = 0.5 * tw;
+          ctx.fillRect(ep[n] - 1, ep[n+1] - 1, 2, 2);
+        }
+        ctx.globalAlpha = 1;
+      }
+    }
+  }
+
+  /* ---------- fumaça e brasa ---------- */
+  const sg = smooth(ramp(t, 1.95, 2.7));
+  smokeLayer.style.opacity = sg.toFixed(3);
+  /* a fumaça acompanha o balanço da mão */
+  const thHand = swayAngle(t, oy);
+  const dxHand = -thHand * (oy - PIVOT_Y), dyHand = thHand * (ox - PIVOT_X);
+  smokeLayer.style.transform = `translate(${dxHand.toFixed(2)}px, ${dyHand.toFixed(2)}px)`;
+  if (sg > 0){
+    smokeNoise.setAttribute('seed', String((tick % 56) + 1));
+    for (const w of WISPS){
+      const el = $(w.id);
+      const [a, b] = w.dash.split(' ').map(Number);
+      el.style.strokeDasharray = w.dash;
+      el.style.strokeDashoffset = String(-(t / DUR) * (a + b) * w.k);
+    }
+    $('gSmoke').setAttribute('transform', `rotate(${2*Math.sin(2*Math.PI*t/3.5)} ${ox} ${oy})`);
+  }
+  /* brilho curto quando o cigarro termina de se formar, depois pulso leve */
+  const burst = gauss(t, 1.75, 0.13) * smooth(ramp(t, 1.5, 1.7));
+  const idle = smooth(ramp(t, 2.0, 2.6)) * (0.35 + 0.3 * (0.5 + 0.5*Math.sin(2*Math.PI*t/2.1)));
+  const emberA = Math.min(1, burst * 1.6 + idle);
+  $('ember').style.opacity = emberA.toFixed(3);
+  $('ember').setAttribute('r', String(6 + 7 * burst + 3 * idle));
+
+  /* ---------- granulação ---------- */
+  const rnd = mulberry32(1234 + (tick % 56));
+  const gimg = gtx.createImageData(270, 338);
+  for (let p = 0; p < gimg.data.length; p += 4){
+    const v = rnd() * 255 | 0;
+    gimg.data[p] = gimg.data[p+1] = gimg.data[p+2] = v;
+    gimg.data[p+3] = 255;
+  }
+  gtx.putImageData(gimg, 0, 0);
+}
+
+window.renderFrame = renderFrame;
+window.TOTAL_FRAMES = TOTAL;
+window.isReady = () => ready;
+
+const t0 = performance.now();
+const frameNow = () => Math.floor(((performance.now() - t0) / 1000 % DUR) * FPS);
+if (!qs.get('render')){
+  (function loop(){ renderFrame(frameNow()); requestAnimationFrame(loop); })();
+}
+</script>
+</body>
+</html>
