@@ -46,8 +46,8 @@
       </defs>
 
       <!-- ancorado na ponta do cigarro; posição vem do CONFIG no script -->
-      <g id="gSmoke" filter="url(#smokeBoil)"
-         style="filter:url(#smokeBoil) drop-shadow(0 0 6px rgba(255,255,255,.9)) drop-shadow(0 0 18px rgba(255,255,255,.4));">
+      <g id="gSmoke"
+         style="filter:url(#smokeBoil) blur(1.4px) drop-shadow(0 0 6px rgba(255,255,255,.9)) drop-shadow(0 0 18px rgba(255,255,255,.4));">
         <path id="wisp1" class="wisp" style="stroke-width:5;   opacity:.85" d=""/>
         <path id="wisp2" class="wisp" style="stroke-width:3.6; opacity:.6"  d=""/>
         <path id="wisp3" class="wisp" style="stroke-width:2.8; opacity:.4"  d=""/>
@@ -73,10 +73,10 @@ const BOIL_FPS = 8, TICKS = DUR * BOIL_FPS;
 const qs = new URLSearchParams(location.search);
 if (qs.get('format') === 'story') document.body.classList.add('story');
 
-/* CONFIG: ponta do cigarro no flyer original (fração da largura/altura).
-   Ajuste fino: abra com ?sx=0.545&sy=0.45 até a fumaça nascer na brasa. */
-const SX = parseFloat(qs.get('sx') || '0.545');
-const SY = parseFloat(qs.get('sy') || '0.450');
+/* CONFIG: ponta do charuto no flyer original (fração da largura/altura).
+   Ajuste fino: abra com ?sx=0.433&sy=0.474 até a fumaça nascer na brasa. */
+const SX = parseFloat(qs.get('sx') || '0.429');
+const SY = parseFloat(qs.get('sy') || '0.480');
 const ox = SX * 1080, oy = SY * 1350;
 
 const $ = id => document.getElementById(id);
@@ -86,11 +86,13 @@ const grain = $('grain'), gtx = grain.getContext('2d');
 
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
 
-/* três véus de fumaça saindo da brasa, comprimentos diferentes */
+/* três véus de fumaça saindo da brasa, comprimentos diferentes;
+   sway positivo desvia para a direita, no corredor livre entre
+   o AUGUST e o bloco APPOINTMENT */
 const WISPS = [
-  { id:'wisp1', h:300, sway:26, dash:'70 110', k:2 },
-  { id:'wisp2', h:380, sway:40, dash:'55 125', k:3 },
-  { id:'wisp3', h:440, sway:56, dash:'45 135', k:4 },
+  { id:'wisp1', h:220, sway:24, dash:'110 70', k:2 },
+  { id:'wisp2', h:280, sway:38, dash:'90 90',  k:3 },
+  { id:'wisp3', h:330, sway:52, dash:'70 110', k:4 },
 ];
 for (const w of WISPS){
   /* curva em S subindo da origem; o sway abre para os lados */
