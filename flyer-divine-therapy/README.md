@@ -35,6 +35,24 @@ node render.mjs still   # out/preview-still.png (frame parado)
 
 Requer `playwright` (com Chromium) e `ffmpeg` no PATH.
 
+## Modo "flyer original" (idêntico, só com movimento)
+
+Para animar o flyer original sem redesenhar nada: salve a imagem em
+`arte/flyer-original.png` (1080×1350 ou proporção 4:5) e rode:
+
+```bash
+node render.mjs orig-feed    # out/divine-therapy-original-feed.mp4
+node render.mjs orig-story   # out/divine-therapy-original-story.mp4
+node render.mjs orig-still   # out/preview-still-original.png
+```
+
+O `flyer-original.html` mantém a arte 100% intocada e adiciona: fumaça
+subindo do cigarro (com tremido de traço à mão), brasa pulsando,
+respiração sutil de brilho, leve deriva de câmera e granulação de filme.
+A posição da ponta do cigarro é configurável — abra
+`flyer-original.html?sx=0.545&sy=0.45` no navegador e ajuste os valores
+até a fumaça nascer no lugar certo (frações da largura/altura).
+
 ## Observações
 
 - A ilustração é um redesenho vetorial (SVG) feito a partir do flyer original —
