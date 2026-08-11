@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/png" href="assets/favicon.png?v=8" />
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=8" />
+<title>Treze Wear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Archivo:wght@400;600;800;900&family=Archivo+Black&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --black:#000;--char:#0a0a0b;--line:#1c1c20;--white:#fff;--grey:#9a9aa2;--grey-dim:#6a6a72;
+  --tech:#cfd0d6;--glass-bg:rgba(255,255,255,.045);--glass-brd:rgba(255,255,255,.12);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden;overflow-x:clip}
+body{background:#000;color:#fff;font-family:'Archivo',sans-serif;overflow-x:hidden;overflow-x:clip;-webkit-font-smoothing:antialiased;min-height:100svh}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.grain{position:fixed;inset:-50%;z-index:90;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:gr .6s steps(2) infinite}
+@keyframes gr{0%{transform:translate(0,0)}50%{transform:translate(-4%,3%)}100%{transform:translate(2%,-2%)}}
+.aurora{position:fixed;inset:0;z-index:-1;pointer-events:none;filter:blur(20px);
+  background:radial-gradient(50vw 40vw at 75% 10%,rgba(207,208,214,.09),transparent 60%),radial-gradient(45vw 45vw at 15% 85%,rgba(233,233,240,.05),transparent 60%)}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  padding:16px clamp(20px,5vw,64px);background:rgba(8,8,10,.55);backdrop-filter:blur(16px) saturate(140%);border-bottom:1px solid var(--line)}
+nav .back{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.22em;color:var(--grey);transition:color .25s}
+nav .back:hover{color:#fff}
+nav .brand{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+nav .brand img{height:24px;opacity:.95}
+nav .cart{font-family:'Space Mono',monospace;font-size:12px;color:#fff;display:flex;align-items:center;gap:8px}
+nav .cart .dot{width:7px;height:7px;border-radius:50%;background:var(--tech);box-shadow:0 0 10px var(--tech)}
+
+.wrap{max-width:1180px;margin:0 auto;padding:120px clamp(20px,5vw,64px) 80px;display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px);align-items:start}
+@media(max-width:900px){.wrap{grid-template-columns:1fr;padding-top:96px}}
+
+/* visual — galeria (várias fotos por produto, carrossel com snap; tamanho fixo por proporção, sem vh) */
+.visual{position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--line);
+  background:radial-gradient(120% 100% at 50% 0%,#1a1a20,#0a0a0c 70%);position:sticky;top:96px}
+@media(max-width:900px){.visual{position:relative;top:auto}}
+.gallery{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;font-size:0;line-height:0}
+.gallery::-webkit-scrollbar{display:none}
+/* desktop: setas + arrasto com o mouse (no celular o dedo já resolve) */
+.visual{position:relative}
+.gallery{cursor:grab}
+.gallery.dragging{cursor:grabbing;scroll-snap-type:none}
+.gnav{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:42px;height:42px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.16);background:rgba(8,8,10,.55);backdrop-filter:blur(8px);
+  color:#fff;font-size:20px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  opacity:.85;transition:opacity .25s,background .25s}
+.gnav:hover{background:rgba(8,8,10,.9);opacity:1}
+.gnav.prev{left:12px}
+.gnav.next{right:12px}
+@media(hover:none){.gnav{display:none}}
+.gdots i{cursor:pointer}
+.gallery img{flex:0 0 100%;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center 24%;
+  scroll-snap-align:center;filter:grayscale(.16) contrast(1.04)}
+.gdots{position:absolute;left:0;right:0;bottom:14px;display:flex;justify-content:center;gap:6px;z-index:3;pointer-events:none}
+.gdots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.45);transition:.35s var(--ease)}
+.gdots i.on{background:#fff;width:20px;border-radius:3px}
+.visual .pill{position:absolute;top:16px;left:16px;padding:7px 13px;border-radius:2px;background:#fff;color:#000;
+  font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;font-weight:700}
+.visual .units-badge{position:absolute;bottom:16px;right:16px;padding:7px 13px;border-radius:2px;
+  background:rgba(0,0,0,.55);border:1px solid var(--glass-brd);color:#fff;
+  font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em}
+
+/* info */
+.kicker{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--grey);margin-bottom:14px}
+h1{font-family:'Archivo Black',sans-serif;font-size:clamp(34px,5vw,58px);line-height:.95;text-transform:uppercase;letter-spacing:-.02em}
+.price{font-family:'Space Mono',monospace;font-size:22px;margin:18px 0 6px}
+.price small{font-size:12px;color:var(--grey-dim);letter-spacing:.1em}
+.desc{color:#fff;font-size:15px;line-height:1.8;margin:18px 0 30px;max-width:440px}
+
+.sec-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.28em;color:var(--grey);text-transform:uppercase;margin-bottom:12px}
+.sizes{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.size{min-width:52px;padding:13px 0;text-align:center;border-radius:3px;border:1px solid var(--glass-brd);
+  background:var(--glass-bg);font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.1em;cursor:pointer;
+  transition:.25s;user-select:none}
+.size:hover{border-color:#fff}
+.size.sel{background:#fff;color:#000;border-color:#fff;font-weight:700}
+.size.out{opacity:.3;cursor:not-allowed;text-decoration:line-through}
+.units{min-height:22px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.15em;color:#fff;margin-bottom:26px}
+.units.warn{color:#c9a07f}
+
+.backart{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:6px;margin-bottom:30px;
+  background:var(--glass-bg);border:1px solid var(--glass-brd);max-width:460px}
+.backart img{width:34px;opacity:.85;flex-shrink:0}
+.backart p{font-size:12.5px;line-height:1.65;color:var(--grey)}
+.backart b{color:#fff;font-weight:600}
+
+.ctas{display:flex;flex-direction:column;gap:12px;max-width:460px}
+.btn{position:relative;display:flex;align-items:center;justify-content:center;gap:12px;padding:17px 30px;border-radius:2px;
+  font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;
+  border:1px solid var(--glass-brd);overflow:hidden;transition:transform .3s var(--ease),border-color .3s,opacity .3s;text-align:center}
+.btn .label{position:relative;z-index:2}
+.btn-chrome{color:#0a0a0b;border:none;background:linear-gradient(180deg,#fdfdff,#cfd0d6 48%,#9a9aa2 52%,#e9e9f0);font-weight:700}
+.btn-chrome::after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;
+  background:linear-gradient(110deg,transparent,rgba(255,255,255,.9),transparent);transform:skewX(-20deg);transition:left .6s var(--ease)}
+.btn-chrome:hover::after{left:140%}
+.btn-chrome:hover{transform:translateY(-2px)}
+.btn-ghost{background:var(--glass-bg);backdrop-filter:blur(12px);color:#fff}
+.btn-ghost:hover{border-color:#fff;transform:translateY(-2px)}
+.btn[disabled]{opacity:.35;pointer-events:none}
+.cta-hint{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--grey-dim);text-align:center;margin-top:2px}
+
+footer{border-top:1px solid var(--line);padding:26px clamp(20px,5vw,64px);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+footer span{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.15em;color:var(--grey-dim)}
+
+#toast{position:fixed;z-index:99;top:74px;left:50%;transform:translateX(-50%) translateY(-8px);
+  font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;color:#fff;background:rgba(10,10,12,.85);
+  backdrop-filter:blur(10px);border:1px solid var(--glass-brd);padding:9px 16px;border-radius:4px;opacity:0;transition:.4s var(--ease);pointer-events:none}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ============ MOBILE ============ */
+@media(max-width:760px){
+  nav .cart{display:none}
+  .wrap{padding:86px 20px 56px;gap:24px}
+  .visual{aspect-ratio:4/5;border-radius:8px}
+  .kicker{font-size:10px;letter-spacing:.26em;margin-bottom:12px}
+  h1{font-size:clamp(30px,8.5vw,44px)}
+  .price{font-size:20px;margin:14px 0 4px}
+  .desc{font-size:14px;line-height:1.7;margin:14px 0 26px;max-width:100%}
+  /* tamanhos preenchem a linha = alvos de toque grandes */
+  .sizes{gap:8px}
+  .size{flex:1;min-width:0;padding:15px 0;font-size:14px}
+  .units{margin-bottom:22px}
+  .backart{margin-bottom:26px;max-width:100%}
+  .ctas{max-width:100%}
+  .btn{padding:18px 24px}
+  footer{padding:24px 20px;gap:8px}
+  footer span:nth-child(2){display:none}
+}</style>
+</head>
+<body>
+<div class="aurora"></div>
+<div class="grain"></div>
+
+<nav>
+  <a class="back" href="index.html#drops">← DROPS</a>
+  <a class="brand" href="index.html"><img src="assets/wordmark.png" alt="TREZE" /></a>
+  <a class="cart" href="carrinho.html" style="text-decoration:none;color:inherit"><span class="dot"></span>SACOLA (<b id="cartN">0</b>)</a>
+</nav>
+
+<main class="wrap">
+  <div class="visual">
+    <div class="gallery" id="gallery"></div>
+    <div class="gdots" id="gdots"></div>
+    <span class="pill" id="vTag"></span>
+  </div>
+
+  <div class="info">
+    <div class="kicker" id="iKicker"></div>
+    <h1 id="iNome"></h1>
+    <div class="price"><span id="iPreco"></span> <small>· tiragem limitada</small></div>
+    <p class="desc" id="iDesc"></p>
+
+    <div class="sec-label">Tamanho</div>
+    <div class="sizes" id="sizes"></div>
+    <div class="units" id="unitsTxt">selecione um tamanho</div>
+
+
+    <div class="ctas">
+      <button class="btn btn-chrome" id="btnCustom" disabled><span class="label">Personalizar na Bancada →</span></button>
+      <button class="btn btn-ghost" id="btnPadrao" disabled><span class="label">+ Adicionar à sacola · padrão</span></button>
+      <div class="cta-hint" id="ctaHint">ESCOLHA O TAMANHO PRA LIBERAR</div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span>© 2026 Treze Wear Comércio do Vestuário Ltda.</span>
+  <span><img src="assets/wordmark.png" alt="Treze" style="height:19px;width:auto;opacity:.6;vertical-align:middle" /></span>
+  <span>BELO HORIZONTE · MINAS GERAIS</span>
+</footer>
+
+<div id="toast"></div>
+
+<script src="assets/cart.js"></script>
+<script>
+const CATALOGO = {
+  'trio-maldito': {
+    nome:'Hoodie Trio Maldito', tag:'DROP 003', preco:'R$ 392,13',
+    desc:'Moletom heavyweight, corte oversized, três escudos que não pedem licença. Costura reforçada pra receber os escudos de couro na bancada.',
+    photos:['trio-tras.jpg','trio-frente.jpg','trio-life-bw.jpg'],
+    un:{P:3, M:5, G:4, GG:1}
+  },
+  'massa-tee': {
+    nome:'MASSA Tee', tag:'NOVO', preco:'R$ 213,92',
+    desc:'Camiseta 100% algodão penteado, gramatura alta, caimento reto. A arte da Massa nas costas; a frente e as mangas são suas.',
+    photos:['massa-tras.jpg','massa-frente.jpg','massa-grupo.jpg'],
+    un:{P:6, M:8, G:5, GG:2}
+  },
+  'klaw': {
+    nome:'KLAW Hoodie', tag:'ICÔNICO', preco:'R$ 392,13',
+    desc:'O moletom da garra. Heavyweight, capuz forrado, punhos em ribana dupla. As últimas unidades do drop mais pedido da TREZE.',
+    photos:['klaw-frente.jpg','klaw-tras.jpg','klaw-life.jpg','look-05.jpg'],
+    un:{P:1, M:2, G:2}
+  },
+  'horto-jogger': {
+    nome:'Horto Jogger', tag:'DROP 004', preco:'R$ 492,13',
+    desc:'Calça de moletom heavyweight, corte jogger com punho na barra. Quatro brasões de couro inclusos, personalizáveis na frente — as costas ficam limpas. Feita à mão em Belo Horizonte.',
+    photos:['horto-frente.jpg?v=2','horto-vesti.jpg','horto-tras.jpg'],
+    un:{P:4, M:6, G:5, GG:2}
+  }
+};
+
+const qs = new URLSearchParams(location.search);
+const SLUG = CATALOGO[qs.get('p')] ? qs.get('p') : 'trio-maldito';
+const P = CATALOGO[SLUG];
+let sizeSel = null;
+
+document.title = 'Treze Wear · ' + P.nome;
+document.getElementById('vTag').textContent = P.tag;
+/* galeria: várias fotos por produto (carrossel com snap + dots) */
+(function(){
+  const fotos = (P.photos && P.photos.length) ? P.photos : [P.photo];
+  const gal = document.getElementById('gallery');
+  const dots = document.getElementById('gdots');
+  gal.innerHTML = fotos.map((src,i)=>`<img src="assets/lookbook/${src}" alt="${P.nome} — ${i+1}" loading="${i?'lazy':'eager'}"/>`).join('');
+  dots.innerHTML = fotos.length>1 ? fotos.map((_,i)=>`<i class="${i===0?'on':''}"></i>`).join('') : '';
+  let raf=0;
+  gal.addEventListener('scroll', ()=>{
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(()=>{
+      const idx = Math.round(gal.scrollLeft / Math.max(1,gal.clientWidth));
+      [...dots.children].forEach((d,i)=>d.classList.toggle('on', i===idx));
+    });
+  });
+  const irPara = (i)=>gal.scrollTo({ left: i*gal.clientWidth, behavior:'smooth' });
+  // setas (desktop)
+  if(fotos.length > 1){
+    const wrap = gal.parentElement;
+    const seta = (cls, txt, dir)=>{
+      const b = document.createElement('button');
+      b.className = 'gnav '+cls; b.innerHTML = txt; b.setAttribute('aria-label', dir>0?'próxima foto':'foto anterior');
+      b.addEventListener('click', ()=>{
+        const idx = Math.round(gal.scrollLeft / Math.max(1,gal.clientWidth));
+        irPara(Math.max(0, Math.min(fotos.length-1, idx+dir)));
+      });
+      wrap.appendChild(b);
+    };
+    seta('prev','‹',-1); seta('next','›',1);
+  }
+  // bolinhas clicáveis
+  [...dots.children].forEach((d,i)=>d.addEventListener('click', ()=>irPara(i)));
+  // arrastar com o mouse (touch já rola nativo)
+  let drag = null;
+  gal.addEventListener('dragstart', e=>e.preventDefault());   // impede o drag nativo da <img>
+  gal.addEventListener('pointerdown', e=>{
+    if(e.pointerType !== 'mouse') return;
+    drag = { x:e.clientX, left:gal.scrollLeft };
+    gal.classList.add('dragging');
+    gal.setPointerCapture(e.pointerId);
+  });
+  gal.addEventListener('pointermove', e=>{ if(drag) gal.scrollLeft = drag.left - (e.clientX - drag.x); });
+  const soltar = ()=>{
+    if(!drag) return;
+    drag = null; gal.classList.remove('dragging');
+    irPara(Math.round(gal.scrollLeft / Math.max(1,gal.clientWidth)));   // encaixa na foto mais próxima
+  };
+  gal.addEventListener('pointerup', soltar);
+  gal.addEventListener('pointercancel', soltar);
+})();
+document.getElementById('iKicker').textContent = P.tag + ' · TREZE WEAR';
+document.getElementById('iNome').textContent = P.nome;
+document.getElementById('iPreco').textContent = P.preco;
+document.getElementById('iDesc').textContent = P.desc;
+
+const sizesEl = document.getElementById('sizes');
+const unitsTxt = document.getElementById('unitsTxt');
+const btnCustom = document.getElementById('btnCustom');
+const btnPadrao = document.getElementById('btnPadrao');
+const ctaHint = document.getElementById('ctaHint');
+
+for(const s of ['P','M','G','GG'].filter(x=>P.un[x]!==undefined)){
+  const d = document.createElement('div');
+  d.className = 'size' + (P.un[s] === 0 ? ' out' : '');
+  d.textContent = s;
+  if(P.un[s] > 0){
+    d.addEventListener('click', ()=>{
+      sizesEl.querySelectorAll('.size').forEach(x=>x.classList.remove('sel'));
+      d.classList.add('sel');
+      sizeSel = s;
+      const n = P.un[s];
+      unitsTxt.textContent = n + (n===1?' unidade restante':' unidades restantes') + ' no tamanho ' + s;
+      unitsTxt.classList.toggle('warn', n <= 2);
+      btnCustom.disabled = false;
+      btnPadrao.disabled = false;
+      ctaHint.textContent = 'TAMANHO ' + s + ' SELECIONADO';
+    });
+  }
+  sizesEl.appendChild(d);
+}
+
+btnCustom.addEventListener('click', ()=>{
+  location.href = 'customizer.html?p=' + SLUG + '&size=' + encodeURIComponent(sizeSel) + '&modo=custom';
+});
+
+btnPadrao.addEventListener('click', ()=>{
+  TREZECART.add({
+    produto: SLUG, nome: P.nome, tamanho: sizeSel, modo: 'padrao',
+    total: parseFloat(P.preco.replace(/[^\d,]/g,'').replace(',','.')),   // 'R$ 392,13' -> 392.13
+    resumo: 'Padrão', render: 'assets/lookbook/' + P.photos[0],
+  });
+  document.getElementById('cartN').textContent = TREZECART.count();
+  toast(P.nome.toUpperCase() + ' · ' + sizeSel + ' NA SACOLA ✦');
+});
+document.getElementById('cartN').textContent = TREZECART.count();   // contagem real ao abrir
+
+let toastT = null;
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+</script>
+</body>
+</html>
